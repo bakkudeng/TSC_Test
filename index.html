@@ -124,7 +124,7 @@ TSC
 <div id="questionsContainer" class="space-y-4"></div>
 ​</main>
 ​<script>
-// --- 10 Full Sets (Complete 140 Questions with Revamped Part 2) ---
+// --- 10 Full Sets (140 Questions) ---
 const allTscSets = {
 1: [
 {
@@ -444,45 +444,83 @@ const realPart2Specs = {
 { topic: "소지품 (자동차 열쇠)", desc: "스마트 리모컨 버튼이 달린 자동차 차키 열쇠 그림", q: "这是什么钥匙？", pyQ: "Zhè shì shénme yàoshi?", trQ: "이것은 무슨 열쇠입니까?", a: "这是车钥匙（汽车钥匙）。", pyA: "Zhè shì chē yàoshi (qìchē yàoshi).", trA: "이것은 자동차 열쇠(차키)입니다.", tip: "열쇠는 '钥匙(yàoshi)', 차키는 '车钥匙'라고 합니다." }
 ]
 };
-​// Synthesize structured data for sets 3-10 using real specific Part 2 questions
+​const setThemes = {
+3: {
+p3: ["영화 예매", "휴대폰 기종 변경", "야근 후 식사", "아침 기상 루틴", "봄철 꽃구경"],
+p4: [ { ko: "음악 감상 취미", zh: "听音乐的爱好", py: "tīng yīnyuè de àihào" }, { ko: "기억에 남는 여행", zh: "难忘的旅行", py: "nánwàng de lǚxíng" }, { ko: "건강한 식습관", zh: "健康的饮食习惯", py: "jiànkāng de yǐnshí xíguàn" } ],
+p5: [ { ko: "종이책 vs 전자책", zh: "看纸质书还是看电子书", py: "kàn zhǐzhìshū háishì kàn diànzǐshū" }, { ko: "빠른 결혼 vs 만혼", zh: "早婚还是晚婚", py: "zǎohūn háishì wǎnhūn" } ]
+},
+4: {
+p3: ["중국어 학습 계기", "주말 등산 약속", "분실물 찾기", "생일 파티 초대", "겨울철 감기 조심"],
+p4: [ { ko: "친구 사귈 때 성격", zh: "交朋友看重的性格", py: "jiāo péngyou kànzhòng de xìnggé" }, { ko: "퇴근 후 하루 일과", zh: "下班后的生活安排", py: "xiàbān hòu de shēnghuó ānpái" }, { ko: "반려동물 기르기", zh: "养宠物", py: "yǎng chǒngwù" } ],
+p5: [ { ko: "전기차 vs 내연기관차", zh: "买电动车还是买燃油车", py: "mǎi diàndòngchē háishì mǎi rányóuchē" }, { ko: "혼자 여행 vs 패키지 단체 여행", zh: "独自旅行还是跟团旅行", py: "dúzì lǚxíng háishì gēntuán lǚxíng" } ]
+},
+5: {
+p3: ["커피 번개", "택시 vs 걷기", "대청소 분담", "저녁 식당 예약", "여름철 더위 대처"],
+p4: [ { ko: "워라밸의 중요성", zh: "工作与生活的平衡", py: "gōngzuò yǔ shēnghuó de pínghéng" }, { ko: "외국어 학습 노하우", zh: "学习外语的方法", py: "xuéxí wàiyǔ de fāngfǎ" }, { ko: "독서 습관", zh: "阅读习惯", py: "yuèdú xíguàn" } ],
+p5: [ { ko: "대기업 근무 vs 스타트업", zh: "去大企业工作还是去创业公司", py: "qù dà qǐyè gōngzuò háishì qù chuàngyè gōngsī" }, { ko: "현금 없는 사회(모바일페이) 찬반", zh: "无现金社会和移动支付", py: "wú xiànjīn shèhuì hé yídòng zhīfù" } ]
+},
+6: {
+p3: ["콘서트 티켓 예매", "쇼핑 옷 추천", "헬스장 등록 상담", "간단한 아침 식사", "가을 단풍 구경"],
+p4: [ { ko: "번아웃 극복법", zh: "克服工作倦怠", py: "kèfú gōngzuò juàndài" }, { ko: "가장 좋아하는 명절", zh: "最喜欢的传统节日", py: "zuì xǐhuan de chuántǒng jiérì" }, { ko: "스마트폰이 바꾼 삶", zh: "智能手机对生活的影响", py: "zhìnéng shǒujī duì shēnghuó de yǐngxiǎng" } ],
+p5: [ { ko: "높은 연봉 vs 적성과 워라밸", zh: "选择高薪工作还是喜欢的工作", py: "xuǎnzé gāoxīn gōngzuò háishì xǐhuan de gōngzuò" }, { ko: "인공지능(AI) 발전의 명암", zh: "人工智能技术的发展", py: "réngōng zhìnéng jìshù de fāzhǎn" } ]
+},
+7: {
+p3: ["프로젝트 성공 회식", "도서 대출 질문", "서비스센터 수리", "저녁 공원 산책", "화창한 주말 날씨"],
+p4: [ { ko: "가장 의미 있는 휴일", zh: "最有意义的假期", py: "zuì yǒu yìyì de jiàqī" }, { ko: "중국어 단어 암기법", zh: "背汉语单词的方法", py: "bèi Hànyǔ dāncí de fāngfǎ" }, { ko: "환경 보호를 위한 실천", zh: "日常生活中的环保行动", py: "rìcháng shēnghuó zhōng de huánbǎo xíngdòng" } ],
+p5: [ { ko: "혼자 자취하기 vs 부모님과 거주", zh: "独自居住还是和父母同住", py: "dúzì jūzhù háishì hé fùmǔ tóngzhù" }, { ko: "오프라인 현장 강의 vs 온라인 강의", zh: "线下上课还是线上网课", py: "xiànxià shàngkè háishì xiànshàng wǎngkè" } ]
+},
+8: {
+p3: ["출장 가방 싸기", "맛집 식당 추천", "운동 파트너 구하기", "오후 티타임 휴식", "바람 부는 쌀쌀한 날"],
+p4: [ { ko: "동료와 의견 충돌 시 해결법", zh: "与同事意见不合时的解决方法", py: "yǔ tóngshì yìjiàn bùhé shí de jiějué fāngfǎ" }, { ko: "주말 재충전 방법", zh: "周末放松充电的方式", py: "zhōumò fàngsōng chōngdiàn de fāngshì" }, { ko: "기억에 남는 생일 선물", zh: "最难忘的生日礼物", py: "zuì nánwàng de shēngrì lǐwù" } ],
+p5: [ { ko: "패스트패션 vs 지속가능 패션", zh: "快时尚消费还是环保消费", py: "kuài shíshàng xiāofèi háishì huánbǎo xiāofèi" }, { ko: "어린이 스마트폰 사용 제한 찬반", zh: "限制青少年使用智能手机", py: "xiànzhì qīngshàonián shǐyòng zhìnéng shǒujī" } ]
+},
+9: {
+p3: ["동료와 카풀 제안", "백화점 할인 쇼핑", "새로운 요리 레시피", "주말 신작 영화", "폭설 안전 안내"],
+p4: [ { ko: "직장에서 소통의 중요성", zh: "职场沟通的重要性", py: "zhíchǎng gōutōng de zhòngyàoxìng" }, { ko: "가장 좋아하는 스포츠", zh: "最喜欢的体育运动", py: "zuì xǐhuan de tǐyù yùndòng" }, { ko: "새해 목표와 계획", zh: "新年的目标与计划", py: "xīnnián de mùbiāo yǔ jìhuà" } ],
+p5: [ { ko: "대학 간판 학벌 vs 실무 능력", zh: "名校学历重要还是工作能力重要", py: "míngxiào xuélì zhòngyào háishì gōngzuò nénglì zhòngyào" }, { ko: "선택적 유연근무제 도입 찬반", zh: "实行弹性工作制", py: "shíxíng tánxìng gōngzuòzhì" } ]
+},
+10: {
+p3: ["신입사원 환영회", "동료 송별회 선물", "항공권 예약 변경", "주말 바비큐 파티", "미세먼지 마스크 착용"],
+p4: [ { ko: "좋은 리더의 조건", zh: "优秀领导者的条件", py: "yōuxiù lǐngdǎozhě de tiáojiàn" }, { ko: "프로젝트 스트레스 관리", zh: "管理项目压力的方法", py: "guǎnlǐ xiàngmù yālì de fāngfǎ" }, { ko: "인생 버킷리스트", zh: "人生愿望清单", py: "rénshēng yuànwàng qīngdān" } ],
+p5: [ { ko: "재택근무 생산성 지속 여부", zh: "居家办公能否保持高效率", py: "jūjiā bàngōng néngfǒu bǎochí gāo xiàolǜ" }, { ko: "전통문화 보존 vs 현대화 개발", zh: "保护传统文化还是推进现代化开发", py: "bǎohù chuántǒng wénhuà háishì tuījìn xiàndàihuà kāifā" } ]
+}
+};
+​// Synthesize structured real data for sets 3-10
 for (let s = 3; s <= 10; s++) {
 const theme = setThemes[s];
 const p2Specs = realPart2Specs[s];
 allTscSets[s] = [
-// Part 2 (4 Specific Exam Questions)
+// Part 2
 {
 id: s${s}_p2_1, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
-topic: p2Specs[0].topic, visualSvg: s${s}_p2_1,
-visualDesc: p2Specs[0].desc,
+topic: p2Specs[0].topic, visualSvg: s${s}_p2_1, visualDesc: p2Specs[0].desc,
 q: p2Specs[0].q, pinyinQ: p2Specs[0].pyQ, transQ: p2Specs[0].trQ,
 a: p2Specs[0].a, pinyinA: p2Specs[0].pyA, transA: p2Specs[0].trA,
 tip: p2Specs[0].tip
 },
 {
 id: s${s}_p2_2, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
-topic: p2Specs[1].topic, visualSvg: s${s}_p2_2,
-visualDesc: p2Specs[1].desc,
+topic: p2Specs[1].topic, visualSvg: s${s}_p2_2, visualDesc: p2Specs[1].desc,
 q: p2Specs[1].q, pinyinQ: p2Specs[1].pyQ, transQ: p2Specs[1].trQ,
 a: p2Specs[1].a, pinyinA: p2Specs[1].pyA, transA: p2Specs[1].trA,
 tip: p2Specs[1].tip
 },
 {
 id: s${s}_p2_3, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
-topic: p2Specs[2].topic, visualSvg: s${s}_p2_3,
-visualDesc: p2Specs[2].desc,
+topic: p2Specs[2].topic, visualSvg: s${s}_p2_3, visualDesc: p2Specs[2].desc,
 q: p2Specs[2].q, pinyinQ: p2Specs[2].pyQ, transQ: p2Specs[2].trQ,
 a: p2Specs[2].a, pinyinA: p2Specs[2].pyA, transA: p2Specs[2].trA,
 tip: p2Specs[2].tip
 },
 {
 id: s${s}_p2_4, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
-topic: p2Specs[3].topic, visualSvg: s${s}_p2_4,
-visualDesc: p2Specs[3].desc,
+topic: p2Specs[3].topic, visualSvg: s${s}_p2_4, visualDesc: p2Specs[3].desc,
 q: p2Specs[3].q, pinyinQ: p2Specs[3].pyQ, transQ: p2Specs[3].trQ,
 a: p2Specs[3].a, pinyinA: p2Specs[3].pyA, transA: p2Specs[3].trA,
 tip: p2Specs[3].tip
 },
-​// Part 3 (5 Qs)
+​// Part 3
 {
 id: s${s}_p3_1, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
 topic: theme.p3[0],
@@ -523,7 +561,7 @@ a: "今天外面风挺大的，有点儿冷，最好多穿一件外套。",
 pinyinA: "Jīntiān wàimiàn fēng tǐng dà de, yǒudiǎnr lěng, zuìhǎo duō chuān yí jiàn wàitào.", transA: "바람이 꽤 불고 쌀쌀해요, 외투 한 벌 더 입는 게 좋아요.",
 tip: "날씨 묘사(风挺大的) + 행동 조언(多穿外套)을 조합합니다."
 },
-​// Part 4 (3 Qs)
+​// Part 4
 {
 id: s${s}_p4_1, part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
 topic: theme.p4[0].ko,
@@ -549,7 +587,7 @@ tip: "'一方面... 另一方面...' 대구법으로 논리성을 확보하세�
 {
 id: s${s}_p4_3, part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
 topic: theme.p4[2].ko,
-q: 请谈谈你对${theme.p4[2].zh}의经历或计划。,
+q: 请谈谈你对${theme.p4[2].zh}的经历或计划。,
 pinyinQ: Qǐng tántan nǐ duì ${theme.p4[2].py} de jīnglì huò jìhuà.,
 transQ: ${theme.p4[2].ko}에 대한 경험이나 계획을 말해보세요.,
 a: "我有过非常难忘的经历。那次经历不仅让我学到了很多实用的经验，还开阔了我的眼界。未来如果有机会，我希望能继续挑战自己，体验更多新鲜的事物，让人生更加丰富。",
@@ -557,7 +595,7 @@ pinyinA: "Wǒ yǒuguo fēicháng nánwàng de jīnglì. Nà cì jīnglì bùjǐn
 transA: "잊지 못할 경험이 있습니다. 많은 실용적 경험을 배웠고 시야를 넓혔습니다. 앞으로도 도전하며 다양한 것을 체험해 인생을 풍요롭게 만들고 싶습니다.",
 tip: "배움(学到经验), 시야 확장(开阔眼界), 자기 도전(挑战自己)은 4급~5급 단골 고득점 어휘입니다."
 },
-​// Part 5 (2 Qs)
+​// Part 5
 {
 id: s${s}_p5_1, part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50,
 topic: theme.p5[0].ko,
@@ -622,8 +660,7 @@ osc.connect(gain); gain.connect(webAudioCtx.destination);
 osc.start(); osc.stop(webAudioCtx.currentTime + d);
 } catch(e) {}
 }
-​// Precise SVG Renderers for All 40 Part 2 Questions
-function getPart2Svg(key) {
+​function getPart2Svg(key) {
 switch(key) {
 // Set 1
 case 's1_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="50" cy="50" r="45" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/><circle cx="50" cy="50" r="3" fill="#0f172a"/><text x="50" y="18" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">12</text><text x="50" y="90" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">6</text><text x="14" y="53" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">9</text><text x="86" y="53" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">3</text><line x1="50" y1="50" x2="28" y2="42" stroke="#0f172a" stroke-width="3.5" stroke-linecap="round"/><line x1="50" y1="50" x2="16" y2="50" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"/></svg>;
@@ -680,12 +717,16 @@ case 's10_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx=
 }
 ​function renderApp() {
 const container = document.getElementById('questionsContainer');
+if (!container) return;
 container.innerHTML = '';
 const currentDataset = allTscSets[currentSet] || [];
 const filtered = currentPart === 'all' ? currentDataset : currentDataset.filter(item => item.part === currentPart);
-document.getElementById('bannerSetLabel').textContent = SET ${String(currentSet).padStart(2, '0')};
-document.getElementById('bannerTitle').textContent = 삼성 사내 TSC 실전 모의고사 ${currentSet}회;
-document.getElementById('bannerTotalCount').textContent = ${filtered.length}개 문항 표시 중;
+​const setLabelEl = document.getElementById('bannerSetLabel');
+const titleEl = document.getElementById('bannerTitle');
+const countEl = document.getElementById('bannerTotalCount');
+if (setLabelEl) setLabelEl.textContent = SET ${String(currentSet).padStart(2, '0')};
+if (titleEl) titleEl.textContent = 삼성 사내 TSC 실전 모의고사 ${currentSet}회;
+if (countEl) countEl.textContent = ${filtered.length}개 문항 표시 중;
 ​filtered.forEach((item) => {
 let isP2 = item.part === 'part2', isP45 = item.part === 'part4' || item.part === 'part5';
 let sQH = isP45 ? true : globalQ23Visible;
@@ -744,7 +785,9 @@ ${isP45 ? `
 } </div> </div> </div> <div id="ansBox_${item.id}" class="ans-block ${globalAnsVisible ? '' : 'hidden'}"> <div class="bg-indigo-50/60 border border-indigo-100 rounded-xl p-3 sm:p-3.5 space-y-1.5"> <div class="flex items-center justify-between"> <span class="text-xs font-bold text-indigo-900 flex items-center gap-1"> <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-indigo-600"></i> 모범 표준 답안 </span> <button onclick="playTTS('${escapeJS(item.a)}', 'a_${item.id}', this)" class="tts-btn px-2 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-xs font-bold flex items-center gap-1"> <span class="tts-icon-wrap flex items-center"><i data-lucide="volume-2" class="w-3 h-3"></i></span> <span class="tts-lbl">답변 듣기</span> </button> </div> <div class="text-sm sm:text-base font-bold text-slate-900 font-chinese whitespace-pre-line leading-relaxed">${item.a}</div> <div class="ans-pinyin text-xs font-semibold text-indigo-900 font-mono whitespace-pre-line leading-relaxed ${sAP ? '' : 'hidden'}">${item.pinyinA}</div> <div class="ans-korean text-xs text-slate-700 whitespace-pre-line leading-relaxed pt-1 border-t border-indigo-100 ${sAK ? '' : 'hidden'}">${item.transA}</div> <div class="text-[11px] text-indigo-950/80 pt-1 border-t border-indigo-100/70 flex items-start gap-1"> <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5"></i> <span><strong>공략 포인트:</strong> ${item.tip}</span> </div> </div> </div> <div class="pt-0.5"> <button onclick="toggleSingleAns('${item.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 flex items-center gap-1.5 shadow-sm active:bg-slate-100"> <span id="btnAnsIconWrap_${item.id}" class="flex items-center"><i data-lucide="${globalAnsVisible ? 'eye-off' : 'eye'}" class="w-3.5 h-3.5 text-indigo-600"></i></span> <span id="btnAnsLabel_${item.id}">${globalAnsVisible ? '모범 답안 닫기' : '모범 답안 열기'}</span> </button> </div> </div> </div>;
 container.appendChild(card);
 });
-lucide.createIcons();
+if (window.lucide && typeof window.lucide.createIcons === 'function') {
+window.lucide.createIcons();
+}
 }
 ​function syncAllQuestionDetails() {
 let ds = allTscSets[currentSet] || [];
@@ -765,42 +808,79 @@ if(lbl) lbl.textContent = sBox ? '문제 병음 가림' : '문제 병음 보기'
 }
 ​function toggleAllQuestionText() {
 globalQ23Visible = !globalQ23Visible;
-document.getElementById('labelGlobalQ').textContent = globalQ23Visible ? '2·3부 질문 숨김' : '2·3부 질문 열기';
-let b = document.getElementById('btnGlobalQ'); b.classList.toggle('bg-rose-100', globalQ23Visible); b.classList.toggle('border-rose-400', globalQ23Visible);
+const lblEl = document.getElementById('labelGlobalQ');
+if (lblEl) lblEl.textContent = globalQ23Visible ? '2·3부 질문 숨김' : '2·3부 질문 열기';
+let b = document.getElementById('btnGlobalQ');
+if (b) {
+b.classList.toggle('bg-rose-100', globalQ23Visible);
+b.classList.toggle('border-rose-400', globalQ23Visible);
+}
 (allTscSets[currentSet] || []).forEach(item => {
 if (item.part === 'part2' || item.part === 'part3') {
 let hz = document.getElementById(qHanzi_${item.id}), pr = document.getElementById(qPrompt_${item.id}), lbl = document.getElementById(btnQLabel_${item.id}), ic = document.getElementById(btnQIconWrap_${item.id});
 if (hz && pr) { hz.classList.toggle('hidden', !globalQ23Visible); pr.classList.toggle('hidden', globalQ23Visible); if(lbl) lbl.textContent = globalQ23Visible ? '질문 숨김' : '질문 보기'; setLucideIcon(ic, globalQ23Visible ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-slate-500'); }
 }
 });
-syncAllQuestionDetails(); lucide.createIcons();
+syncAllQuestionDetails();
+if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 }
 ​function toggleAllQuestionPinyin() {
-globalQPinyinVisible = !globalQPinyinVisible; document.getElementById('labelGlobalQPinyin').textContent = globalQPinyinVisible ? '문제 병음 전체 가림' : '문제 병음 전체 열기';
-let b = document.getElementById('btnGlobalQPinyin'); b.classList.toggle('bg-amber-100', globalQPinyinVisible); b.classList.toggle('border-amber-400', globalQPinyinVisible);
+globalQPinyinVisible = !globalQPinyinVisible;
+const lblEl = document.getElementById('labelGlobalQPinyin');
+if (lblEl) lblEl.textContent = globalQPinyinVisible ? '문제 병음 전체 가림' : '문제 병음 전체 열기';
+let b = document.getElementById('btnGlobalQPinyin');
+if (b) {
+b.classList.toggle('bg-amber-100', globalQPinyinVisible);
+b.classList.toggle('border-amber-400', globalQPinyinVisible);
+}
 syncAllQuestionDetails();
 }
 function toggleAllPinyin() {
-globalPinyinVisible = !globalPinyinVisible; document.getElementById('labelGlobalPinyin').textContent = globalPinyinVisible ? '병음 전체 숨기기' : '병음 전체 표시';
-let b = document.getElementById('btnGlobalPinyin'); b.classList.toggle('bg-blue-100', globalPinyinVisible); b.classList.toggle('border-blue-400', globalPinyinVisible);
-document.querySelectorAll('.ans-pinyin').forEach(el => el.classList.toggle('hidden', !globalPinyinVisible)); syncAllQuestionDetails();
+globalPinyinVisible = !globalPinyinVisible;
+const lblEl = document.getElementById('labelGlobalPinyin');
+if (lblEl) lblEl.textContent = globalPinyinVisible ? '병음 전체 숨기기' : '병음 전체 표시';
+let b = document.getElementById('btnGlobalPinyin');
+if (b) {
+b.classList.toggle('bg-blue-100', globalPinyinVisible);
+b.classList.toggle('border-blue-400', globalPinyinVisible);
+}
+document.querySelectorAll('.ans-pinyin').forEach(el => el.classList.toggle('hidden', !globalPinyinVisible));
+syncAllQuestionDetails();
 }
 function toggleAllKorean() {
-globalKoreanVisible = !globalKoreanVisible; document.getElementById('labelGlobalKorean').textContent = globalKoreanVisible ? '해석 숨기기' : '해석 보기';
-let b = document.getElementById('btnGlobalKorean'); b.classList.toggle('bg-emerald-100', globalKoreanVisible); b.classList.toggle('border-emerald-400', globalKoreanVisible);
-document.querySelectorAll('.ans-korean').forEach(el => el.classList.toggle('hidden', !globalKoreanVisible)); syncAllQuestionDetails();
+globalKoreanVisible = !globalKoreanVisible;
+const lblEl = document.getElementById('labelGlobalKorean');
+if (lblEl) lblEl.textContent = globalKoreanVisible ? '해석 숨기기' : '해석 보기';
+let b = document.getElementById('btnGlobalKorean');
+if (b) {
+b.classList.toggle('bg-emerald-100', globalKoreanVisible);
+b.classList.toggle('border-emerald-400', globalKoreanVisible);
+}
+document.querySelectorAll('.ans-korean').forEach(el => el.classList.toggle('hidden', !globalKoreanVisible));
+syncAllQuestionDetails();
 }
 function toggleAllAnswers() {
-globalAnsVisible = !globalAnsVisible; document.getElementById('labelGlobalAns').textContent = globalAnsVisible ? '답안 전체 닫기' : '답안 전체 열기';
-let b = document.getElementById('btnGlobalAns'); b.classList.toggle('bg-indigo-100', globalAnsVisible); b.classList.toggle('border-indigo-400', globalAnsVisible);
+globalAnsVisible = !globalAnsVisible;
+const lblEl = document.getElementById('labelGlobalAns');
+if (lblEl) lblEl.textContent = globalAnsVisible ? '답안 전체 닫기' : '답안 전체 열기';
+let b = document.getElementById('btnGlobalAns');
+if (b) {
+b.classList.toggle('bg-indigo-100', globalAnsVisible);
+b.classList.toggle('border-indigo-400', globalAnsVisible);
+}
 document.querySelectorAll('.ans-block').forEach(el => el.classList.toggle('hidden', !globalAnsVisible));
-if (globalAnsVisible) { document.querySelectorAll('.ans-pinyin, .ans-korean').forEach(el => el.classList.remove('hidden')); }
-else { document.querySelectorAll('.ans-pinyin').forEach(el => el.classList.toggle('hidden', !globalPinyinVisible)); document.querySelectorAll('.ans-korean').forEach(el => el.classList.toggle('hidden', !globalKoreanVisible)); }
+if (globalAnsVisible) {
+document.querySelectorAll('.ans-pinyin, .ans-korean').forEach(el => el.classList.remove('hidden'));
+} else {
+document.querySelectorAll('.ans-pinyin').forEach(el => el.classList.toggle('hidden', !globalPinyinVisible));
+document.querySelectorAll('.ans-korean').forEach(el => el.classList.toggle('hidden', !globalKoreanVisible));
+}
 (allTscSets[currentSet] || []).forEach(item => {
 let lbl = document.getElementById(btnAnsLabel_${item.id}), ic = document.getElementById(btnAnsIconWrap_${item.id});
-if(lbl) lbl.textContent = globalAnsVisible ? '모범 답안 닫기' : '모범 답안 열기'; setLucideIcon(ic, globalAnsVisible ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-indigo-600');
+if(lbl) lbl.textContent = globalAnsVisible ? '모범 답안 닫기' : '모범 답안 열기';
+setLucideIcon(ic, globalAnsVisible ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-indigo-600');
 });
-lucide.createIcons();
+if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 }
 ​function togglePart45QuestionPinyin(id) {
 let b = document.getElementById(qDetailBox_${id}), l = document.getElementById(btnQPinyinLabel_${id});
@@ -813,13 +893,15 @@ function toggleSingleQ(id) {
 let hz = document.getElementById(qHanzi_${id}), pr = document.getElementById(qPrompt_${id}), b = document.getElementById(qDetailBox_${id}), l = document.getElementById(btnQLabel_${id}), ic = document.getElementById(btnQIconWrap_${id});
 if(!hz) return; let isO = hz.classList.contains('hidden'); hz.classList.toggle('hidden', !isO); if(pr) pr.classList.toggle('hidden', isO);
 if(b) { b.classList.toggle('hidden', !isO); let pEl = b.querySelector('.q-pinyin'), kEl = b.querySelector('.q-korean'); if(pEl) pEl.classList.toggle('hidden', !isO); if(kEl) kEl.classList.toggle('hidden', !isO); }
-if(l) l.textContent = isO ? '질문 숨김' : '질문 보기'; setLucideIcon(ic, isO ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-slate-500'); lucide.createIcons();
+if(l) l.textContent = isO ? '질문 숨김' : '질문 보기'; setLucideIcon(ic, isO ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-slate-500');
+if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 }
 function toggleSingleAns(id) {
 let b = document.getElementById(ansBox_${id}), l = document.getElementById(btnAnsLabel_${id}), ic = document.getElementById(btnAnsIconWrap_${id});
 if(!b) return; let isO = b.classList.contains('hidden'); b.classList.toggle('hidden', !isO);
 if(isO) { let pEl = b.querySelector('.ans-pinyin'), kEl = b.querySelector('.ans-korean'); if(pEl) pEl.classList.remove('hidden'); if(kEl) kEl.classList.remove('hidden'); }
-if(l) l.textContent = isO ? '모범 답안 닫기' : '모범 답안 열기'; setLucideIcon(ic, isO ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-indigo-600'); lucide.createIcons();
+if(l) l.textContent = isO ? '모범 답안 닫기' : '모범 답안 열기'; setLucideIcon(ic, isO ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-indigo-600');
+if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 }
 ​function playTTS(text, elementId, btnEl) {
 if (!('speechSynthesis' in window)) return showToast("브라우저가 TTS를 지원하지 않습니다.");
@@ -829,14 +911,24 @@ let utter = new SpeechSynthesisUtterance(text); utter.lang = 'zh-CN'; utter.rate
 let cnVoice = window.speechSynthesis.getVoices().find(v => v.lang && (v.lang.includes('zh') || v.lang.includes('cmn')));
 if (cnVoice) utter.voice = cnVoice;
 currentSpeakingId = elementId;
-if (btnEl) { btnEl.classList.add('ring-2', 'ring-rose-500', '!bg-rose-600', '!text-white'); let ic = btnEl.querySelector('.tts-icon-wrap'); setLucideIcon(ic, 'square', elementId.startsWith('a_') ? 'w-3 h-3' : 'w-3.5 h-3.5'); lucide.createIcons(); }
-utter.onend = () => { resetTTSButtons(); currentSpeakingId = null; }; utter.onerror = utter.onend;
+if (btnEl) {
+btnEl.classList.add('ring-2', 'ring-rose-500', '!bg-rose-600', '!text-white');
+let ic = btnEl.querySelector('.tts-icon-wrap');
+setLucideIcon(ic, 'square', elementId.startsWith('a_') ? 'w-3 h-3' : 'w-3.5 h-3.5');
+if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+}
+utter.onend = () => { resetTTSButtons(); currentSpeakingId = null; };
+utter.onerror = utter.onend;
 activeUtterance = utter; window.speechSynthesis.speak(utter);
 }
 function stopTTS() { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); resetTTSButtons(); currentSpeakingId = null; }
 function resetTTSButtons() {
-document.querySelectorAll('.tts-btn').forEach(b => { b.classList.remove('ring-2', 'ring-rose-500', '!bg-rose-600', '!text-white'); let ic = b.querySelector('.tts-icon-wrap'); setLucideIcon(ic, 'volume-2', b.textContent.includes('답변') ? 'w-3 h-3' : 'w-3.5 h-3.5'); });
-lucide.createIcons();
+document.querySelectorAll('.tts-btn').forEach(b => {
+b.classList.remove('ring-2', 'ring-rose-500', '!bg-rose-600', '!text-white');
+let ic = b.querySelector('.tts-icon-wrap');
+setLucideIcon(ic, 'volume-2', b.textContent.includes('답변') ? 'w-3 h-3' : 'w-3.5 h-3.5');
+});
+if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 }
 ​function triggerTimer(id, duration) {
 if (timerInterval) { clearInterval(timerInterval); if (activeTimerId) { let oldBox = document.getElementById(timerBox_${activeTimerId}); if (oldBox) oldBox.classList.add('hidden'); } }
@@ -855,7 +947,10 @@ let t = document.createElement('div'); t.className = "fixed bottom-5 left-1/2 -t
 document.body.appendChild(t); setTimeout(() => t.remove(), 3000);
 }
 ​window.addEventListener('DOMContentLoaded', () => {
-renderApp(); if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+renderApp();
+if ('speechSynthesis' in window) {
+window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
 });
 </script>
 </body>
