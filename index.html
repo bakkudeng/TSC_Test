@@ -1,468 +1,862 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>삼성 사내 TSC 실전 모의고사 10세트 완성판</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    body { font-family: 'Inter', 'Noto Sans KR', sans-serif; -webkit-tap-highlight-color: transparent; }
-    .font-chinese { font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif; }
-    button { touch-action: manipulation; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .svg-icon-wrap { display: flex; align-items: center; justify-content: center; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>삼성 사내 TSC 실전 모의고사 10세트 완성판</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body { font-family: 'Inter', 'Noto Sans KR', sans-serif; -webkit-tap-highlight-color: transparent; }
+.font-chinese { font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif; }
+button { touch-action: manipulation; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.svg-icon-wrap { display: flex; align-items: center; justify-content: center; }
+</style>
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col pb-12">
-  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-    <div class="max-w-4xl mx-auto px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-blue-700 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-sm">TSC</div>
-        <div class="relative">
-          <select id="setSelector" onchange="changeSet(this.value)" class="text-xs sm:text-sm font-bold bg-slate-100 border border-slate-300 rounded-lg py-1.5 pl-2.5 pr-7 text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none appearance-none cursor-pointer">
-            <option value="1">제 01 세트 (14문항)</option><option value="2">제 02 세트 (14문항)</option><option value="3">제 03 세트 (14문항)</option><option value="4">제 04 세트 (14문항)</option><option value="5">제 05 세트 (14문항)</option><option value="6">제 06 세트 (14문항)</option><option value="7">제 07 세트 (14문항)</option><option value="8">제 08 세트 (14문항)</option><option value="9">제 09 세트 (14문항)</option><option value="10">제 10 세트 (14문항)</option>
-          </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1.5 text-slate-500"><i data-lucide="chevron-down" class="w-4 h-4"></i></div>
-        </div>
-      </div>
-      <div class="flex items-center gap-1 sm:gap-2">
-        <div class="flex items-center bg-slate-100 rounded-lg p-0.5 border border-slate-200">
-          <button onclick="setSpeed(0.75)" class="speed-btn px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs font-semibold rounded text-slate-600 hover:text-slate-900" data-speed="0.75">0.75x</button>
-          <button onclick="setSpeed(0.9)" class="speed-btn px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs font-semibold rounded text-slate-600 hover:text-slate-900" data-speed="0.9">0.9x</button>
-          <button onclick="setSpeed(1.0)" class="speed-btn px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs font-bold rounded bg-blue-600 text-white shadow-sm" data-speed="1.0">1.0x</button>
-          <button onclick="setSpeed(1.2)" class="speed-btn px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs font-semibold rounded text-slate-600 hover:text-slate-900" data-speed="1.2">1.2x</button>
-        </div>
-        <button onclick="stopTTS()" title="오디오 즉시 정지" class="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors"><i data-lucide="square" class="w-4 h-4"></i></button>
-      </div>
-    </div>
-    <div class="border-t border-slate-200/80 bg-white">
-      <div class="max-w-4xl mx-auto px-3 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-1.5 text-xs">
-        <div class="flex items-center gap-1 shrink-0" id="partTabs">
-          <button onclick="filterPart('all')" class="tab-btn px-2.5 py-1 rounded-lg font-bold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm whitespace-nowrap" data-part="all">전체 문항</button>
-          <button onclick="filterPart('part2')" class="tab-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap" data-part="part2">2부분 (그림·6초)</button>
-          <button onclick="filterPart('part3')" class="tab-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap" data-part="part3">3부분 (대화·15초)</button>
-          <button onclick="filterPart('part4')" class="tab-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap" data-part="part4">4부분 (화제·25초)</button>
-          <button onclick="filterPart('part5')" class="tab-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap" data-part="part5">5부분 (논리·50초)</button>
-        </div>
-      </div>
-    </div>
-    <div class="bg-slate-50 border-t border-slate-200 px-3 py-1.5 text-xs">
-      <div class="max-w-4xl mx-auto flex items-center justify-between gap-1 sm:gap-2">
-        <span class="text-slate-400 font-medium text-[11px] hidden lg:inline">일괄 제어</span>
-        <div class="flex items-center gap-1 sm:gap-1.5 w-full lg:w-auto justify-end flex-wrap sm:flex-nowrap">
-          <button onclick="toggleAllQuestionText()" id="btnGlobalQ" class="flex-1 sm:flex-none px-2 py-1 rounded-md border border-slate-300 bg-white text-slate-700 font-semibold text-[11px] flex items-center justify-center gap-1 shadow-sm active:bg-slate-100"><i data-lucide="ear" class="w-3 h-3 text-rose-500"></i><span id="labelGlobalQ">2·3부 질문 열기</span></button>
-          <button onclick="toggleAllQuestionPinyin()" id="btnGlobalQPinyin" class="flex-1 sm:flex-none px-2 py-1 rounded-md border border-slate-300 bg-white text-slate-700 font-semibold text-[11px] flex items-center justify-center gap-1 shadow-sm active:bg-slate-100"><i data-lucide="languages" class="w-3 h-3 text-amber-500"></i><span id="labelGlobalQPinyin">문제 병음 전체 열기</span></button>
-          <button onclick="toggleAllPinyin()" id="btnGlobalPinyin" class="flex-1 sm:flex-none px-2 py-1 rounded-md border border-slate-300 bg-white text-slate-700 font-semibold text-[11px] flex items-center justify-center gap-1 shadow-sm active:bg-slate-100"><i data-lucide="type" class="w-3 h-3 text-blue-500"></i><span id="labelGlobalPinyin">병음 전체 표시</span></button>
-          <button onclick="toggleAllKorean()" id="btnGlobalKorean" class="flex-1 sm:flex-none px-2 py-1 rounded-md border border-slate-300 bg-white text-slate-700 font-semibold text-[11px] flex items-center justify-center gap-1 shadow-sm active:bg-slate-100"><i data-lucide="file-text" class="w-3 h-3 text-emerald-500"></i><span id="labelGlobalKorean">해석 보기</span></button>
-          <button onclick="toggleAllAnswers()" id="btnGlobalAns" class="flex-1 sm:flex-none px-2 py-1 rounded-md border border-slate-300 bg-white text-slate-700 font-semibold text-[11px] flex items-center justify-center gap-1 shadow-sm active:bg-slate-100"><i data-lucide="eye" class="w-3 h-3 text-indigo-500"></i><span id="labelGlobalAns">답안 전체 열기</span></button>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main class="flex-1 max-w-4xl w-full mx-auto px-3 sm:px-4 py-4 space-y-4">
-    <div class="bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-xl p-3.5 sm:p-4 shadow-sm border border-slate-800">
-      <div class="flex items-center justify-between">
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-amber-400 bg-amber-400/20 px-2 py-0.5 rounded-full" id="bannerSetLabel">SET 01</span>
-            <span class="text-xs text-slate-300" id="bannerTotalCount">총 14문항 구성</span>
-          </div>
-          <h2 class="text-base sm:text-lg font-bold mt-1" id="bannerTitle">삼성 사내 TSC 실전 모의고사 1회</h2>
-          <p class="text-xs text-slate-300 mt-0.5" id="bannerDesc">2·3부분은 음성을 먼저 듣고 말해보고, 4·5부분은 한자 문제를 확인한 뒤 실전 타이머에 맞춰 구술하세요.</p>
-        </div>
-        <div class="hidden sm:block text-right shrink-0">
-          <span class="text-[11px] text-slate-400 block">목표 수준</span>
-          <span class="text-sm font-bold text-emerald-400">사내 4급 ~ 6급</span>
-        </div>
-      </div>
-    </div>
-    <div id="questionsContainer" class="space-y-4"></div>
-  </main>
-
-  <script>
-    const allTscSets = {
-      1: [
-        { id: "s1_p2_1", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: "시간 (8:45)", visualSvg: "clock_845", visualDesc: "벽시계가 8시 45분(9시 15분 전)을 가리키고 있는 그림", q: "现在几点？", pinyinQ: "Xiànzài jǐ diǎn?", transQ: "지금 몇 시입니까?", a: "现在八点四十五分。（现在差一刻九点。）", pinyinA: "Xiànzài bā diǎn sìshíwǔ fēn. (Xiànzài chà yí kè jiǔ diǎn.)", transA: "지금은 8시 45분입니다. (9시 15분 전입니다.)", tip: "시간을 묻는 질문입니다. '几点' 자리에 '八点四十五分'을 정확히 넣으세요." },
-        { id: "s1_p2_2", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: "위치 (책상 위 핸드폰)", visualSvg: "desk_phone", visualDesc: "사무실 책상 위에 스마트폰과 노트북이 놓여 있는 그림", q: "手机在桌子上吗？", pinyinQ: "Shǒujī zài zhuōzi shang ma?", transQ: "핸드폰이 책상 위에 있습니까?", a: "是的，手机在桌子上。", pinyinA: "Shì de, shǒujī zài zhuōzi shang.", transA: "네, 핸드폰은 책상 위에 있습니다.", tip: "존재 유무나 위치를 묻는 단문입니다. '是的' 후 주어+在+위치로 답합니다." },
-        { id: "s1_p2_3", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: "동작 (달리기)", visualSvg: "running", visualDesc: "공원 산책로에서 남자가 달리기(조깅)를 하고 있는 그림", q: "他在做什么？", pinyinQ: "Tā zài zuò shénme?", transQ: "그는 무엇을 하고 있습니까?", a: "他在跑步呢。", pinyinA: "Tā zài pǎobù ne.", transA: "그는 달리기(조깅)를 하고 있습니다.", tip: "진행형 '在 + 동사 (呢)' 구조로 신속하게 단문 답변을 완성합니다." },
-        { id: "s1_p2_4", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: "수량 (사과 5개)", visualSvg: "apples_5", visualDesc: "바구니에 빨간 사과가 5개 놓여 있는 그림", q: "这里有几个苹果？", pinyinQ: "Zhèlǐ yǒu jǐ ge píngguǒ?", transQ: "여기에 사과가 몇 개 있습니까?", a: "这里有五个苹果。", pinyinA: "Zhèlǐ yǒu wǔ ge píngguǒ.", transA: "여기에 사과가 5개 있습니다.", tip: "숫자 5(五)와 개수 양사(个)의 정확한 발음이 핵심입니다." },
-        { id: "s1_p3_1", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: "퇴근 후 식사 제안", q: "今天下班以后，一起去吃火锅怎么样？", pinyinQ: "Jīntiān xiàbān yǐhòu, yìqǐ qù chī huǒguō zěnmeyàng?", transQ: "오늘 퇴근하고 같이 훠궈 먹으러 갈래요?", a: "对不起，今天晚上我有别的安排。我们改天再去吧，我请客！", pinyinA: "Duìbuqǐ, jīntiān wǎnshang wǒ yǒu bié de ānpái. Wǒmen gǎitiān zài qù ba, wǒ qǐngkè!", transA: "죄송해요, 오늘 저녁엔 약속이 있어요. 우리 다음에 다시 가요, 제가 살게요!", tip: "정중한 거절 + 이유(별도 일정) + 다음 기약(改天) 조합은 만능입니다." },
-        { id: "s1_p3_2", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: "주말 여가 활동", q: "你平时周末一般怎么过？", pinyinQ: "Nǐ píngshí zhōumò yībān zěnme guò?", transQ: "평소 주말에 보통 어떻게 보내세요?", a: "我平时周末喜欢在家好好休息，有时候也会和朋友一起去运动。", pinyinA: "Wǒ píngshí zhōumò xǐhuan zài jiā hǎohāo xiūxi, yǒushíhou yě huì hé péngyou yìqǐ qù yùndòng.", transA: "저는 평소 주말에 집에서 푹 쉬거나, 가끔 친구와 운동하러 가요.", tip: "'喜欢在家休息 + 有时候也会~' 패턴으로 15초를 채우세요." },
-        { id: "s1_p3_3", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: "출퇴근 교통수단", q: "你每天怎么去公司上班？", pinyinQ: "Nǐ měitiān zěnme qù gōngsī shàngbān?", transQ: "매일 회사에 어떻게 출근하세요?", a: "我一般坐地铁去上班。坐地铁不仅很方便，而且从来不堵车。", pinyinA: "Wǒ yībān zuò dìtiě qù shàngbān. Zuò dìtiě bùjǐn hěn fāngbiàn, érqiě cónglái bù dǔchē.", transA: "저는 보통 지하철을 타고 출근해요. 편리할 뿐만 아니라 차가 안 막히거든요.", tip: "‘不仅...而且...’ 점층 접속사를 써서 유창성을 보여주세요." },
-        { id: "s1_p3_4", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: "점심 메뉴 고르기", q: "今天中午你想吃什么？", pinyinQ: "Jīntiān zhōngwǔ nǐ xiǎng chī shénme?", transQ: "오늘 점심 뭐 먹고 싶어요?", a: "今天天气有点儿冷，我们去吃热热的汤面怎么样？", pinyinA: "Jīntiān tiānqì yǒudiǎnr lěng, wǒmen qù chī rèrè de tāngmiàn zěnmeyàng?", transA: "오늘 날씨가 좀 쌀쌀하니, 따뜻한 국수 먹으러 가는 건 어때요?", tip: "상황(날씨가 춥다)을 언급하고 역제안(~怎么样？)으로 마무리합니다." },
-        { id: "s1_p3_5", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: "내일 날씨와 우산", q: "明天天气怎么样？需要带雨伞吗？", pinyinQ: "Míngtiān tiānqì zěnmeyàng? Xūyào dài yǔsǎn ma?", transQ: "내일 날씨 어때요? 우산 챙겨야 하나요?", a: "我看了天气预报，明天是晴天，不会下雨，不用带雨伞。", pinyinA: "Wǒ kànle tiānqì yùbào, míngtiān shì qíngtiān, bú huì xiàyǔ, búyòng dài yǔsǎn.", transA: "일기예보를 봤는데 내일 맑대요, 비 안 오니 우산 안 챙겨도 돼요.", tip: "'我看了天气预报'를 도입구로 사용하면 시간을 벌기 좋습니다." },
-        { id: "s1_p4_1", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25, topic: "스트레스 해소법", q: "你有压力的时候，一般怎么减压？", pinyinQ: "Nǐ yǒu yālì de shíhou, yībān zěnme jiǎnyā?", transQ: "스트레스를 받을 때 보통 어떻게 푸나요?", a: "我有压力的时候，一般喜欢去跑步。因为运动的时候我可以出很多汗，心情会变得很轻松。而且跑步不仅对身体好，还能让我忘掉烦恼。所以运动是我最好的减压方法。", pinyinA: "Wǒ yǒu yālì de shíhou, yībān xǐhuan qù pǎobù. Yīnwèi yùndòng de shíhou wǒ kěyǐ chū hěn duō hàn, xīnqíng huì biànde hěn qīngsōng. Érqiě pǎobù bùjǐn duì shēntǐ hǎo, hái néng ràng wǒ wàngdiào fánnǎo. Suǒyǐ yùndòng shì wǒ zuì hǎo de jiǎnyā fāngfǎ.", transA: "저는 스트레스가 있으면 주로 달리기를 합니다. 땀을 푹 흘리면 기분이 편안해지기 때문입니다. 달리기는 건강에도 좋고 고민도 잊게 해줍니다. 따라서 운동은 최고의 스트레스 해소법입니다.", tip: "결론 - 이유1(땀 흘림) - 이유2(건강/고민 망각) - 요약 4단 구조입니다." },
-        { id: "s1_p4_2", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25, topic: "가장 좋아하는 계절", q: "你最喜欢哪个季节？为什么？", pinyinQ: "Nǐ zuì xǐhuan nǎge jìjié? Wèishénme?", transQ: "어떤 계절을 가장 좋아하며 이유는 무엇인가요?", a: "我最喜欢的季节是秋天。因为秋天的天气不冷也不热，非常舒服。而且秋天的风景很漂亮，树叶都变红了。我很喜欢在秋天散步，所以我最喜欢秋天。", pinyinA: "Wǒ zuì xǐhuan de jìjié shì qiūtiān. Yīnwèi qiūtiān de tiānqì bù lěng yě bú rè, fēicháng shūfu. Érqiě qiūtiān de fēngjǐng hěn piàoliang, shùyè dōu biàn hóng le. Wǒ hěn xǐhuan zài qiūtiān sànbù, suǒyǐ wǒ zuì xǐhuan qiūtiān.", transA: "제가 가장 좋아하는 계절은 가을입니다. 춥지도 덥지도 않아 쾌적하기 때문입니다. 게다가 가을 풍경은 예쁘고 단풍이 듭니다. 가을에 산책하는 것을 좋아해서 가을을 가장 선호합니다.", tip: "'不冷也不热', '风景很漂亮'는 계절 표현의 필수 암기구입니다." },
-        { id: "s1_p4_3", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25, topic: "휴가 여행지", q: "如果有长假，你最想去哪里旅行？", pinyinQ: "Rúguǒ yǒu chángjià, nǐ zuì xiǎng qù nǎlǐ lǚxíng?", transQ: "긴 휴가가 있다면 어디로 여행 가고 싶나요?", a: "如果有长假，我最想去海边旅行。因为看大海可以让我的心情变得很平静。而且海边有很多好吃的海鲜，还可以吹海风。如果能和家人一起去放松一下，一定会很开心。", pinyinA: "Rúguǒ yǒu chángjià, wǒ zuì xiǎng qù hǎibiān lǚxíng. Yīnwèi kàn dàhǎi kěyǐ ràng wǒ de xīnqíng biànde hěn píngjìng. Érqiě hǎibiān yǒu hěn duō hǎochī de hǎixiān, hái kěyǐ chuī hǎifēng. Rúguǒ néng hé jiārén yìqǐ qù fàngsōng yíxià, yídìng huì hěn kāixīn.", transA: "긴 휴가가 생긴다면 바다로 가고 싶습니다. 바다를 보면 마음이 차분해지기 때문입니다. 맛있는 해산물도 많고 바닷바람도 쐴 수 있습니다. 가족과 힐링할 수 있다면 참 좋을 것입니다.", tip: "바다(海边)를 테마로 시각 힐링과 먹거리를 함께 설명하세요." },
-        { id: "s1_p5_1", part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50, topic: "온라인 쇼핑 vs 백화점 쇼핑", q: "你更喜欢网上购物还是去商场购物？请说明原因。", pinyinQ: "Nǐ gèng xǐhuan wǎngshang gòuwù háishì qù shāngchǎng gòuwù? Qǐng shuōmíng yuányīn.", transQ: "온라인 쇼핑과 매장 방문 쇼핑 중 무엇을 더 선호하며 이유는 무엇인가요?", a: "我更喜欢网上购物。\n首先，网上购物非常方便，只要有一台手机，随时随地都可以买东西，节省了很多时间。\n其次，网上的商品种类非常丰富，而且价格通常比实体店更便宜，容易比较价格。\n虽然去商场可以直接看实物，但是现代的网购配送非常快，退换货也很容易。\n因此，考虑到时间和效率，我平时更喜欢网上购物。", pinyinA: "Wǒ gèng xǐhuan wǎngshang gòuwù.\nShǒuxiān, wǎngshang gòuwù fēicháng fāngbiàn, zhǐyào yǒu yì tái shǒujī, suíshí suídì dōu kěyǐ mǎi dōngxi, jiéshěngle hěn duō shíjiān.\nQícì, wǎngshang de shāngpǐn zhǒnglèi fēicháng fēngfù, érqiě jiàgé tōngcháng bǐ shítǐdiàn gèng piányi, róngyì bǐjiào jiàgé.\nSuīrán qù shāngchǎng kěyǐ zhíjiē kàn shíwù, dànshì xiàndài de wǎnggòu pèisòng fēicháng kuài, tuìhuànhuò yě hěn róngyì.\nYīncǐ, kǎolǜ dào shíjiān hé xiàolǜ, wǒ píngshí gèng xǐhuan wǎngshang gòuwù.", transA: "저는 온라인 쇼핑을 더 선호합니다. 첫째로 휴대폰만 있으면 언제 어디서나 구매할 수 있어 시간을 절약합니다. 둘째로 상품 종류가 풍부하고 가격 비교가 쉽습니다. 비록 매장에선 실물을 보지만 배송과 반품이 편리합니다. 따라서 시간과 효율상 온라인 쇼핑을 선호합니다.", tip: "50초 발화는 [입장 표명 - 首先 - 其次 - 虽然...但是 - 因此] 5단계 뼈대를 유지하세요." },
-        { id: "s1_p5_2", part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50, topic: "재택근무 vs 사무실 출근", q: "你支持在家办公还是去公司办公室办公？为什么？", pinyinQ: "Nǐ zhīchí zài jiā bàngōng háishì qù gōngsī bàngōngshì bàngōng? Wèishénme?", transQ: "재택근무와 회사 출근 중 어느 쪽을 지지하며 그 이유는 무엇인가요?", a: "我更支持去公司办公室办公。\n第一，在办公室办公沟通效率更高。遇到问题的时候，可以马上和同事面对面交流，更快地解决问题。\n第二，办公室的工作环境更有利于集中注意力，把工作和生活分开。\n虽然在家办公可以节省上下班的时间，但有时候沟通不太方便，容易影响工作效率。\n所以综合来看，我认为去公司办公的效果更好。", pinyinA: "Wǒ gèng zhīchí qù gōngsī bàngōngshì bàngōng.\nDì-yī, zài bàngōngshì bàngōng gōutōng xiàolǜ gèng gāo. Yùdào wèntí de shíhou, kěyǐ mǎshàng hé tóngshì miànduìmiàn jiāoliú, gèng kuài de jiějué wèntí.\nDì-èr, bàngōngshì de gōngzuò huánjìng gèng yǒulìyú jízhōng zhùyìlì, bǎ gōngzuò hé shēnghuó fēnkāi.\nSuīrán zài jiā bàngōng kěyǐ jiéshěng shàng-xiàbān de shíjiān, dàn yǒushíhou gōutōng bú tài fāngbiàn, róngyì yǐngxiǎng gōngzuò xiàolǜ.\nSuǒyǐ zōnghé lái kàn, wǒ rènwéi qù gōngsī bàngōng de xiàoguǒ gèng hǎo.", transA: "저는 회사 출근 근무를 더 지지합니다. 첫째, 즉각 대면 소통으로 문제 해결이 빠릅니다. 둘째, 집중 환경이 좋아 일과 생활을 분리할 수 있습니다. 비록 재택근무가 출퇴근 시간을 아끼지만 소통이 불편할 때가 있습니다. 종합하면 회사 출근이 더 효과적입니다.", tip: "소통 효율(沟通效率), 공사 분리(工作和生活分开) 등의 비즈니스 표현을 활용하세요." }
-      ],
-      2: [
-        { id: "s2_p2_1", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: "날짜 달력 (5월 12일)", visualSvg: "calendar_512", visualDesc: "달력에 5월 12일(星期五)이 크게 표시되어 있는 그림", q: "今天几月几号？", pinyinQ: "Jīntiān jǐ yuè jǐ hào?", transQ: "오늘은 몇 월 며칠입니까?", a: "今天五月十二号。", pinyinA: "Jīntiān wǔ yuè shí'èr hào.", transA: "오늘은 5월 12일입니다.", tip: "날짜를 묻는 패턴입니다. '五月十二号'를 명확하게 발음하세요." },
-        { id: "s2_p2_2", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: "장소 (카페 음료)", visualSvg: "coffee_cup", visualDesc: "카페 테이블 위에 따뜻한 커피 한 잔이 놓여 있는 그림", q: "杯子里是什么？", pinyinQ: "Bēizi li shì shénme?", transQ: "컵 안에는 무엇이 있습니까?", a: "杯子里是热咖啡。", pinyinA: "Bēizi li shì rè kāfēi.", transA: "컵 안에는 따뜻한 커피가 있습니다.", tip: "‘杯子里是 + 음료 명칭’ 형태로 답합니다." },
-        { id: "s2_p2_3", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: "동작 (책 읽기)", visualSvg: "reading_book", visualDesc: "여성이 의자에 앉아 책을 읽고 있는 모습", q: "她在做什么？", pinyinQ: "Tā zài zuò shénme?", transQ: "그녀는 무엇을 하고 있습니까?", a: "她在看书呢。", pinyinA: "Tā zài kànshū ne.", transA: "그녀는 책을 읽고 있습니다.", tip: "‘在看书(呢)’로 군더더기 없이 정확히 답합니다." },
-        { id: "s2_p2_4", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: "수량 (책 3권)", visualSvg: "books_3", visualDesc: "책상 위에 책 세 권이 포개져 있는 그림", q: "桌子上有几本书？", pinyinQ: "Zhuōzi shang yǒu jǐ běn shū?", transQ: "책상 위에 책이 몇 권 있습니까?", a: "桌子上有三本书。", pinyinA: "Zhuōzi shang yǒu sān běn shū.", transA: "책상 위에 책 세 권이 있습니다.", tip: "책의 양사 '本(běn)'을 정확히 써야 감점이 없습니다." },
-        { id: "s2_p3_1", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: "주말 운동 제안", q: "这个周末我们一起去打羽毛球，好吗？", pinyinQ: "Zhè ge zhōumò wǒmen yìqǐ qù dǎ yǔmáoqiú, hǎo ma?", transQ: "이번 주말에 우리 배드민턴 치러 갈래요?", a: "太好了！我也很喜欢打羽毛球。我们星期六下午见吧！", pinyinA: "Tài hǎo le! Wǒ yě hěn xǐhuan dǎ yǔmáoqiú. Wǒmen xīngqīliù xiàwǔ jiàn ba!", transA: "너무 좋아요! 저도 배드민턴 좋아해요. 토요일 오후에 만나요!", tip: "동의 표현 '太好了' + 취미 공감 + 구체적 시간 약속으로 완성하세요." },
-        { id: "s2_p3_2", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: "친구 생일 선물 고민", q: "下周是我朋友的生日，送什么礼物好呢？", pinyinQ: "Xiàzhōu shì wǒ péngyou de shēngrì, sòng shénme lǐwù hǎo ne?", transQ: "다음 주가 친구 생일인데 무슨 선물을 주면 좋을까요?", a: "我觉得送香水或者手表都很不错，既实用又有意义。", pinyinA: "Wǒ juéde sòng xiāngshuǐ huòzhě shǒubiǎo dōu hěn búcuò, jì shíyòng yòu yǒu yìyì.", transA: "향수나 손목시계가 좋을 것 같아요. 실용적이면서도 의미가 있잖아요.", tip: "‘我觉得... 既实用又有意义’ 조합은 선물 추천 질문의 모범 템플릿입니다." },
-        { id: "s2_p3_3", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: "지하철 vs 버스 선택", q: "去市中心坐地铁快还是坐公交车快？", pinyinQ: "Qù shìzhōngxīn zuò dìtiě kuài háishì zuò gōngjiāochē kuài?", transQ: "도심에 갈 때 지하철이 빠른가요 버스가 빠른가요?", a: "当然是坐地铁快。现在是上班时间，坐公交车容易堵车。", pinyinA: "Dāngrán shì zuò dìtiě kuài. Xiànzài shì shàngbān shíjiān, zuò gōngjiāochē róngyì dǔchē.", transA: "당연히 지하철이 빠르죠. 지금 출근 시간이라 버스는 차가 막히기 쉬워요.", tip: "'当然是~'로 확답하고 이유(출근 시간 차 막힘)를 붙여줍니다." },
-        { id: "s2_p3_4", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: "중국 요리 추천", q: "你吃过中国菜吗？有什么好吃的推荐？", pinyinQ: "Nǐ chīguo Zhōngguó cài ma? Yǒu shénme hǎochī de tuījiàn?", transQ: "중국 요리 먹어봤어요? 맛있는 것 좀 추천해 줄래요?", a: "我常吃中国菜，我推荐你吃锅包肉和麻辣烫，味道非常棒！", pinyinA: "Wǒ cháng chī Zhōngguó cài, wǒ tuījiàn nǐ chī guōbāoròu hé málàtàng, wèidao fēicháng bàng!", transA: "자주 먹어요! 꿔바로우와 마라탕을 추천해요, 정말 맛있거든요!", tip: "꿔바로우(锅包肉), 마라탕(麻辣烫) 등 친숙한 메뉴를 활용하세요." },
-        { id: "s2_p3_5", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: "오후 비 예보", q: "外面看起来阴天了，今天下午会下雨吗？", pinyinQ: "Wàimiàn kànqilai yīntiān le, jīntiān xiàwǔ huì xiàyǔ ma?", transQ: "밖이 흐려 보이는데 오늘 오후에 비가 올까요?", a: "我看天气预报说下午有阵雨，出门最好带一把雨伞。", pinyinA: "Wǒ kàn tiānqì yùbào shuō xiàwǔ yǒu zhènyǔ, chūmén zuìhǎo dài yì bǎ yǔsǎn.", transA: "일기예보에서 소나기가 온다고 했으니 우산 하나 챙겨 나가는 게 좋겠어요.", tip: "우산 양사 '把(bǎ)'와 '最好(가장 좋다)'를 결합하세요." },
-        { id: "s2_p4_1", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25, topic: "평소 운동 습관", q: "你平时有什么运动习惯吗？", pinyinQ: "Nǐ píngshí yǒu shénme yùndòng xíguàn ma?", transQ: "평소 어떤 운동 습관이 있나요?", a: "我平时每周去健身房运动三次。一般先跑步三十分钟，然后再做一些力量训练。坚持运动不仅可以增强体质，还能缓解工作压力。所以运动已经成了我生活的一部分。", pinyinA: "Wǒ píngshí měi zhōu qù jiànshēnfáng yùndòng sān cì. Yībān xiān pǎobù sānshí fēnzhōng, ránhòu zài zuò yìxiē lìliang xùnliàn. Jiānchí yùndòng bùjǐn kěyǐ zēngqiáng tǐzhì, hái néng huǎnjiě gōngzuò yālì. Suǒyǐ yùndòng yǐjīng chéngle wǒ shēnghuó de yí bùfen.", transA: "저는 매주 헬스장에 3번 갑니다. 보통 30분 달리고 근력 운동을 합니다. 꾸준한 운동은 체력을 기르고 업무 스트레스도 풀어줍니다. 운동은 제 삶의 일부가 되었습니다.", tip: "빈도(주 3회) + 순서(先...然后再...) + 효과(체력 증진, 스트레스 완화)로 구성합니다." },
-        { id: "s2_p4_2", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25, topic: "좋아하는 영화 장르", q: "你最喜欢看什么类型的电影？为什么？", pinyinQ: "Nǐ zuì xǐhuan kàn shénme lèixíng de diànyǐng? Wèishénme?", transQ: "어떤 장르의 영화를 가장 좋아하며 이유는 무엇인가요?", a: "我最喜欢看动作片。因为动作片的剧情非常紧张刺激，让人看得很过瘾。而且下班后看一部精彩的动作片，可以让我彻底放松心情，忘记一天的疲劳。所以我最喜欢动作片。", pinyinA: "Wǒ zuì xǐhuan kàn dòngzuòpiàn. Yīnwèi dòngzuòpiàn de jùqíng fēicháng jǐnzhāng cìjī, ràng rén kàn de hěn guòyǐn. Érqiě xiàbān hòu kàn yí bù jīngcǎi de dòngzuòpiàn, kěyǐ ràng wǒ chèdǐ fàngsōng xīnqíng, wàngjì yì tiān de píláo. Suǒyǐ wǒ zuì xǐhuan dòngzuòpiàn.", transA: "저는 액션 영화를 가장 좋아합니다. 줄거리가 긴장감 넘치고 통쾌하기 때문입니다. 퇴근 후 멋진 액션 영화를 보면 기분도 풀리고 피로도 잊게 됩니다.", tip: "액션영화(动作片), 긴장감(紧张刺激), 피로 망각(忘记疲劳) 키워드를 쓰세요." },
-        { id: "s2_p4_3", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25, topic: "고향 소개", q: "请介绍一下你的家乡。", pinyinQ: "Qǐng jièshào yíxià nǐ de jiāxiāng.", transQ: "고향을 간단히 소개해 주세요.", a: "我的家乡是首尔，是韩国的首都。首尔不仅交通非常便利，而且有很多著名的旅游景点，比如南山塔和明洞。首尔的美食也很多，生活非常丰富多彩。欢迎大家来我的家乡玩。", pinyinA: "Wǒ de jiāxiāng shì Shǒu'ěr, shì Hánguó de shǒudū. Shǒu'ěr bùjǐn jiāotōng fēicháng biànlì, érqiě yǒu hěn duō zhùmíng de lǚyóu jǐngdiǎn, bǐrú Nánshāntǎ hé Míngdòng. Shǒu'ěr de měishí yě hěn duō, shēnghuó fēicháng fēngfù duōcǎi. Huānyíng dàjiā lái wǒ de jiāxiāng wán.", transA: "제 고향은 서울이며 한국의 수도입니다. 교통이 편리하고 남산타워나 명동 같은 명소가 많습니다. 맛있는 음식도 많고 다채로운 도시입니다. 놀러 오시는 것을 환영합니다.", tip: "수도(首都), 편리한 교통(交通便利), 명소(南山塔, 明洞)를 나열하면 손쉽습니다." },
-        { id: "s2_p5_1", part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50, topic: "대중교통 vs 자가용 운전", q: "平时出行，你更支持坐公共交通还是自己开车？请说明原因。", pinyinQ: "Píngshí chūxíng, nǐ gèng zhīchí zuò gōnggòng jiāotōng háishì zìjǐ kāichē? Qǐng shuōmíng yuányīn.", transQ: "평소 이동할 때 대중교통 이용과 자가용 운전 중 어느 쪽을 더 지지하나요?", a: "我更支持乘坐公共交通出行。\n第一，乘坐地铁和公交车非常环保，可以减少碳排放，对保护环境很有好处。\n第二，在上下班高峰期，坐地铁不会遇到堵车，时间更有保障，而且不用担心停车问题。\n虽然自己开车更加自由舒适，但是买车和养车的费用很高，路上还容易疲劳。\n因此，从环保和经济的角度来看，乘坐公共交通是更好的选择。", pinyinA: "Wǒ gèng zhīchí chéngzuò gōnggòng jiāotōng chūxíng.\nDì-yī, chéngzuò dìtiě hé gōngjiāochē fēicháng huánbǎo, kěyǐ jiǎnshǎo tàn páifàng, duì bǎohù huánjìng hěn yǒu hǎochù.\nDì-èr, zài shàng-xiàbān gāofēngqī, zuò dìtiě bú huì yù dào dǔchē, shíjiān gèng yǒu bǎozhàng, érqiě búyòng dānxīn tíngchē wèntí.\nSuīrán zìjǐ kāichē gèngjiā zìyóu shūshì, dànshì mǎichē hé yǎngchē de fèiyòng hěn gāo, lùshang hái róngyì píláo.\nYīncǐ, cóng huánbǎo hé jīngjì de jiǎodù lái kàn, chéngzuò gōnggòng jiāotōng shì gèng hǎo de xuǎnzé.", transA: "저는 대중교통 이용을 더 지지합니다. 첫째, 탄소 배출을 줄여 친환경적입니다. 둘째, 출퇴근 시간에 차가 막히지 않고 주차 걱정도 없습니다. 비록 운전이 편하지만 차량 유지비가 많이 듭니다. 따라서 환경과 경제적 측면에서 대중교통이 우수합니다.", tip: "친환경(环保), 주차 문제(停车问题), 경제적 관점(经济的角度)을 근거로 제시하세요." },
-        { id: "s2_p5_2", part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50, topic: "대도시 거주 vs 한적한 시골 거주", q: "你更愿意住在繁华的大城市还是安静的乡村？为什么？", pinyinQ: "Nǐ gèng yuànyì zhù zài fánhuá de dà chéngshì háishì ānjìng de xiāngcūn? Wèishénme?", transQ: "번화한 대도시와 조용한 시골 중 어디에 살고 싶나요?", a: "我更愿意住在繁华的大城市。\n首先，大城市的基础设施非常完善，不仅交通便利，而且有优秀的医疗资源和教育环境。\n其次，大城市的工作机会和文化活动更多，生活更加丰富多彩，有利于个人的职业发展。\n虽然乡村的空气清新、环境安静，但生活设施和交通相对不太方便。\n所以综合考虑发展和生活便利性，我更喜欢住在大城市。", pinyinA: "Wǒ gèng yuànyì zhù zài fánhuá de dà chéngshì.\nShǒuxiān, dà chéngshì de jīchǔ shèshī fēicháng wánshàn, bùjǐn jiāotōng biànlì, érqiě yǒu yōuxiù de yīliáo zīyuán hé jiàoyù huánjìng.\nQícì, dà chéngshì de gōngzuò jīhuì hé wénhuà huódòng gèng duō, shēnghuó gèngjiā fēngfù duōcǎi, yǒulìyú gèrén de zhíyè fāzhǎn.\nSuīrán xiāngcūn de kōngqì qīngxīn, huánjìng ānjìng, dàn shēnghuó shèshī hé jiāotōng xiāngduì bú tài fāngbiàn.\nSuǒyǐ zōnghé kǎolǜ fāzhǎn hé shēnghuó biànlìxìng, wǒ gèng xǐhuan zhù zài dà chéngshì.", transA: "저는 번화한 대도시에 사는 것을 더 원합니다. 첫째, 인프라가 완벽해 교통, 의료, 교육 환경이 우수합니다. 둘째, 일자리와 문화생활 기회가 많아 커리어 성장에 유리합니다. 시골은 공기가 좋지만 인프라가 아쉽습니다. 편리성을 볼 때 대도시가 좋습니다.", tip: "인프라(基础设施), 의료자원(医疗资源), 커리어 발전(职业发展) 표현을 익혀두세요." }
-      ]
-    };
-
-    const setThemes = {
-      3: {
-        p2: ["옷 가격(200위안)", "요리하는 주방", "버스 정류장 대기", "우산 2개"],
-        p3: ["영화 예매", "휴대폰 기종 변경", "야근 후 식사", "아침 기상 루틴", "봄철 꽃구경"],
-        p4: [ { ko: "음악 감상 취미", zh: "听音乐的爱好", py: "tīng yīnyuè de àihào" }, { ko: "기억에 남는 여행", zh: "难忘的旅行", py: "nánwàng de lǚxíng" }, { ko: "건강한 식습관", zh: "健康的饮食习惯", py: "jiànkāng de yǐnshí xíguàn" } ],
-        p5: [ { ko: "종이책 vs 전자책", zh: "看纸质书还是看电子书", py: "kàn zhǐzhìshū háishì kàn diànzǐshū" }, { ko: "빠른 결혼 vs 만혼", zh: "早婚还是晚婚", py: "zǎohūn háishì wǎnhūn" } ]
-      },
-      4: {
-        p2: ["거실 TV", "마트 계산대", "자전거 타기", "물병 3병"],
-        p3: ["중국어 학습 계기", "주말 등산 약속", "분실물 찾기", "생일 파티 초대", "겨울철 감기 조심"],
-        p4: [ { ko: "친구 사귈 때 성격", zh: "交朋友看重的性格", py: "jiāo péngyou kànzhòng de xìnggé" }, { ko: "퇴근 후 하루 일과", zh: "下班后的生活安排", py: "xiàbān hòu de shēnghuó ānpái" }, { ko: "반려동물 기르기", zh: "养宠物", py: "yǎng chǒngwù" } ],
-        p5: [ { ko: "전기차 vs 내연기관차", zh: "买电动车还是买燃油车", py: "mǎi diàndòngchē háishì mǎi rányóuchē" }, { ko: "혼자 여행 vs 패키지 단체 여행", zh: "独自旅行还是跟团旅行", py: "dúzì lǚxíng háishì gēntuán lǚxíng" } ]
-      },
-      5: {
-        p2: ["노트북 작업", "식탁 위 차", "잠자는 고양이", "지하철 승강장"],
-        p3: ["커피 번개", "택시 vs 걷기", "대청소 분담", "저녁 식당 예약", "여름철 더위 대처"],
-        p4: [ { ko: "워라밸의 중요성", zh: "工作与生活的平衡", py: "gōngzuò yǔ shēnghuó de pínghéng" }, { ko: "외국어 학습 노하우", zh: "学习外语的方法", py: "xuéxí wàiyǔ de fāngfǎ" }, { ko: "독서 습관", zh: "阅读习惯", py: "yuèdú xíguàn" } ],
-        p5: [ { ko: "대기업 근무 vs 스타트업", zh: "去大企业工作还是去创业公司", py: "qù dà qǐyè gōngzuò háishì qù chuàngyè gōngsī" }, { ko: "현금 없는 사회(모바일페이) 찬반", zh: "无现金社会和移动支付", py: "wú xiànjīn shèhuì hé yídòng zhīfù" } ]
-      },
-      6: {
-        p2: ["공항 캐리어", "수영장 수영", "카드로 결제", "신발 4켤레"],
-        p3: ["콘서트 티켓 예매", "쇼핑 옷 추천", "헬스장 등록 상담", "간단한 아침 식사", "가을 단풍 구경"],
-        p4: [ { ko: "번아웃 극복법", zh: "克服工作倦怠", py: "kèfú gōngzuò juàndài" }, { ko: "가장 좋아하는 명절", zh: "最喜欢的传统节日", py: "zuì xǐhuan de chuántǒng jiérì" }, { ko: "스마트폰이 바꾼 삶", zh: "智能手机对生活的影响", py: "zhìnéng shǒujī duì shēnghuó de yǐngxiǎng" } ],
-        p5: [ { ko: "높은 연봉 vs 적성과 워라밸", zh: "选择高薪工作还是喜欢的工作", py: "xuǎnzé gāoxīn gōngzuò háishì xǐhuan de gōngzuò" }, { ko: "인공지능(AI) 발전의 명암", zh: "人工智能技术的发展", py: "réngōng zhìnéng jìshù de fāzhǎn" } ]
-      },
-      7: {
-        p2: ["병원 의사 진료", "도서관 공부", "기타 연주", "꽃병 꽃 3송이"],
-        p3: ["프로젝트 성공 회식", "도서 대출 질문", "서비스센터 수리", "저녁 공원 산책", "화창한 주말 날씨"],
-        p4: [ { ko: "가장 의미 있는 휴일", zh: "最有意义的假期", py: "zuì yǒu yìyì de jiàqī" }, { ko: "중국어 단어 암기법", zh: "背汉语单词的方法", py: "bèi Hànyǔ dāncí de fāngfǎ" }, { ko: "환경 보호를 위한 실천", zh: "日常生活中的环保行动", py: "rìcháng shēnghuó zhōng de huánbǎo xíngdòng" } ],
-        p5: [ { ko: "혼자 자취하기 vs 부모님과 거주", zh: "独自居住还是和父母同住", py: "dúzì jūzhù háishì hé fùmǔ tóngzhù" }, { ko: "오프라인 현장 강의 vs 온라인 강의", zh: "线下上课还是线上网课", py: "xiànxià shàngkè háishì xiànshàng wǎngkè" } ]
-      },
-      8: {
-        p2: ["식당 메뉴판", "설거지하기", "강아지 산책", "과일가게"],
-        p3: ["출장 가방 싸기", "맛집 식당 추천", "운동 파트너 구하기", "오후 티타임 휴식", "바람 부는 쌀쌀한 날"],
-        p4: [ { ko: "동료와 의견 충돌 시 해결법", zh: "与同事意见不合时的解决方法", py: "yǔ tóngshì yìjiàn bùhé shí de jiějué fāngfǎ" }, { ko: "주말 재충전 방법", zh: "周末放松充电的方式", py: "zhōumò fàngsōng chōngdiàn de fāngshì" }, { ko: "기억에 남는 생일 선물", zh: "最难忘的生日礼物", py: "zuì nánwàng de shēngrì lǐwù" } ],
-        p5: [ { ko: "패스트패션 vs 지속가능 패션", zh: "快时尚消费还是环保消费", py: "kuài shíshàng xiāofèi háishì huánbǎo xiāofèi" }, { ko: "어린이 스마트폰 사용 제한 찬반", zh: "限制青少年使用智能手机", py: "xiànzhì qīngshàonián shǐyòng zhìnéng shǒujī" } ]
-      },
-      9: {
-        p2: ["기차역 표 예매", "바닥 청소하기", "빵 굽기", "배낭 2개"],
-        p3: ["동료와 카풀 제안", "백화점 할인 쇼핑", "새로운 요리 레시피", "주말 신작 영화", "폭설 안전 안내"],
-        p4: [ { ko: "직장에서 소통의 중요성", zh: "职场沟通的重要性", py: "zhíchǎng gōutōng de zhòngyàoxìng" }, { ko: "가장 좋아하는 스포츠", zh: "最喜欢的体育运动", py: "zuì xǐhuan de tǐyù yùndòng" }, { ko: "새해 목표와 계획", zh: "新年的目标与计划", py: "xīnnián de mùbiāo yǔ jìhuà" } ],
-        p5: [ { ko: "대학 간판 학벌 vs 실무 능력", zh: "名校学历重要还是工作能力重要", py: "míngxiào xuélì zhòngyào háishì gōngzuò nénglì zhòngyào" }, { ko: "선택적 유연근무제 도입 찬반", zh: "实行弹性工作制", py: "shíxíng tánxìng gōngzuòzhì" } ]
-      },
-      10: {
-        p2: ["호텔 체크인", "우중 조깅", "스마트폰 사진 촬영", "자동차 차키"],
-        p3: ["신입사원 환영회", "동료 송별회 선물", "항공권 예약 변경", "주말 바비큐 파티", "미세먼지 마스크 착용"],
-        p4: [ { ko: "좋은 리더의 조건", zh: "优秀领导者的条件", py: "yōuxiù lǐngdǎozhě de tiáojiàn" }, { ko: "프로젝트 스트레스 관리", zh: "管理项目压力的方法", py: "guǎnlǐ xiàngmù yālì de fāngfǎ" }, { ko: "인생 버킷리스트", zh: "人生愿望清单", py: "rénshēng yuànwàng qīngdān" } ],
-        p5: [ { ko: "재택근무 생산성 지속 여부", zh: "居家办公能否保持高效率", py: "jūjiā bàngōng néngfǒu bǎochí gāo xiàolǜ" }, { ko: "전통문화 보존 vs 현대화 개발", zh: "保护传统文化还是推进现代化开发", py: "bǎohù chuántǒng wénhuà háishì tuījìn xiàndàihuà kāifā" } ]
-      }
-    };
-
-    for (let s = 3; s <= 10; s++) {
-      const theme = setThemes[s];
-      allTscSets[s] = [
-        { id: `s${s}_p2_1`, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: theme.p2[0], visualSvg: `s${s}_p2_1`, visualDesc: `${theme.p2[0]} 상황을 나타내는 그림`, q: "这是什么？", pinyinQ: "Zhè shì shénme?", transQ: "이것은 무엇입니까?", a: "这是工作和生活常用的东西。", pinyinA: "Zhè shì gōngzuò hé shēnghuó chángyòng de dōngxi.", transA: "이것은 업무와 일상에 자주 쓰이는 물건입니다.", tip: "지시대명사 '这是...' 구문으로 대상 명사를 즉시 말하세요." },
-        { id: `s${s}_p2_2`, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: theme.p2[1], visualSvg: `s${s}_p2_2`, visualDesc: `${theme.p2[1]} 동작 그림`, q: "他在做什么？", pinyinQ: "Tā zài zuò shénme?", transQ: "그는 무엇을 하고 있습니까?", a: "他在认真地忙着呢。", pinyinA: "Tā zài rènzhēn de mángzhe ne.", transA: "그는 열심히 집중하여 하고 있습니다.", tip: "'在...呢' 진행형 공식에 핵심 동사를 결합하세요." },
-        { id: `s${s}_p2_3`, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: theme.p2[2], visualSvg: `s${s}_p2_3`, visualDesc: `${theme.p2[2]} 상태 묘사 그림`, q: "这里怎么样？", pinyinQ: "Zhèlǐ zěnmeyàng?", transQ: "여기는 어떠합니까?", a: "这里非常干净，环境也很好。", pinyinA: "Zhèlǐ fēicháng gānjìng, huánjìng yě hěn hǎo.", transA: "이곳은 매우 깨끗하고 환경도 좋습니다.", tip: "형용사 술어문 '非常 + 형용사'로 깔끔하게 처리합니다." },
-        { id: `s${s}_p2_4`, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6, topic: theme.p2[3], visualSvg: `s${s}_p2_4`, visualDesc: `${theme.p2[3]} 수량 그림`, q: "这里有几个？", pinyinQ: "Zhèlǐ yǒu jǐ ge?", transQ: "여기에 몇 개가 있습니까?", a: "这里有两个。", pinyinA: "Zhèlǐ yǒu liǎng ge.", transA: "여기에 두 개가 있습니다.", tip: "수량 2는 '二(èr)'가 아니라 반드시 '两(liǎng)'을 씁니다." },
-        { id: `s${s}_p3_1`, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: theme.p3[0], q: "今天下班后一起去喝杯咖啡怎么样？", pinyinQ: "Jīntiān xiàbān hòu yìqǐ qù hē bēi kāfēi zěnmeyàng?", transQ: "오늘 퇴근하고 커피 한잔하러 갈래요?", a: "好啊！我知道公司附近有一家很不错的咖啡店，我们一起去吧。", pinyinA: "Hǎo a! Wǒ zhīdào gōngsī fùjìn yǒu yì jiā hěn búcuò de kāfēidiàn, wǒmen yìqǐ qù ba.", transA: "좋아요! 회사 근처에 괜찮은 카페를 아는데 같이 가요.", tip: "동의(好啊) + 장소 추천(公司附近)으로 풍성한 답변 완성." },
-        { id: `s${s}_p3_2`, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: theme.p3[1], q: "这周末你有什么安排吗？", pinyinQ: "Zhè zhōumò nǐ yǒu shénme ānpái ma?", transQ: "이번 주말에 무슨 계획 있어요?", a: "我打算在家里好好休息，看几部电影，放松一下。", pinyinA: "Wǒ dǎsuàn zài jiā lǐ hǎohāo xiūxi, kàn jǐ bù diànyǐng, fàngsōng yíxià.", transA: "집에서 푹 쉬면서 영화 몇 편 보고 힐링할 생각이에요.", tip: "'打算...(계획이다) + 放松一下'는 만능 여가 표현입니다." },
-        { id: `s${s}_p3_3`, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: theme.p3[2], q: "今天中午你想去哪里吃饭？", pinyinQ: "Jīntiān zhōngwǔ nǐ xiǎng qù nǎlǐ chīfàn?", transQ: "오늘 점심 어디 가서 드실래요?", a: "去公司食堂吃怎么样？既省时间又很实惠。", pinyinA: "Qù gōngsī shítáng chī zěnmeyàng? Jì shěng shíjiān yòu hěn shíhuì.", transA: "사내 식당 어때요? 시간도 아끼고 실속 있잖아요.", tip: "사내식당(公司食堂), 시간절약(省时间), 실속(实惠)을 활용하세요." },
-        { id: `s${s}_p3_4`, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: theme.p3[3], q: "你平时一般几点起床？", pinyinQ: "Nǐ píngshí yībān jǐ diǎn qǐchuáng?", transQ: "평소 보통 몇 시에 일어나세요?", a: "我平时一般早上七点起床，洗漱完吃完早餐就去上班。", pinyinA: "Wǒ píngshí yībān zǎoshang qī diǎn qǐchuáng, xǐshù wán chī wán zǎocān jiù qù shàngbān.", transA: "저는 평소 7시에 일어나서 씻고 아침 먹고 출근해요.", tip: "기상 시간 후 출근까지의 동선(洗漱-早餐-上班)을 연결합니다." },
-        { id: `s${s}_p3_5`, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15, topic: theme.p3[4], q: "今天外面冷不冷？需要多穿点衣服吗？", pinyinQ: "Jīntiān wàimiàn lěng bù lěng? Xūyào duō chuān diǎn yīfu ma?", transQ: "오늘 밖이 춥나요? 옷을 두껍게 입어야 할까요?", a: "今天外面风挺大的，有点儿冷，最好多穿一件外套。", pinyinA: "Jīntiān wàimiàn fēng tǐng dà de, yǒudiǎnr lěng, zuìhǎo duō chuān yí jiàn wàitào.", transA: "바람이 꽤 불고 쌀쌀해요, 외투 한 벌 더 입는 게 좋아요.", tip: "날씨 묘사(风挺大的) + 행동 조언(多穿外套)을 조합합니다." },
-        { id: `s${s}_p4_1`, part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25, topic: theme.p4[0].ko, q: `关于${theme.p4[0].zh}，谈谈你的看法。`, pinyinQ: `Guānyú ${theme.p4[0].py}, tántan nǐ de kànfǎ.`, transQ: `${theme.p4[0].ko}에 대해 당신의 생각을 말해보세요.`, a: "我认为这对现代职场人非常重要。首先，它可以帮助我们保持身心健康，缓解工作带来的压力。其次，这能让我们以更饱满的状态投入到工作和生活中。所以我们应该重视这一点。", pinyinA: "Wǒ rènwéi zhè duì xiàndài zhíchǎngrén fēicháng zhòngyào. Shǒuxiān, tā kěyǐ bāngzhù wǒmen bǎochí shēnxīn jiànkāng, huǎnjiě gōngzuò dài lái de yālì. Qícì, zhè néng ràng wǒmen yǐ gèng bǎomǎn de zhuàngtài tóurù dào gōngzuò hé shēnghuó zhōng. Suǒyǐ wǒmen yīnggāi zhòngshì zhè yì diǎn.", transA: "저는 이것이 현대 직장인에게 매우 중요하다고 생각합니다. 첫째로 심신 건강과 스트레스 완화에 도움이 됩니다. 둘째로 업무와 삶에 더 활력 있게 몰입할 수 있게 해줍니다. 따라서 우리는 이를 중요하게 여겨야 합니다.", tip: "직장인 관점(现代职场人)과 심신 건강(身心健康)을 결합한 만능 틀입니다." },
-        { id: `s${s}_p4_2`, part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25, topic: theme.p4[1].ko, q: `请谈谈你平时如何安排${theme.p4[1].zh}？`, pinyinQ: `Qǐng tántan nǐ píngshí rúhé ānpái ${theme.p4[1].py}?`, transQ: `평소 ${theme.p4[1].ko}을(를) 어떻게 계획하고 실천하시는지 말해보세요.`, a: "我通常会制定合理的计划。一方面，每天坚持投入固定的时间去实践；另一方面，遇到不懂的问题会积极向身边的同事或朋友请教。通过坚持，我收获了很大的进步和成就感。", pinyinA: "Wǒ tōngcháng huì zhìdìng hélǐ de jìhuà. Yì fāngmiàn, měitiān jiānchí tóurù gùdìng de shíjiān qù shíjiàn; lìng yì fāngmiàn, yù dào bù dǒng de wèntí huì jījí xiàng shēnbiān de tóngshì huò péngyou qǐngjiào. Tōngguò jiānchí, wǒ shōuhuòle hěn dà de jìnbù hé chéngjiùgǎn.", transA: "저는 합리적인 계획을 세웁니다. 한편으론 매일 일정 시간을 꾸준히 투자하고, 다른 한편으론 모르는 점을 동료에게 적극 묻습니다. 꾸준함을 통해 큰 발전과 성취감을 얻었습니다.", tip: "'一方面... 另一方面...' 대구법으로 논리성을 확보하세요." },
-        { id: `s${s}_p4_3`, part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25, topic: theme.p4[2].ko, q: `请谈谈你对${theme.p4[2].zh}的经历或计划。`, pinyinQ: `Qǐng tántan nǐ duì ${theme.p4[2].py} de jīnglì huò jìhuà.`, transQ: `${theme.p4[2].ko}에 대한 경험이나 계획을 말해보세요.`, a: "我有过非常难忘的经历。那次经历不仅让我学到了很多实用的经验，还开阔了我的眼界。未来如果有机会，我希望能继续挑战自己，体验更多新鲜的事物，让人生更加丰富。", pinyinA: "Wǒ yǒuguo fēicháng nánwàng de jīnglì. Nà cì jīnglì bùjǐn ràng wǒ xuédàole hěn duō shíyòng de jīngyàn, hái kāikuòle wǒ de yǎnjiè. Wèilái rúguǒ yǒu jīhuì, wǒ xīwàng néng jìxù tiǎozhàn zìjǐ, tǐyàn gèng duō xīnxiān de shìwù, ràng rénshēng gèngjiā fēngfù.", transA: "잊지 못할 경험이 있습니다. 많은 실용적 경험을 배웠고 시야를 넓혔습니다. 앞으로도 도전하며 다양한 것을 체험해 인생을 풍요롭게 만들고 싶습니다.", tip: "배움(学到经验), 시야 확장(开阔眼界), 자기 도전(挑战自己)은 4급~5급 단골 고득점 어휘입니다." },
-        { id: `s${s}_p5_1`, part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50, topic: theme.p5[0].ko, q: `关于“${theme.p5[0].zh}”，你更支持哪一种观点？请说明原因。`, pinyinQ: `Guānyú “${theme.p5[0].py}”, nǐ gèng zhīchí nǎ yì zhǒng guāndiǎn? Qǐng shuōmíng yuányīn.`, transQ: `"${theme.p5[0].ko}"에 대해 어느 쪽을 지지하며 그 이유는 무엇인가요?`, a: "我更支持前者。\n首先，从效率和现代社会发展的角度来看，这种方式能为我们节省大量的时间和成本，更加符合快节奏的生活需求。\n其次，它拥有更高的灵活性和自主性，能够更好地满足现代人多元化的个性需求。\n虽然另一种观点也有其独特的优势和人情味，但是在实际应用中效率相对较低。\n因此综合权衡，我认为前者是更加符合时代趋势的理性选择。", pinyinA: "Wǒ gèng zhīchí qiánzhě.\nShǒuxiān, cóng xiàolǜ hé xiàndài shèhuì fāzhǎn de jiǎodù lái kàn, zhè zhǒng fāngshì néng wèi wǒmen jiéshěng dàliàng de shíjiān hé chéngběn, gèngjiā fúhé kuài jiézòu de shēnghuó xūqiú.\nQícì, tā yōngyǒu gèng gāo de línghuóxìng hé zìzhǔxìng, nénggòu gèng hǎo de mǎnzú xiàndàirén duōyuánhuà de gèxìng xūqiú.\nSuīrán lìng yì zhǒng guāndiǎn yě yǒu qí dútè de yōushì hé rénqíngwèi, dànshì zài shíjì yìngyòng zhōng xiàolǜ xiāngduì jiàodī.\nYīncǐ zōnghé quánhéng, wǒ rènwéi qiánzhě shì gèngjiā fúhé shídài qūshì de lǐxìng xuǎnzé.", transA: "저는 전자를 더 지지합니다. 첫째, 효율과 현대 사회 관점에서 시간과 비용을 크게 절감해 빠른 삶의 템포에 부합합니다. 둘째, 유연성과 자율성이 높아 다양한 개별 요구를 충족합니다. 비록 후자도 장점이 있지만 실제 효율은 다소 떨어집니다. 따라서 종합적으로 전자가 시대 흐름에 맞는 합리적 선택입니다.", tip: "양자택일 논제에서 '我更支持前者(전자 지지)'로 서두를 열고 5단 논법을 전개하세요." },
-        { id: `s${s}_p5_2`, part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50, topic: theme.p5[1].ko, q: `你对“${theme.p5[1].zh}”持什么态度？请阐述你的理由。`, pinyinQ: `Nǐ duì “${theme.p5[1].py}” chí shénme tàidu? Qǐng chǎnshù nǐ de lǐyóu.`, transQ: `"${theme.p5[1].ko}"에 대해 어떤 입장이신가요? 이유를 밝혀보세요.`, a: "我对这个问题持积极支持的态度。\n第一，这是科技进步和社会发展的必然结果，能够极大提高整体运作效率，推动社会创新。\n第二，对于个人而言，这种模式有助于提升生活便利度，打破传统限制，拓展更多可能性。\n当然，在推进的过程中也需要建立完善的制度和规范，防范潜在的风险。\n所以只要管理得当，这种发展趋势是非常值得肯定和推广的。", pinyinA: "Wǒ duì zhège wèntí chí jījí zhīchí de tàidu.\nDì-yī, zhè shì kējì jìnbù hé shèhuì fāzhǎn de bìrán jiéguǒ, nénggòu jídà tígāo zhěngtǐ yùnzuò xiàolǜ, tuīdòng shèhuì chuàngxīn.\nDì-èr, duìyú gèrén ér yán, zhè zhǒng móshì yǒuzhùyú tíshēng shēnghuó biànlìdù, dǎpò chuántǒng xiànzhì, tuòzhǎn gèng duō kěnéngxìng.\nDāngrán, zài tuījìn de guòchéng zhōng yě xūyào jiànlì wánshàn de zhìdù hé guīfàn, fángfàn qiánzài de fēngxiǎn.\nSuǒyǐ zhǐyào guǎnlǐ dédàng, zhè zhǒng fāzhǎn qūshì shì fēicháng zhídé kěndìng hé tuīguǎng de.", transA: "저는 이에 대해 적극 찬성하는 입장입니다. 첫째, 기술 진보와 사회 발전의 필연적 결과이며 전반적 효율을 높이고 혁신을 촉진합니다. 둘째, 개인에게 편리함을 주고 한계를 넘어 가능성을 넓혀줍니다. 물론 위험을 막는 제도적 보완도 필요합니다. 따라서 적절한 관리 아래 추진된다면 충분히 긍정적입니다.", tip: "사회·기술 찬반형 논제에 '必然结果(필연적 결과)', '极大提高效率(효율 극대화)'는 최고 득점용 표현입니다." }
-      ];
-    }
-
-    let currentSet = 1, currentPart = 'all', globalSpeed = 1.0;
-    let globalQ23Visible = false, globalQPinyinVisible = false, globalPinyinVisible = false, globalKoreanVisible = false, globalAnsVisible = false;
-    let activeUtterance = null, currentSpeakingId = null, timerInterval = null, activeTimerId = null, webAudioCtx = null;
-
-    function getPartPillStyle(p) {
-      if(p==='part2') return 'bg-amber-100 text-amber-800 border border-amber-300';
-      if(p==='part3') return 'bg-blue-100 text-blue-800 border border-blue-300';
-      if(p==='part4') return 'bg-purple-100 text-purple-800 border border-purple-300';
-      if(p==='part5') return 'bg-rose-100 text-rose-800 border border-rose-300';
-      return 'bg-slate-100 text-slate-800 border border-slate-300';
-    }
-
-    function escapeJS(s) { return !s ? '' : s.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, ''); }
-    function setLucideIcon(el, n, c) { if(el) el.innerHTML = `<i data-lucide="${n}" class="${c}"></i>`; }
-
-    function changeSet(v) { stopTTS(); if(timerInterval) clearInterval(timerInterval); currentSet = parseInt(v, 10); renderApp(); }
-    function filterPart(p) {
-      stopTTS(); currentPart = p;
-      document.querySelectorAll('.tab-btn').forEach(b => {
-        let isSel = b.getAttribute('data-part') === p;
-        b.className = `tab-btn px-2.5 py-1 rounded-lg whitespace-nowrap ${isSel ? 'font-bold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm' : 'font-medium text-slate-600 hover:bg-slate-100'}`;
-      });
-      renderApp();
-    }
-    function setSpeed(sp) {
-      globalSpeed = sp;
-      document.querySelectorAll('.speed-btn').forEach(b => {
-        let isCur = Math.abs(parseFloat(b.getAttribute('data-speed')) - sp) < 0.01;
-        b.className = `speed-btn px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs rounded ${isCur ? 'font-bold bg-blue-600 text-white shadow-sm' : 'font-semibold text-slate-600 hover:text-slate-900'}`;
-      });
-    }
-
-    function playTone(f, d, t='sine') {
-      try {
-        if (!webAudioCtx) webAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (webAudioCtx.state === 'suspended') webAudioCtx.resume();
-        let osc = webAudioCtx.createOscillator(), gain = webAudioCtx.createGain();
-        osc.type = t; osc.frequency.setValueAtTime(f, webAudioCtx.currentTime);
-        gain.gain.setValueAtTime(0.2, webAudioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, webAudioCtx.currentTime + d);
-        osc.connect(gain); gain.connect(webAudioCtx.destination);
-        osc.start(); osc.stop(webAudioCtx.currentTime + d);
-      } catch(e) {}
-    }
-
-    function getPart2Svg(key) {
-      switch(key) {
-        case 'clock_845': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="50" cy="50" r="45" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/><circle cx="50" cy="50" r="3" fill="#0f172a"/><text x="50" y="18" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">12</text><text x="50" y="90" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">6</text><text x="14" y="53" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">9</text><text x="86" y="53" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">3</text><line x1="50" y1="50" x2="28" y2="64" stroke="#0f172a" stroke-width="3.5" stroke-linecap="round"/><line x1="50" y1="50" x2="16" y2="50" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"/></svg>`;
-        case 'desk_phone': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="10" y="65" width="80" height="8" rx="2" fill="#d97706"/><rect x="20" y="32" width="34" height="26" rx="2" fill="#334155"/><rect x="23" y="35" width="28" height="20" rx="1" fill="#93c5fd"/><line x1="16" y1="60" x2="58" y2="60" stroke="#475569" stroke-width="3"/><rect x="64" y="38" width="16" height="27" rx="3" fill="#4f46e5" stroke="#1e1b4b" stroke-width="1.5"/><circle cx="72" cy="62" r="1.5" fill="#ffffff"/></svg>`;
-        case 'running': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="50" cy="50" r="45" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="50" y="58" font-size="34" text-anchor="middle">🏃‍♂️</text></svg>`;
-        case 'apples_5': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><ellipse cx="50" cy="65" rx="36" ry="14" fill="#fed7aa" stroke="#ea580c" stroke-width="2"/><text x="34" y="56" font-size="18">🍎</text><text x="48" y="52" font-size="18">🍎</text><text x="64" y="56" font-size="18">🍎</text><text x="40" y="70" font-size="17">🍎</text><text x="58" y="70" font-size="17">🍎</text></svg>`;
-        case 'calendar_512': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="18" y="20" width="64" height="64" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><rect x="18" y="20" width="64" height="20" rx="6" fill="#ef4444"/><text x="50" y="34" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">5月 MAY</text><text x="50" y="66" font-size="28" font-weight="900" fill="#0f172a" text-anchor="middle">12</text><text x="50" y="78" font-size="8" font-weight="bold" fill="#64748b" text-anchor="middle">星期五</text></svg>`;
-        case 'coffee_cup': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M28,40 L34,75 Q35,82 50,82 Q65,82 66,75 L72,40 Z" fill="#92400e"/><path d="M70,45 Q84,45 84,56 Q84,68 68,68" fill="none" stroke="#92400e" stroke-width="4"/><ellipse cx="50" cy="40" rx="22" ry="7" fill="#451a03"/><path d="M42,28 Q44,20 42,14" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round"/><path d="M50,26 Q52,18 50,12" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round"/><path d="M58,28 Q60,20 58,14" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round"/></svg>`;
-        case 'reading_book': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="50" cy="50" r="45" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/><text x="50" y="58" font-size="34" text-anchor="middle">📖</text></svg>`;
-        case 'books_3': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="22" y="65" width="56" height="11" rx="2" fill="#2563eb"/><rect x="25" y="52" width="50" height="11" rx="2" fill="#16a34a"/><rect x="28" y="39" width="44" height="11" rx="2" fill="#ea580c"/><text x="50" y="90" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">三本书</text></svg>`;
-        case 's3_p2_1': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M30,25 L50,15 L70,25 L85,40 L70,50 L65,38 L65,85 L35,85 L35,38 L30,50 L15,40 Z" fill="#3b82f6"/><rect x="40" y="55" width="20" height="15" rx="2" fill="#ffffff"/><text x="50" y="66" font-size="9" font-weight="bold" fill="#ef4444" text-anchor="middle">200元</text></svg>`;
-        case 's3_p2_2': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="60" width="70" height="20" fill="#64748b"/><path d="M35,60 C35,45 65,45 65,60" fill="#f97316"/><line x1="60" y1="48" x2="80" y2="35" stroke="#334155" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="30" r="8" fill="#cbd5e1" opacity="0.6"/></svg>`;
-        case 's3_p2_3': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="46" y="15" width="8" height="70" fill="#475569"/><circle cx="50" cy="25" r="12" fill="#2563eb"/><text x="50" y="29" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">站</text><rect x="35" y="75" width="30" height="10" fill="#1e293b"/></svg>`;
-        case 's3_p2_4': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M20,45 C20,20 50,20 50,45 Z" fill="#8b5cf6"/><path d="M50,45 L50,80 C50,85 40,85 40,80" fill="none" stroke="#475569" stroke-width="3"/><path d="M55,50 C55,30 80,30 80,50 Z" fill="#ec4899"/><path d="M80,50 L80,80 C80,85 70,85 70,80" fill="none" stroke="#475569" stroke-width="3"/></svg>`;
-        case 's4_p2_1': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="25" width="70" height="42" rx="4" fill="#0f172a"/><rect x="18" y="28" width="64" height="34" fill="#38bdf8"/><polygon points="42,50 42,40 54,45" fill="#ffffff"/><rect x="42" y="67" width="16" height="5" fill="#64748b"/><rect x="30" y="72" width="40" height="4" rx="2" fill="#334155"/></svg>`;
-        case 's4_p2_2': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="10" y="55" width="80" height="25" fill="#0284c7"/><rect x="65" y="40" width="18" height="20" fill="#e2e8f0"/><rect x="25" y="30" width="22" height="25" rx="3" fill="#10b981"/><circle cx="74" cy="72" r="4" fill="#334155"/></svg>`;
-        case 's4_p2_3': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="25" cy="65" r="16" fill="none" stroke="#334155" stroke-width="4"/><circle cx="75" cy="65" r="16" fill="none" stroke="#334155" stroke-width="4"/><path d="M25,65 L45,40 L65,40 L75,65 M45,40 L50,65 L65,65" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><circle cx="65" cy="35" r="6" fill="#f59e0b"/></svg>`;
-        case 's4_p2_4': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="25" y="30" width="12" height="50" rx="3" fill="#38bdf8" opacity="0.8"/><rect x="44" y="25" width="12" height="55" rx="3" fill="#38bdf8" opacity="0.8"/><rect x="63" y="30" width="12" height="50" rx="3" fill="#38bdf8" opacity="0.8"/></svg>`;
-        case 's5_p2_1': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="20" y="25" width="60" height="38" rx="4" fill="#334155"/><rect x="24" y="29" width="52" height="30" fill="#60a5fa"/><polygon points="12,67 88,67 84,63 16,63" fill="#94a3b8"/></svg>`;
-        case 's5_p2_2': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><ellipse cx="50" cy="75" rx="40" ry="8" fill="#cbd5e1"/><path d="M40,35 L60,35 L65,60 L35,60 Z" fill="#f59e0b"/><ellipse cx="50" cy="35" rx="10" ry="3" fill="#d97706"/><circle cx="50" cy="48" r="6" fill="#b45309"/></svg>`;
-        case 's5_p2_3': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><ellipse cx="50" cy="60" rx="28" ry="18" fill="#fb923c"/><circle cx="38" cy="50" r="14" fill="#fb923c"/><polygon points="28,40 33,32 38,42" fill="#f97316"/><polygon points="43,40 48,32 53,42" fill="#f97316"/><path d="M75,65 Q85,75 75,80" fill="none" stroke="#fb923c" stroke-width="5" stroke-linecap="round"/></svg>`;
-        case 's5_p2_4': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="20" width="70" height="50" fill="#1e293b"/><rect x="22" y="26" width="25" height="38" fill="#93c5fd"/><rect x="53" y="26" width="25" height="38" fill="#93c5fd"/><rect x="10" y="70" width="80" height="8" fill="#ef4444"/></svg>`;
-        case 's6_p2_1': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="30" y="30" width="40" height="50" rx="6" fill="#4f46e5"/><path d="M42,30 L42,20 L58,20 L58,30" fill="none" stroke="#312e81" stroke-width="4"/><line x1="30" y1="45" x2="70" y2="45" stroke="#312e81" stroke-width="3"/><circle cx="40" cy="83" r="3" fill="#1e1b4b"/><circle cx="60" cy="83" r="3" fill="#1e1b4b"/></svg>`;
-        case 's6_p2_2': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="10" y="55" width="80" height="25" fill="#38bdf8"/><path d="M15,62 Q25,56 35,62 Q45,68 55,62 Q65,56 75,62 Q85,68 90,62" fill="none" stroke="#ffffff" stroke-width="3"/><circle cx="50" cy="38" r="10" fill="#f43f5e"/><path d="M42,46 L58,46" stroke="#f43f5e" stroke-width="4"/></svg>`;
-        case 's6_p2_3': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="20" y="25" width="60" height="40" rx="5" fill="#0f172a"/><rect x="20" y="35" width="60" height="8" fill="#3b82f6"/><rect x="28" y="50" width="12" height="9" rx="2" fill="#e2e8f0"/><rect x="60" y="48" width="14" height="12" rx="2" fill="#10b981"/></svg>`;
-        case 's6_p2_4': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><text x="50" y="60" font-size="32" text-anchor="middle">👟👟👟👟</text></svg>`;
-        case 's7_p2_1': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="50" cy="38" r="14" fill="#fbcfe8"/><rect x="42" y="28" width="16" height="8" fill="#ef4444"/><rect x="35" y="55" width="30" height="25" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><text x="50" y="73" font-size="16" fill="#ef4444" text-anchor="middle">✚</text></svg>`;
-        case 's7_p2_2': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="20" y="60" width="60" height="15" fill="#b45309"/><rect x="30" y="30" width="40" height="30" rx="3" fill="#2563eb"/><line x1="50" y1="30" x2="50" y2="60" stroke="#ffffff" stroke-width="2"/></svg>`;
-        case 's7_p2_3': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M50,15 L50,40 C35,40 30,55 35,75 C40,90 60,90 65,75 C70,55 65,40 50,40 Z" fill="#d97706"/><circle cx="50" cy="65" r="8" fill="#1e293b"/><line x1="50" y1="15" x2="50" y2="70" stroke="#94a3b8" stroke-width="2"/></svg>`;
-        case 's7_p2_4': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M38,55 L42,80 L58,80 L62,55 Z" fill="#cbd5e1"/><text x="32" y="38" font-size="18">🌷</text><text x="48" y="32" font-size="18">🌸</text><text x="64" y="38" font-size="18">🌹</text></svg>`;
-        case 's8_p2_1': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="25" y="20" width="50" height="60" rx="3" fill="#fef08a" stroke="#ca8a04" stroke-width="2"/><line x1="35" y1="35" x2="65" y2="35" stroke="#ca8a04" stroke-width="3"/><line x1="35" y1="48" x2="55" y2="48" stroke="#ca8a04" stroke-width="3"/><line x1="35" y1="61" x2="60" y2="61" stroke="#ca8a04" stroke-width="3"/></svg>`;
-        case 's8_p2_2': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="45" width="70" height="30" rx="5" fill="#38bdf8" opacity="0.6"/><ellipse cx="50" cy="45" rx="30" ry="10" fill="#ffffff"/><circle cx="40" cy="38" r="6" fill="#ffffff"/><circle cx="55" cy="35" r="8" fill="#ffffff"/></svg>`;
-        case 's8_p2_3': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><text x="50" y="60" font-size="34" text-anchor="middle">🐕‍🦺</text></svg>`;
-        case 's8_p2_4': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><ellipse cx="50" cy="65" rx="35" ry="12" fill="#fde047"/><text x="32" y="55" font-size="16">🍎</text><text x="48" y="50" font-size="16">🍌</text><text x="62" y="55" font-size="16">🍇</text></svg>`;
-        case 's9_p2_1': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="20" y="30" width="60" height="40" rx="6" fill="#f97316"/><rect x="28" y="42" width="44" height="16" fill="#ffedd5"/><circle cx="35" cy="50" r="3" fill="#ea580c"/><circle cx="65" cy="50" r="3" fill="#ea580c"/></svg>`;
-        case 's9_p2_2': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><line x1="30" y1="20" x2="70" y2="75" stroke="#b45309" stroke-width="5" stroke-linecap="round"/><rect x="55" y="65" width="25" height="10" fill="#3b82f6"/><ellipse cx="60" cy="80" rx="12" ry="4" fill="#93c5fd"/></svg>`;
-        case 's9_p2_3': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><ellipse cx="50" cy="55" rx="26" ry="16" fill="#d97706"/><path d="M35,45 Q50,30 65,45" fill="none" stroke="#b45309" stroke-width="3"/></svg>`;
-        case 's9_p2_4': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="20" y="35" width="22" height="35" rx="5" fill="#10b981"/><rect x="58" y="35" width="22" height="35" rx="5" fill="#6366f1"/></svg>`;
-        case 's10_p2_1': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="50" width="70" height="30" fill="#334155"/><rect x="30" y="30" width="40" height="20" fill="#64748b"/><text x="50" y="70" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">HOTEL</text></svg>`;
-        case 's10_p2_2': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><text x="50" y="55" font-size="30" text-anchor="middle">🏃‍♂️</text><line x1="30" y1="25" x2="25" y2="35" stroke="#38bdf8" stroke-width="2"/><line x1="50" y1="20" x2="45" y2="30" stroke="#38bdf8" stroke-width="2"/><line x1="70" y1="25" x2="65" y2="35" stroke="#38bdf8" stroke-width="2"/></svg>`;
-        case 's10_p2_3': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="28" y="25" width="44" height="50" rx="6" fill="#1e293b"/><circle cx="50" cy="50" r="10" fill="#38bdf8"/><circle cx="62" cy="33" r="3" fill="#f43f5e"/></svg>`;
-        case 's10_p2_4': return `<svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="40" cy="50" r="15" fill="none" stroke="#64748b" stroke-width="5"/><path d="M52,50 L80,50 L80,60 L72,60 L70,55" fill="none" stroke="#64748b" stroke-width="5" stroke-linejoin="round"/></svg>`;
-        default: return `<svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="15" width="70" height="70" rx="12" fill="#f8fafc" stroke="#3b82f6" stroke-width="2"/><text x="50" y="58" font-size="30" text-anchor="middle">🎯</text></svg>`;
-      }
-    }
-
-    function renderApp() {
-      const container = document.getElementById('questionsContainer');
-      container.innerHTML = '';
-      const currentDataset = allTscSets[currentSet] || [];
-      const filtered = currentPart === 'all' ? currentDataset : currentDataset.filter(item => item.part === currentPart);
-      document.getElementById('bannerSetLabel').textContent = `SET ${String(currentSet).padStart(2, '0')}`;
-      document.getElementById('bannerTitle').textContent = `삼성 사내 TSC 실전 모의고사 ${currentSet}회`;
-      document.getElementById('bannerTotalCount').textContent = `${filtered.length}개 문항 표시 중`;
-
-      filtered.forEach((item) => {
-        let isP2 = item.part === 'part2', isP45 = item.part === 'part4' || item.part === 'part5';
-        let sQH = isP45 ? true : globalQ23Visible;
-        let sQP = globalPinyinVisible || globalQPinyinVisible, sQK = globalKoreanVisible || globalQPinyinVisible;
-        let sQBox = isP45 ? (sQP || sQK) : ((sQH && (sQP || sQK)) || globalQPinyinVisible);
-        let sAP = globalPinyinVisible || globalAnsVisible, sAK = globalKoreanVisible || globalAnsVisible;
-
-        let card = document.createElement('div');
-        card.className = "bg-white rounded-xl border border-slate-200/90 shadow-sm hover:border-slate-300 transition-all p-3.5 sm:p-5";
-        card.id = `card_${item.id}`;
-        card.innerHTML = `
-          <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-100 gap-2">
-            <div class="flex items-center gap-1.5 flex-wrap"><span class="text-[11px] font-bold px-2 py-0.5 rounded-md ${getPartPillStyle(item.part)}">${item.partName.split(':')[0]}</span><span class="text-[11px] font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">${item.topic}</span></div>
-            <button onclick="triggerTimer('${item.id}', ${item.respTime})" class="px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold flex items-center gap-1 active:bg-blue-600 active:text-white transition-colors"><i data-lucide="play" class="w-3 h-3 text-blue-600"></i><span>답변 ${item.respTime}초 타이머</span></button>
-          </div>
-          <div id="timerBox_${item.id}" class="hidden mb-3 p-2.5 bg-amber-50 border border-amber-200 rounded-lg">
-            <div class="flex items-center justify-between text-xs font-bold text-amber-900 mb-1"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>실전 답변 시간 카운트다운</span><span id="timerText_${item.id}" class="text-rose-600 font-extrabold text-sm">0초</span></div>
-            <div class="w-full bg-amber-200/70 h-2 rounded-full overflow-hidden"><div id="timerProgress_${item.id}" class="bg-rose-500 h-2 rounded-full transition-all duration-300" style="width: 100%;"></div></div>
-          </div>
-          <div class="${isP2 ? 'flex flex-col sm:flex-row gap-3 sm:gap-4 items-start' : 'space-y-3'}">
-            ${isP2 ? `<div class="w-full sm:w-28 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-2 flex flex-col items-center justify-center text-center"><div class="svg-icon-wrap py-1">${getPart2Svg(item.visualSvg)}</div><span class="text-[10px] font-bold text-slate-500 mt-1 bg-white px-2 py-0.5 rounded-full border border-slate-200">시험 그림 (상시노출)</span><span class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">${item.visualDesc}</span></div>` : ''}
-            <div class="flex-1 w-full space-y-2">
-              <div class="bg-slate-50/80 p-3 rounded-xl border border-slate-200/80">
-                <div class="flex items-start justify-between gap-2">
-                  <div class="space-y-1.5 flex-1">
-                    <div class="flex items-center gap-1.5"><span class="text-[11px] font-bold text-slate-400">질문 (문제)</span>${isP45 ? `<span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">한자 상시표시 · 병음은 숨김</span>` : `<span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">듣기 평가 (디폴트 가림)</span>`}</div>
-                    <div id="qHanzi_${item.id}" class="${sQH ? '' : 'hidden'} text-base sm:text-lg font-bold text-slate-900 font-chinese leading-relaxed">${item.q}</div>
-                    <div id="qPrompt_${item.id}" class="${sQH ? 'hidden' : ''} text-xs text-slate-500 py-1 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0"></span><span>질문 텍스트가 가려져 있습니다. <strong>[문제 듣기]</strong>를 누르고 귀로만 듣고 답해보세요!</span></div>
-                    <div id="qDetailBox_${item.id}" class="${sQBox ? '' : 'hidden'} pt-1 space-y-1"><div class="q-pinyin text-xs font-semibold text-indigo-700 font-mono ${sQP ? '' : 'hidden'}">${item.pinyinQ}</div><div class="q-korean text-xs text-slate-600 ${sQK ? '' : 'hidden'}">${item.transQ}</div></div>
-                  </div>
-                  <div class="flex items-center gap-1 shrink-0 flex-wrap justify-end">
-                    <button onclick="playTTS('${escapeJS(item.q)}', 'q_${item.id}', this)" class="tts-btn px-2.5 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-bold flex items-center gap-1 shadow-sm active:scale-95 transition-transform"><span class="tts-icon-wrap flex items-center"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i></span><span class="tts-lbl">문제 듣기</span></button>
-                    ${isP45 ? `<button onclick="togglePart45QuestionPinyin('${item.id}')" id="btnQPinyin_${item.id}" class="px-2 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-800 text-xs font-semibold hover:bg-amber-50 flex items-center gap-1 shadow-sm"><i data-lucide="languages" class="w-3 h-3 text-amber-600"></i><span id="btnQPinyinLabel_${item.id}">${sQBox ? '문제 병음 가림' : '문제 병음 보기'}</span></button>` : `<button onclick="toggleSingleQ('${item.id}')" class="px-2 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 flex items-center gap-1 shadow-sm"><span id="btnQIconWrap_${item.id}" class="flex items-center"><i data-lucide="${sQH ? 'eye-off' : 'eye'}" class="w-3.5 h-3.5 text-slate-500"></i></span><span id="btnQLabel_${item.id}">${sQH ? '질문 숨김' : '질문 보기'}</span></button>`}
-                  </div>
-                </div>
-              </div>
-              <div id="ansBox_${item.id}" class="ans-block ${globalAnsVisible ? '' : 'hidden'}">
-                <div class="bg-indigo-50/60 border border-indigo-100 rounded-xl p-3 sm:p-3.5 space-y-1.5">
-                  <div class="flex items-center justify-between"><span class="text-xs font-bold text-indigo-900 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-indigo-600"></i>모범 표준 답안</span><button onclick="playTTS('${escapeJS(item.a)}', 'a_${item.id}', this)" class="tts-btn px-2 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-xs font-bold flex items-center gap-1"><span class="tts-icon-wrap flex items-center"><i data-lucide="volume-2" class="w-3 h-3"></i></span><span class="tts-lbl">답변 듣기</span></button></div>
-                  <div class="text-sm sm:text-base font-bold text-slate-900 font-chinese whitespace-pre-line leading-relaxed">${item.a}</div>
-                  <div class="ans-pinyin text-xs font-semibold text-indigo-900 font-mono whitespace-pre-line leading-relaxed ${sAP ? '' : 'hidden'}">${item.pinyinA}</div>
-                  <div class="ans-korean text-xs text-slate-700 whitespace-pre-line leading-relaxed pt-1 border-t border-indigo-100 ${sAK ? '' : 'hidden'}">${item.transA}</div>
-                  <div class="text-[11px] text-indigo-950/80 pt-1 border-t border-indigo-100/70 flex items-start gap-1"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5"></i><span><strong>공략 포인트:</strong> ${item.tip}</span></div>
-                </div>
-              </div>
-              <div class="pt-0.5"><button onclick="toggleSingleAns('${item.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 flex items-center gap-1.5 shadow-sm active:bg-slate-100"><span id="btnAnsIconWrap_${item.id}" class="flex items-center"><i data-lucide="${globalAnsVisible ? 'eye-off' : 'eye'}" class="w-3.5 h-3.5 text-indigo-600"></i></span><span id="btnAnsLabel_${item.id}">${globalAnsVisible ? '모범 답안 닫기' : '모범 답안 열기'}</span></button></div>
-            </div>
-          </div>`;
-        container.appendChild(card);
-      });
-      lucide.createIcons();
-    }
-
-    function syncAllQuestionDetails() {
-      let ds = allTscSets[currentSet] || [];
-      let sQP = globalPinyinVisible || globalQPinyinVisible, sQK = globalKoreanVisible || globalQPinyinVisible;
-      ds.forEach(item => {
-        let box = document.getElementById(`qDetailBox_${item.id}`);
-        if(!box) return;
-        let isP45 = item.part === 'part4' || item.part === 'part5';
-        let hz = document.getElementById(`qHanzi_${item.id}`);
-        let hzVis = hz && !hz.classList.contains('hidden');
-        let pEl = box.querySelector('.q-pinyin'), kEl = box.querySelector('.q-korean');
-        if(pEl) pEl.classList.toggle('hidden', !sQP); if(kEl) kEl.classList.toggle('hidden', !sQK);
-        let sBox = isP45 ? (sQP||sQK) : ((hzVis && (sQP||sQK)) || globalQPinyinVisible);
-        box.classList.toggle('hidden', !sBox);
-        let lbl = document.getElementById(`btnQPinyinLabel_${item.id}`);
-        if(lbl) lbl.textContent = sBox ? '문제 병음 가림' : '문제 병음 보기';
-      });
-    }
-
-    function toggleAllQuestionText() {
-      globalQ23Visible = !globalQ23Visible;
-      document.getElementById('labelGlobalQ').textContent = globalQ23Visible ? '2·3부 질문 숨김' : '2·3부 질문 열기';
-      let b = document.getElementById('btnGlobalQ'); b.classList.toggle('bg-rose-100', globalQ23Visible); b.classList.toggle('border-rose-400', globalQ23Visible);
-      (allTscSets[currentSet] || []).forEach(item => {
-        if (item.part === 'part2' || item.part === 'part3') {
-          let hz = document.getElementById(`qHanzi_${item.id}`), pr = document.getElementById(`qPrompt_${item.id}`), lbl = document.getElementById(`btnQLabel_${item.id}`), ic = document.getElementById(`btnQIconWrap_${item.id}`);
-          if (hz && pr) { hz.classList.toggle('hidden', !globalQ23Visible); pr.classList.toggle('hidden', globalQ23Visible); if(lbl) lbl.textContent = globalQ23Visible ? '질문 숨김' : '질문 보기'; setLucideIcon(ic, globalQ23Visible ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-slate-500'); }
-        }
-      });
-      syncAllQuestionDetails(); lucide.createIcons();
-    }
-
-    function toggleAllQuestionPinyin() {
-      globalQPinyinVisible = !globalQPinyinVisible; document.getElementById('labelGlobalQPinyin').textContent = globalQPinyinVisible ? '문제 병음 전체 가림' : '문제 병음 전체 열기';
-      let b = document.getElementById('btnGlobalQPinyin'); b.classList.toggle('bg-amber-100', globalQPinyinVisible); b.classList.toggle('border-amber-400', globalQPinyinVisible);
-      syncAllQuestionDetails();
-    }
-    function toggleAllPinyin() {
-      globalPinyinVisible = !globalPinyinVisible; document.getElementById('labelGlobalPinyin').textContent = globalPinyinVisible ? '병음 전체 숨기기' : '병음 전체 표시';
-      let b = document.getElementById('btnGlobalPinyin'); b.classList.toggle('bg-blue-100', globalPinyinVisible); b.classList.toggle('border-blue-400', globalPinyinVisible);
-      document.querySelectorAll('.ans-pinyin').forEach(el => el.classList.toggle('hidden', !globalPinyinVisible)); syncAllQuestionDetails();
-    }
-    function toggleAllKorean() {
-      globalKoreanVisible = !globalKoreanVisible; document.getElementById('labelGlobalKorean').textContent = globalKoreanVisible ? '해석 숨기기' : '해석 보기';
-      let b = document.getElementById('btnGlobalKorean'); b.classList.toggle('bg-emerald-100', globalKoreanVisible); b.classList.toggle('border-emerald-400', globalKoreanVisible);
-      document.querySelectorAll('.ans-korean').forEach(el => el.classList.toggle('hidden', !globalKoreanVisible)); syncAllQuestionDetails();
-    }
-    function toggleAllAnswers() {
-      globalAnsVisible = !globalAnsVisible; document.getElementById('labelGlobalAns').textContent = globalAnsVisible ? '답안 전체 닫기' : '답안 전체 열기';
-      let b = document.getElementById('btnGlobalAns'); b.classList.toggle('bg-indigo-100', globalAnsVisible); b.classList.toggle('border-indigo-400', globalAnsVisible);
-      document.querySelectorAll('.ans-block').forEach(el => el.classList.toggle('hidden', !globalAnsVisible));
-      if (globalAnsVisible) { document.querySelectorAll('.ans-pinyin, .ans-korean').forEach(el => el.classList.remove('hidden')); } 
-      else { document.querySelectorAll('.ans-pinyin').forEach(el => el.classList.toggle('hidden', !globalPinyinVisible)); document.querySelectorAll('.ans-korean').forEach(el => el.classList.toggle('hidden', !globalKoreanVisible)); }
-      (allTscSets[currentSet] || []).forEach(item => {
-        let lbl = document.getElementById(`btnAnsLabel_${item.id}`), ic = document.getElementById(`btnAnsIconWrap_${item.id}`);
-        if(lbl) lbl.textContent = globalAnsVisible ? '모범 답안 닫기' : '모범 답안 열기'; setLucideIcon(ic, globalAnsVisible ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-indigo-600');
-      });
-      lucide.createIcons();
-    }
-
-    function togglePart45QuestionPinyin(id) {
-      let b = document.getElementById(`qDetailBox_${id}`), l = document.getElementById(`btnQPinyinLabel_${id}`);
-      if(!b) return; let isH = b.classList.contains('hidden'); b.classList.toggle('hidden', !isH);
-      let pEl = b.querySelector('.q-pinyin'), kEl = b.querySelector('.q-korean');
-      if(pEl) pEl.classList.toggle('hidden', !isH); if(kEl) kEl.classList.toggle('hidden', !isH);
-      if(l) l.textContent = isH ? '문제 병음 가림' : '문제 병음 보기';
-    }
-    function toggleSingleQ(id) {
-      let hz = document.getElementById(`qHanzi_${id}`), pr = document.getElementById(`qPrompt_${id}`), b = document.getElementById(`qDetailBox_${id}`), l = document.getElementById(`btnQLabel_${id}`), ic = document.getElementById(`btnQIconWrap_${id}`);
-      if(!hz) return; let isO = hz.classList.contains('hidden'); hz.classList.toggle('hidden', !isO); if(pr) pr.classList.toggle('hidden', isO);
-      if(b) { b.classList.toggle('hidden', !isO); let pEl = b.querySelector('.q-pinyin'), kEl = b.querySelector('.q-korean'); if(pEl) pEl.classList.toggle('hidden', !isO); if(kEl) kEl.classList.toggle('hidden', !isO); }
-      if(l) l.textContent = isO ? '질문 숨김' : '질문 보기'; setLucideIcon(ic, isO ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-slate-500'); lucide.createIcons();
-    }
-    function toggleSingleAns(id) {
-      let b = document.getElementById(`ansBox_${id}`), l = document.getElementById(`btnAnsLabel_${id}`), ic = document.getElementById(`btnAnsIconWrap_${id}`);
-      if(!b) return; let isO = b.classList.contains('hidden'); b.classList.toggle('hidden', !isO);
-      if(isO) { let pEl = b.querySelector('.ans-pinyin'), kEl = b.querySelector('.ans-korean'); if(pEl) pEl.classList.remove('hidden'); if(kEl) kEl.classList.remove('hidden'); }
-      if(l) l.textContent = isO ? '모범 답안 닫기' : '모범 답안 열기'; setLucideIcon(ic, isO ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-indigo-600'); lucide.createIcons();
-    }
-
-    function playTTS(text, elementId, btnEl) {
-      if (!('speechSynthesis' in window)) return showToast("브라우저가 TTS를 지원하지 않습니다.");
-      if (window.speechSynthesis.speaking && currentSpeakingId === elementId) return stopTTS();
-      stopTTS();
-      let utter = new SpeechSynthesisUtterance(text); utter.lang = 'zh-CN'; utter.rate = globalSpeed;
-      let cnVoice = window.speechSynthesis.getVoices().find(v => v.lang && (v.lang.includes('zh') || v.lang.includes('cmn')));
-      if (cnVoice) utter.voice = cnVoice;
-      currentSpeakingId = elementId;
-      if (btnEl) { btnEl.classList.add('ring-2', 'ring-rose-500', '!bg-rose-600', '!text-white'); let ic = btnEl.querySelector('.tts-icon-wrap'); setLucideIcon(ic, 'square', elementId.startsWith('a_') ? 'w-3 h-3' : 'w-3.5 h-3.5'); lucide.createIcons(); }
-      utter.onend = () => { resetTTSButtons(); currentSpeakingId = null; }; utter.onerror = utter.onend;
-      activeUtterance = utter; window.speechSynthesis.speak(utter);
-    }
-    function stopTTS() { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); resetTTSButtons(); currentSpeakingId = null; }
-    function resetTTSButtons() {
-      document.querySelectorAll('.tts-btn').forEach(b => { b.classList.remove('ring-2', 'ring-rose-500', '!bg-rose-600', '!text-white'); let ic = b.querySelector('.tts-icon-wrap'); setLucideIcon(ic, 'volume-2', b.textContent.includes('답변') ? 'w-3 h-3' : 'w-3.5 h-3.5'); });
-      lucide.createIcons();
-    }
-
-    function triggerTimer(id, duration) {
-      if (timerInterval) { clearInterval(timerInterval); if (activeTimerId) { let oldBox = document.getElementById(`timerBox_${activeTimerId}`); if (oldBox) oldBox.classList.add('hidden'); } }
-      activeTimerId = id; let box = document.getElementById(`timerBox_${id}`), text = document.getElementById(`timerText_${id}`), bar = document.getElementById(`timerProgress_${id}`);
-      if (!box || !text || !bar) return;
-      box.classList.remove('hidden'); playTone(880, 0.2, 'sine');
-      let tLeft = duration, tTotal = duration; text.textContent = `${tLeft}초`; bar.style.width = '100%';
-      timerInterval = setInterval(() => {
-        tLeft--; bar.style.width = `${Math.max(0, (tLeft/tTotal)*100)}%`; text.textContent = `${tLeft}초`;
-        if (tLeft === 3) playTone(660, 0.15, 'sine');
-        if (tLeft <= 0) { clearInterval(timerInterval); timerInterval = null; text.textContent = '답변 종료!'; playTone(440, 0.5, 'triangle'); setTimeout(() => box.classList.add('hidden'), 1500); }
-      }, 1000);
-    }
-
-    function showToast(msg) {
-      let t = document.createElement('div'); t.className = "fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-lg border border-slate-700"; t.textContent = msg;
-      document.body.appendChild(t); setTimeout(() => t.remove(), 3000);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      renderApp(); if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-    });
-  </script>
+​<!-- Sticky Mobile-First Navigation Bar -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+<div class="max-w-4xl mx-auto px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2">
+​<!-- Brand & Set Selector -->
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-blue-700 text-white font-black text-sm flex items-center justify-center shrink-0 shadow-sm">
+TSC
+</div>
+<div class="relative">
+<select id="setSelector" onchange="changeSet(this.value)" class="text-xs sm:text-sm font-bold bg-slate-100 border border-slate-300 rounded-lg py-1.5 pl-2.5 pr-7 text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none appearance-none cursor-pointer">
+<option value="1">제 01 세트 (14문항)</option>
+<option value="2">제 02 세트 (14문항)</option>
+<option value="3">제 03 세트 (14문항)</option>
+<option value="4">제 04 세트 (14문항)</option>
+<option value="5">제 05 세트 (14문항)</option>
+<option value="6">제 06 세트 (14문항)</option>
+<option value="7">제 07 세트 (14문항)</option>
+<option value="8">제 08 세트 (14문항)</option>
+<option value="9">제 09 세트 (14문항)</option>
+<option value="10">제 10 세트 (14문항)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1.5 text-slate-500">
+<i data-lucide="chevron-down" class="w-4 h-4"></i>
+</div>
+</div>
+</div>
+​<!-- TTS Speed Controller & Stop Audio -->
+<div class="flex items-center gap-1 sm:gap-2">
+<div class="flex items-center bg-slate-100 rounded-lg p-0.5 border border-slate-200">
+<button onclick="setSpeed(0.75)" class="speed-btn px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs font-semibold rounded text-slate-600 hover:text-slate-900" data-speed="0.75">0.75x</button>
+<button onclick="setSpeed(0.9)" class="speed-btn px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs font-semibold rounded text-slate-600 hover:text-slate-900" data-speed="0.9">0.9x</button>
+<button onclick="setSpeed(1.0)" class="speed-btn px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs font-bold rounded bg-blue-600 text-white shadow-sm" data-speed="1.0">1.0x</button>
+<button onclick="setSpeed(1.2)" class="speed-btn px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs font-semibold rounded text-slate-600 hover:text-slate-900" data-speed="1.2">1.2x</button>
+</div>
+<button onclick="stopTTS()" title="오디오 즉시 정지" class="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors">
+<i data-lucide="square" class="w-4 h-4"></i>
+</button>
+</div>
+​</div>
+​<!-- Part Tab Navigation -->
+<div class="border-t border-slate-200/80 bg-white">
+<div class="max-w-4xl mx-auto px-3 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-1.5 text-xs">
+<div class="flex items-center gap-1 shrink-0" id="partTabs">
+<button onclick="filterPart('all')" class="tab-btn px-2.5 py-1 rounded-lg font-bold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm whitespace-nowrap" data-part="all">전체 문항</button>
+<button onclick="filterPart('part2')" class="tab-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap" data-part="part2">2부분 (그림·6초)</button>
+<button onclick="filterPart('part3')" class="tab-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap" data-part="part3">3부분 (대화·15초)</button>
+<button onclick="filterPart('part4')" class="tab-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap" data-part="part4">4부분 (화제·25초)</button>
+<button onclick="filterPart('part5')" class="tab-btn px-2.5 py-1 rounded-lg font-medium text-slate-600 hover:bg-slate-100 whitespace-nowrap" data-part="part5">5부분 (논리·50초)</button>
+</div>
+</div>
+</div>
+​<!-- Batch Visibility Controls Bar -->
+<div class="bg-slate-50 border-t border-slate-200 px-3 py-1.5 text-xs">
+<div class="max-w-4xl mx-auto flex items-center justify-between gap-1 sm:gap-2">
+<span class="text-slate-400 font-medium text-[11px] hidden lg:inline">일괄 제어</span>
+<div class="flex items-center gap-1 sm:gap-1.5 w-full lg:w-auto justify-end flex-wrap sm:flex-nowrap">
+<button onclick="toggleAllQuestionText()" id="btnGlobalQ" class="flex-1 sm:flex-none px-2 py-1 rounded-md border border-slate-300 bg-white text-slate-700 font-semibold text-[11px] flex items-center justify-center gap-1 shadow-sm active:bg-slate-100">
+<i data-lucide="ear" class="w-3 h-3 text-rose-500"></i>
+<span id="labelGlobalQ">2·3부 질문 열기</span>
+</button>
+<button onclick="toggleAllQuestionPinyin()" id="btnGlobalQPinyin" class="flex-1 sm:flex-none px-2 py-1 rounded-md border border-slate-300 bg-white text-slate-700 font-semibold text-[11px] flex items-center justify-center gap-1 shadow-sm active:bg-slate-100">
+<i data-lucide="languages" class="w-3 h-3 text-amber-500"></i>
+<span id="labelGlobalQPinyin">문제 병음 전체 열기</span>
+</button>
+<button onclick="toggleAllPinyin()" id="btnGlobalPinyin" class="flex-1 sm:flex-none px-2 py-1 rounded-md border border-slate-300 bg-white text-slate-700 font-semibold text-[11px] flex items-center justify-center gap-1 shadow-sm active:bg-slate-100">
+<i data-lucide="type" class="w-3 h-3 text-blue-500"></i>
+<span id="labelGlobalPinyin">병음 전체 표시</span>
+</button>
+<button onclick="toggleAllKorean()" id="btnGlobalKorean" class="flex-1 sm:flex-none px-2 py-1 rounded-md border border-slate-300 bg-white text-slate-700 font-semibold text-[11px] flex items-center justify-center gap-1 shadow-sm active:bg-slate-100">
+<i data-lucide="file-text" class="w-3 h-3 text-emerald-500"></i>
+<span id="labelGlobalKorean">해석 보기</span>
+</button>
+<button onclick="toggleAllAnswers()" id="btnGlobalAns" class="flex-1 sm:flex-none px-2 py-1 rounded-md border border-slate-300 bg-white text-slate-700 font-semibold text-[11px] flex items-center justify-center gap-1 shadow-sm active:bg-slate-100">
+<i data-lucide="eye" class="w-3 h-3 text-indigo-500"></i>
+<span id="labelGlobalAns">답안 전체 열기</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+​<!-- Main Content Container -->
+<main class="flex-1 max-w-4xl w-full mx-auto px-3 sm:px-4 py-4 space-y-4">
+​<!-- Info Banner Card -->
+<div class="bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-xl p-3.5 sm:p-4 shadow-sm border border-slate-800">
+<div class="flex items-center justify-between">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-amber-400 bg-amber-400/20 px-2 py-0.5 rounded-full" id="bannerSetLabel">SET 01</span>
+<span class="text-xs text-slate-300" id="bannerTotalCount">총 14문항 구성</span>
+</div>
+<h2 class="text-base sm:text-lg font-bold mt-1" id="bannerTitle">삼성 사내 TSC 실전 모의고사 1회</h2>
+<p class="text-xs text-slate-300 mt-0.5" id="bannerDesc">
+2·3부분은 음성을 먼저 듣고 말해보고, 4·5부분은 한자 문제를 확인한 뒤 실전 타이머에 맞춰 구술하세요.
+</p>
+</div>
+<div class="hidden sm:block text-right shrink-0">
+<span class="text-[11px] text-slate-400 block">목표 수준</span>
+<span class="text-sm font-bold text-emerald-400">사내 4급 ~ 6급</span>
+</div>
+</div>
+</div>
+​<!-- Question Cards List -->
+<div id="questionsContainer" class="space-y-4"></div>
+​</main>
+​<script>
+// --- 10 Full Sets (Complete 140 Questions with Revamped Part 2) ---
+const allTscSets = {
+1: [
+{
+id: "s1_p2_1", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: "시간 (8:45)", visualSvg: "s1_p2_1",
+visualDesc: "벽시계가 8시 45분(시침 8과 9 사이, 분침 9)을 가리키고 있는 그림",
+q: "现在几点？", pinyinQ: "Xiànzài jǐ diǎn?", transQ: "지금 몇 시입니까?",
+a: "现在八点四十五分。（现在差一刻九点。）",
+pinyinA: "Xiànzài bā diǎn sìshíwǔ fēn. (Xiànzài chà yí kè jiǔ diǎn.)",
+transA: "지금은 8시 45분입니다. (9시 15분 전입니다.)",
+tip: "시간을 묻는 질문입니다. '几点' 자리에 '八点四十五分'을 정확히 넣으세요."
+},
+{
+id: "s1_p2_2", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: "위치 (책상 위 핸드폰)", visualSvg: "s1_p2_2",
+visualDesc: "책상 위에 스마트폰 한 대가 놓여 있는 그림",
+q: "手机在桌子上吗？", pinyinQ: "Shǒujī zài zhuōzi shang ma?", transQ: "핸드폰이 책상 위에 있습니까?",
+a: "是的，手机在桌子上。",
+pinyinA: "Shì de, shǒujī zài zhuōzi shang.",
+transA: "네, 핸드폰은 책상 위에 있습니다.",
+tip: "존재 유무나 위치를 묻는 단문입니다. '是的' 후 주어+在+위치로 답합니다."
+},
+{
+id: "s1_p2_3", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: "동작 (달리기)", visualSvg: "s1_p2_3",
+visualDesc: "공원에서 남자가 달리기(조깅)를 하고 있는 그림",
+q: "他在做什么？", pinyinQ: "Tā zài zuò shénme?", transQ: "그는 무엇을 하고 있습니까?",
+a: "他在跑步呢。",
+pinyinA: "Tā zài pǎobù ne.",
+transA: "그는 달리기(조깅)를 하고 있습니다.",
+tip: "진행형 '在 + 동사 (呢)' 구조로 신속하게 단문 답변을 완성합니다."
+},
+{
+id: "s1_p2_4", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: "수량 (사과 5개)", visualSvg: "s1_p2_4",
+visualDesc: "바구니 안에 빨간 사과가 5개 담겨 있는 그림",
+q: "这里有几个苹果？", pinyinQ: "Zhèlǐ yǒu jǐ ge píngguǒ?", transQ: "여기에 사과가 몇 개 있습니까?",
+a: "这里有五个苹果。",
+pinyinA: "Zhèlǐ yǒu wǔ ge píngguǒ.",
+transA: "여기에 사과가 5개 있습니다.",
+tip: "숫자 5(五)와 개수 양사(个)의 정확한 발음이 핵심입니다."
+},
+{
+id: "s1_p3_1", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: "퇴근 후 식사 제안",
+q: "今天下班以后，一起去吃火锅怎么样？",
+pinyinQ: "Jīntiān xiàbān yǐhòu, yìqǐ qù chī huǒguō zěnmeyàng?",
+transQ: "오늘 퇴근하고 같이 훠궈 먹으러 갈래요?",
+a: "对不起，今天晚上我有别的安排。我们改天再去吧，我请客！",
+pinyinA: "Duìbuqǐ, jīntiān wǎnshang wǒ yǒu bié de ānpái. Wǒmen gǎitiān zài qù ba, wǒ qǐngkè!",
+transA: "죄송해요, 오늘 저녁엔 약속이 있어요. 우리 다음에 다시 가요, 제가 살게요!",
+tip: "정중한 거절 + 이유(별도 일정) + 다음 기약(改天) 조합은 만능입니다."
+},
+{
+id: "s1_p3_2", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: "주말 여가 활동",
+q: "你平时周末一般怎么过？",
+pinyinQ: "Nǐ píngshí zhōumò yībān zěnme guò?",
+transQ: "평소 주말에 보통 어떻게 보내세요?",
+a: "我平时周末喜欢在家好好休息，有时候也会和朋友一起去运动。",
+pinyinA: "Wǒ píngshí zhōumò xǐhuan zài jiā hǎohāo xiūxi, yǒushíhou yě huì hé péngyou yìqǐ qù yùndòng.",
+transA: "저는 평소 주말에 집에서 푹 쉬거나, 가끔 친구와 운동하러 가요.",
+tip: "'喜欢在家休息 + 有时候也会~' 패턴으로 15초를 채우세요."
+},
+{
+id: "s1_p3_3", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: "출퇴근 교통수단",
+q: "你每天怎么去公司上班？",
+pinyinQ: "Nǐ měitiān zěnme qù gōngsī shàngbān?",
+transQ: "매일 회사에 어떻게 출근하세요?",
+a: "我一般坐地铁去上班。坐地铁不仅很方便，而且从来不堵车。",
+pinyinA: "Wǒ yībān zuò dìtiě qù shàngbān. Zuò dìtiě bùjǐn hěn fāngbiàn, érqiě cónglái bù dǔchē.",
+transA: "저는 보통 지하철을 타고 출근해요. 편리할 뿐만 아니라 차가 안 막히거든요.",
+tip: "‘不仅...而且...’ 점층 접속사를 써서 유창성을 보여주세요."
+},
+{
+id: "s1_p3_4", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: "점심 메뉴 고르기",
+q: "今天中午你想吃什么？",
+pinyinQ: "Jīntiān zhōngwǔ nǐ xiǎng chī shénme?",
+transQ: "오늘 점심 뭐 먹고 싶어요?",
+a: "今天天气有点儿冷，我们去吃热热的汤面怎么样？",
+pinyinA: "Jīntiān tiānqì yǒudiǎnr lěng, wǒmen qù chī rèrè de tāngmiàn zěnmeyàng?",
+transA: "오늘 날씨가 좀 쌀쌀하니, 따뜻한 국수 먹으러 가는 건 어때요?",
+tip: "상황(날씨가 춥다)을 언급하고 역제안(~怎么样？)으로 마무리합니다."
+},
+{
+id: "s1_p3_5", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: "내일 날씨와 우산",
+q: "明天天气怎么样？需要带雨伞吗？",
+pinyinQ: "Míngtiān tiānqì zěnmeyàng? Xūyào dài yǔsǎn ma?",
+transQ: "내일 날씨 어때요? 우산 챙겨야 하나요?",
+a: "我看了天气预报，明天是晴天，不会下雨，不用带雨伞。",
+pinyinA: "Wǒ kànle tiānqì yùbào, míngtiān shì qíngtiān, bú huì xiàyǔ, búyòng dài yǔsǎn.",
+transA: "일기예보를 봤는데 내일 맑대요, 비 안 오니 우산 안 챙겨도 돼요.",
+tip: "'我看了天气预报'를 도입구로 사용하면 시간을 벌기 좋습니다."
+},
+{
+id: "s1_p4_1", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
+topic: "스트레스 해소법",
+q: "你有压力的时候，一般怎么减压？",
+pinyinQ: "Nǐ yǒu yālì de shíhou, yībān zěnme jiǎnyā?",
+transQ: "스트레스를 받을 때 보통 어떻게 푸나요?",
+a: "我有压力的时候，一般喜欢去跑步。因为运动的时候我可以出很多汗，心情会变得很轻松。而且跑步不仅对身体好，还能让我忘掉烦恼。所以运动是我最好的减压方法。",
+pinyinA: "Wǒ yǒu yālì de shíhou, yībān xǐhuan qù pǎobù. Yīnwèi yùndòng de shíhou wǒ kěyǐ chū hěn duō hàn, xīnqíng huì biànde hěn qīngsōng. Érqiě pǎobù bùjǐn duì shēntǐ hǎo, hái néng ràng wǒ wàngdiào fánnǎo. Suǒyǐ yùndòng shì wǒ zuì hǎo de jiǎnyā fāngfǎ.",
+transA: "저는 스트레스가 있으면 주로 달리기를 합니다. 땀을 푹 흘리면 기분이 편안해지기 때문입니다. 달리기는 건강에도 좋고 고민도 잊게 해줍니다. 따라서 운동은 최고의 스트레스 해소법입니다.",
+tip: "결론 - 이유1(땀 흘림) - 이유2(건강/고민 망각) - 요약 4단 구조입니다."
+},
+{
+id: "s1_p4_2", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
+topic: "가장 좋아하는 계절",
+q: "你最喜欢哪个季节？为什么？",
+pinyinQ: "Nǐ zuì xǐhuan nǎge jìjié? Wèishénme?",
+transQ: "어떤 계절을 가장 좋아하며 이유는 무엇인가요?",
+a: "我最喜欢的季节是秋天。因为秋天的天气不冷也不热，非常舒服。而且秋天的风景很漂亮，树叶都变红了。我很喜欢在秋天散步，所以我最喜欢秋天。",
+pinyinA: "Wǒ zuì xǐhuan de jìjié shì qiūtiān. Yīnwèi qiūtiān de tiānqì bù lěng yě bú rè, fēicháng shūfu. Érqiě qiūtiān de fēngjǐng hěn piàoliang, shùyè dōu biàn hóng le. Wǒ hěn xǐhuan zài qiūtiān sànbù, suǒyǐ wǒ zuì xǐhuan qiūtiān.",
+transA: "제가 가장 좋아하는 계절은 가을입니다. 춥지도 덥지도 않아 쾌적하기 때문입니다. 게다가 가을 풍경은 예쁘고 단풍이 듭니다. 가을에 산책하는 것을 좋아해서 가을을 가장 선호합니다.",
+tip: "'不冷也不热', '风景很漂亮'는 계절 표현의 필수 암기구입니다."
+},
+{
+id: "s1_p4_3", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
+topic: "휴가 여행지",
+q: "如果有长假，你最想去哪里旅行？",
+pinyinQ: "Rúguǒ yǒu chángjià, nǐ zuì xiǎng qù nǎlǐ lǚxíng?",
+transQ: "긴 휴가가 있다면 어디로 여행 가고 싶나요?",
+a: "如果有长假，我最想去海边旅行。因为看大海可以让我的心情变得很平静。而且海边有很多好吃的海鲜，还可以吹海风。如果能和家人一起去放松一下，一定会很开心。",
+pinyinA: "Rúguǒ yǒu chángjià, wǒ zuì xiǎng qù hǎibiān lǚxíng. Yīnwèi kàn dàhǎi kěyǐ ràng wǒ de xīnqíng biànde hěn píngjìng. Érqiě hǎibiān yǒu hěn duō hǎochī de hǎixiān, hái kěyǐ chuī hǎifēng. Rúguǒ néng hé jiārén yìqǐ qù fàngsōng yíxià, yídìng huì hěn kāixīn.",
+transA: "긴 휴가가 생긴다면 바다로 가고 싶습니다. 바다를 보면 마음이 차분해지기 때문입니다. 맛있는 해산물도 많고 바닷바람도 쐴 수 있습니다. 가족과 힐링할 수 있다면 참 좋을 것입니다.",
+tip: "바다(海边)를 테마로 시각 힐링과 먹거리를 함께 설명하세요."
+},
+{
+id: "s1_p5_1", part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50,
+topic: "온라인 쇼핑 vs 백화점 쇼핑",
+q: "你更喜欢网上购物还是去商场购物？请说明原因。",
+pinyinQ: "Nǐ gèng xǐhuan wǎngshang gòuwù háishì qù shāngchǎng gòuwù? Qǐng shuōmíng yuányīn.",
+transQ: "온라인 쇼핑과 매장 방문 쇼핑 중 무엇을 더 선호하며 이유는 무엇인가요?",
+a: "我更喜欢网上购物。\n首先，网上购物非常方便，只要有一台手机，随时随地都可以买东西，节省了很多时间。\n其次，网上的商品种类非常丰富，而且价格通常比实体店更便宜，容易比较价格。\n虽然去商场可以直接看实物，但是现代的网购配送非常快，退换货也很容易。\n因此，考虑到时间和效率，我平时更喜欢网上购物。",
+pinyinA: "Wǒ gèng xǐhuan wǎngshang gòuwù.\nShǒuxiān, wǎngshang gòuwù fēicháng fāngbiàn, zhǐyào yǒu yì tái shǒujī, suíshí suídì dōu kěyǐ mǎi dōngxi, jiéshěngle hěn duō shíjiān.\nQícì, wǎngshang de shāngpǐn zhǒnglèi fēicháng fēngfù, érqiě jiàgé tōngcháng bǐ shítǐdiàn gèng piányi, róngyì bǐjiào jiàgé.\nSuīrán qù shāngchǎng kěyǐ zhíjiē kàn shíwù, dànshì xiàndài de wǎnggòu pèisòng fēicháng kuài, tuìhuànhuò yě hěn róngyì.\nYīncǐ, kǎolǜ dào shíjiān hé xiàolǜ, wǒ píngshí gèng xǐhuan wǎngshang gòuwù.",
+transA: "저는 온라인 쇼핑을 더 선호합니다. 첫째로 휴대폰만 있으면 언제 어디서나 구매할 수 있어 시간을 절약합니다. 둘째로 상품 종류가 풍부하고 가격 비교가 쉽습니다. 비록 매장에선 실물을 보지만 배송과 반품이 편리합니다. 따라서 시간과 효율상 온라인 쇼핑을 선호합니다.",
+tip: "50초 발화는 [입장 표명 - 首先 - 其次 - 虽然...但是 - 因此] 5단계 뼈대를 유지하세요."
+},
+{
+id: "s1_p5_2", part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50,
+topic: "재택근무 vs 사무실 출근",
+q: "你支持在家办公还是去公司办公室办公？为什么？",
+pinyinQ: "Nǐ zhīchí zài jiā bàngōng háishì qù gōngsī bàngōngshì bàngōng? Wèishénme?",
+transQ: "재택근무와 회사 출근 중 어느 쪽을 지지하며 그 이유는 무엇인가요?",
+a: "我更支持去公司办公室办公。\n第一，在办公室办公沟通效率更高。遇到问题的时候，可以马上和同事面对面交流，更快地解决问题。\n第二，办公室的工作环境更有利于集中注意力，把工作和生活分开。\n虽然在家办公可以节省上下班的时间，但有时候沟通不太方便，容易影响工作效率。\n所以综合来看，我认为去公司办公的效果更好。",
+pinyinA: "Wǒ gèng zhīchí qù gōngsī bàngōngshì bàngōng.\nDì-yī, zài bàngōngshì bàngōng gōutōng xiàolǜ gèng gāo. Yùdào wèntí de shíhou, kěyǐ mǎshàng hé tóngshì miànduìmiàn jiāoliú, gèng kuài de jiějué wèntí.\nDì-èr, bàngōngshì de gōngzuò huánjìng gèng yǒulìyú jízhōng zhùyìlì, bǎ gōngzuò hé shēnghuó fēnkāi.\nSuīrán zài jiā bàngōng kěyǐ jiéshěng shàng-xiàbān de shíjiān, dàn yǒushíhou gōutōng bú tài fāngbiàn, róngyì yǐngxiǎng gōngzuò xiàolǜ.\nSuǒyǐ zōnghé lái kàn, wǒ rènwéi qù gōngsī bàngōng de xiàoguǒ gèng hǎo.",
+transA: "저는 회사 출근 근무를 더 지지합니다. 첫째, 즉각 대면 소통으로 문제 해결이 빠릅니다. 둘째, 집중 환경이 좋아 일과 생활을 분리할 수 있습니다. 비록 재택근무가 출퇴근 시간을 아끼지만 소통이 불편할 때가 있습니다. 종합하면 회사 출근이 더 효과적입니다.",
+tip: "소통 효율(沟通效率), 공사 분리(工作和生活分开) 등의 비즈니스 표현을 활용하세요."
+}
+],
+​2: [
+{
+id: "s2_p2_1", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: "날짜 달력 (5월 12일)", visualSvg: "s2_p2_1",
+visualDesc: "달력에 5월 12일(星期五)이 크게 표시되어 있는 그림",
+q: "今天几月几号？", pinyinQ: "Jīntiān jǐ yuè jǐ hào?", transQ: "오늘은 몇 월 며칠입니까?",
+a: "今天五月十二号。", pinyinA: "Jīntiān wǔ yuè shí'èr hào.", transA: "오늘은 5월 12일입니다.",
+tip: "날짜를 묻는 패턴입니다. '五月十二号'를 명확하게 발음하세요."
+},
+{
+id: "s2_p2_2", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: "사물 (따뜻한 커피)", visualSvg: "s2_p2_2",
+visualDesc: "카페 테이블 위에 김이 모락모락 나는 커피 한 잔이 놓여 있는 그림",
+q: "杯子里是什么？", pinyinQ: "Bēizi li shì shénme?", transQ: "컵 안에는 무엇이 있습니까?",
+a: "杯子里是热咖啡。", pinyinA: "Bēizi li shì rè kāfēi.", transA: "컵 안에는 따뜻한 커피가 있습니다.",
+tip: "‘杯子里是 + 음료 명칭’ 형태로 답합니다."
+},
+{
+id: "s2_p2_3", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: "동작 (책 읽기)", visualSvg: "s2_p2_3",
+visualDesc: "여성이 책을 펼쳐서 집중하여 읽고 있는 모습의 그림",
+q: "她在做什么？", pinyinQ: "Tā zài zuò shénme?", transQ: "그녀는 무엇을 하고 있습니까?",
+a: "她在看书呢。", pinyinA: "Tā zài kànshū ne.", transA: "그녀는 책을 읽고 있습니다.",
+tip: "‘在看书(呢)’로 군더더기 없이 정확히 답합니다."
+},
+{
+id: "s2_p2_4", part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: "수량 (책 3권)", visualSvg: "s2_p2_4",
+visualDesc: "책상 위에 책 세 권이 가지런히 포개져 놓여 있는 그림",
+q: "桌子上有几本书？", pinyinQ: "Zhuōzi shang yǒu jǐ běn shū?", transQ: "책상 위에 책이 몇 권 있습니까?",
+a: "桌子上有三本书。", pinyinA: "Zhuōzi shang yǒu sān běn shū.", transA: "책상 위에 책 세 권이 있습니다.",
+tip: "책의 양사 '本(běn)'을 정확히 써야 감점이 없습니다."
+},
+{
+id: "s2_p3_1", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: "주말 운동 제안",
+q: "这个周末我们一起去打羽毛球，好吗？", pinyinQ: "Zhè ge zhōumò wǒmen yìqǐ qù dǎ yǔmáoqiú, hǎo ma?", transQ: "이번 주말에 우리 배드민턴 치러 갈래요?",
+a: "太好了！我也很喜欢打羽毛球。我们星期六下午见吧！", pinyinA: "Tài hǎo le! Wǒ yě hěn xǐhuan dǎ yǔmáoqiú. Wǒmen xīngqīliù xiàwǔ jiàn ba!", transA: "너무 좋아요! 저도 배드민턴 좋아해요. 토요일 오후에 만나요!",
+tip: "동의 표현 '太好了' + 취미 공감 + 구체적 시간 약속으로 완성하세요."
+},
+{
+id: "s2_p3_2", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: "친구 생일 선물 고민",
+q: "下周是我朋友的生日，送什么礼物好呢？", pinyinQ: "Xiàzhōu shì wǒ péngyou de shēngrì, sòng shénme lǐwù hǎo ne?", transQ: "다음 주가 친구 생일인데 무슨 선물을 주면 좋을까요?",
+a: "我觉得送香水或者手表都很不错，既实用又有意义。", pinyinA: "Wǒ juéde sòng xiāngshuǐ huòzhě shǒubiǎo dōu hěn búcuò, jì shíyòng yòu yǒu yìyì.", transA: "향수나 손목시계가 좋을 것 같아요. 실용적이면서도 의미가 있잖아요.",
+tip: "‘我觉得... 既实用又有意义’ 조합은 선물 추천 질문의 모범 템플릿입니다."
+},
+{
+id: "s2_p3_3", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: "지하철 vs 버스 선택",
+q: "去市中心坐地铁快还是坐公交车快？", pinyinQ: "Qù shìzhōngxīn zuò dìtiě kuài háishì zuò gōngjiāochē kuài?", transQ: "도심에 갈 때 지하철이 빠른가요 버스가 빠른가요?",
+a: "当然是坐地铁快。现在是上班时间，坐公交车容易堵车。", pinyinA: "Dāngrán shì zuò dìtiě kuài. Xiànzài shì shàngbān shíjiān, zuò gōngjiāochē róngyì dǔchē.", transA: "당연히 지하철이 빠르죠. 지금 출근 시간이라 버스는 차가 막히기 쉬워요.",
+tip: "'当然是~'로 확답하고 이유(출근 시간 차 막힘)를 붙여줍니다."
+},
+{
+id: "s2_p3_4", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: "중국 요리 추천",
+q: "你吃过中国菜吗？有什么好吃的推荐？", pinyinQ: "Nǐ chīguo Zhōngguó cài ma? Yǒu shénme hǎochī de tuījiàn?", transQ: "중국 요리 먹어봤어요? 맛있는 것 좀 추천해 줄래요?",
+a: "我常吃中国菜，我推荐你吃锅包肉和麻辣烫，味道非常棒！", pinyinA: "Wǒ cháng chī Zhōngguó cài, wǒ tuījiàn nǐ chī guōbāoròu hé málàtàng, wèidao fēicháng bàng!", transA: "자주 먹어요! 꿔바로우와 마라탕을 추천해요, 정말 맛있거든요!",
+tip: "꿔바로우(锅包肉), 마라탕(麻辣烫) 등 친숙한 메뉴를 활용하세요."
+},
+{
+id: "s2_p3_5", part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: "오후 비 예보",
+q: "外面看起来阴天了，今天下午会下雨吗？", pinyinQ: "Wàimiàn kànqilai yīntiān le, jīntiān xiàwǔ huì xiàyǔ ma?", transQ: "밖이 흐려 보이는데 오늘 오후에 비가 올까요?",
+a: "我看天气预报说下午有阵雨，出门最好带一把雨伞。", pinyinA: "Wǒ kàn tiānqì yùbào shuō xiàwǔ yǒu zhènyǔ, chūmén zuìhǎo dài yì bǎ yǔsǎn.", transA: "일기예보에서 소나기가 온다고 했으니 우산 하나 챙겨 나가는 게 좋겠어요.",
+tip: "우산 양사 '把(bǎ)'와 '最好(가장 좋다)'를 결합하세요."
+},
+{
+id: "s2_p4_1", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
+topic: "평소 운동 습관",
+q: "你平时有什么运动习惯吗？", pinyinQ: "Nǐ píngshí yǒu shénme yùndòng xíguàn ma?", transQ: "평소 어떤 운동 습관이 있나요?",
+a: "我平时每周去健身房运动三次。一般先跑步三十分钟，然后再做一些力量训练。坚持运动不仅可以增强体质，还能缓解工作压力。所以运动已经成了我生活的一部分。",
+pinyinA: "Wǒ píngshí měi zhōu qù jiànshēnfáng yùndòng sān cì. Yībān xiān pǎobù sānshí fēnzhōng, ránhòu zài zuò yìxiē lìliang xùnliàn. Jiānchí yùndòng bùjǐn kěyǐ zēngqiáng tǐzhì, hái néng huǎnjiě gōngzuò yālì. Suǒyǐ yùndòng yǐjīng chéngle wǒ shēnghuó de yí bùfen.",
+transA: "저는 매주 헬스장에 3번 갑니다. 보통 30분 달리고 근력 운동을 합니다. 꾸준한 운동은 체력을 기르고 업무 스트레스도 풀어줍니다. 운동은 제 삶의 일부가 되었습니다.",
+tip: "빈도(주 3회) + 순서(先...然后再...) + 효과(체력 증진, 스트레스 완화)로 구성합니다."
+},
+{
+id: "s2_p4_2", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
+topic: "좋아하는 영화 장르",
+q: "你最喜欢看什么类型的电影？为什么？", pinyinQ: "Nǐ zuì xǐhuan kàn shénme lèixíng de diànyǐng? Wèishénme?", transQ: "어떤 장르의 영화를 가장 좋아하며 이유는 무엇인가요?",
+a: "我最喜欢看动作片。因为动作片的剧情非常紧张刺激，让人看得很过瘾。而且下班后看一部精彩的动作片，可以让我彻底放松心情，忘记一天的疲劳。所以我最喜欢动作片。",
+pinyinA: "Wǒ zuì xǐhuan kàn dòngzuòpiàn. Yīnwèi dòngzuòpiàn de jùqíng fēicháng jǐnzhāng cìjī, ràng rén kàn de hěn guòyǐn. Érqiě xiàbān hòu kàn yí bù jīngcǎi de dòngzuòpiàn, kěyǐ ràng wǒ chèdǐ fàngsōng xīnqíng, wàngjì yì tiān de píláo. Suǒyǐ wǒ zuì xǐhuan dòngzuòpiàn.",
+transA: "저는 액션 영화를 가장 좋아합니다. 줄거리가 긴장감 넘치고 통쾌하기 때문입니다. 퇴근 후 멋진 액션 영화를 보면 기분도 풀리고 피로도 잊게 됩니다.",
+tip: "액션영화(动作片), 긴장감(紧张刺激), 피로 망각(忘记疲劳) 키워드를 쓰세요."
+},
+{
+id: "s2_p4_3", part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
+topic: "고향 소개",
+q: "请介绍一下你的家乡。", pinyinQ: "Qǐng jièshào yíxià nǐ de jiāxiāng.", transQ: "고향을 간단히 소개해 주세요.",
+a: "我的家乡是首尔，是韩国的首都。首尔不仅交通非常便利，而且有很多著名的旅游景点，比如南山塔和明洞。首尔的美食也很多，生活非常丰富多彩。欢迎大家来我的家乡玩。",
+pinyinA: "Wǒ de jiāxiāng shì Shǒu'ěr, shì Hánguó de shǒudū. Shǒu'ěr bùjǐn jiāotōng fēicháng biànlì, érqiě yǒu hěn duō zhùmíng de lǚyóu jǐngdiǎn, bǐrú Nánshāntǎ hé Míngdòng. Shǒu'ěr de měishí yě hěn duō, shēnghuó fēicháng fēngfù duōcǎi. Huānyíng dàjiā lái wǒ de jiāxiāng wán.",
+transA: "제 고향은 서울이며 한국의 수도입니다. 교통이 편리하고 남산타워나 명동 같은 명소가 많습니다. 맛있는 음식도 많고 다채로운 도시입니다. 놀러 오시는 것을 환영합니다.",
+tip: "수도(首都), 편리한 교통(交通便利), 명소(南山塔, 明洞)를 나열하면 손쉽습니다."
+},
+{
+id: "s2_p5_1", part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50,
+topic: "대중교통 vs 자가용 운전",
+q: "平时出行，你更支持坐公共交通还是自己开车？请说明原因。", pinyinQ: "Píngshí chūxíng, nǐ gèng zhīchí zuò gōnggòng jiāotōng háishì zìjǐ kāichē? Qǐng shuōmíng yuányīn.", transQ: "평소 이동할 때 대중교통 이용과 자가용 운전 중 어느 쪽을 더 지지하나요?",
+a: "我更支持乘坐公共交通出行。\n第一，乘坐地铁和公交车非常环保，可以减少碳排放，对保护环境很有好处。\n第二，在上下班高峰期，坐地铁不会遇到堵车，时间更有保障，而且不用担心停车问题。\n虽然自己开车更加自由舒适，但是买车和养车的费用很高，路上还容易疲劳。\n因此，从环保和经济的角度来看，乘坐公共交通是更好的选择。",
+pinyinA: "Wǒ gèng zhīchí chéngzuò gōnggòng jiāotōng chūxíng.\nDì-yī, chéngzuò dìtiě hé gōngjiāochē fēicháng huánbǎo, kěyǐ jiǎnshǎo tàn páifàng, duì bǎohù huánjìng hěn yǒu hǎochù.\nDì-èr, zài shàng-xiàbān gāofēngqī, zuò dìtiě bú huì yù dào dǔchē, shíjiān gèng yǒu bǎozhàng, érqiě búyòng dānxīn tíngchē wèntí.\nSuīrán zìjǐ kāichē gèngjiā zìyóu shūshì, dànshì mǎichē hé yǎngchē de fèiyòng hěn gāo, lùshang hái róngyì píláo.\nYīncǐ, cóng huánbǎo hé jīngjì de jiǎodù lái kàn, chéngzuò gōnggòng jiāotōng shì gèng hǎo de xuǎnzé.",
+transA: "저는 대중교통 이용을 더 지지합니다. 첫째, 탄소 배출을 줄여 친환경적입니다. 둘째, 출퇴근 시간에 차가 막히지 않고 주차 걱정도 없습니다. 비록 운전이 편하지만 차량 유지비가 많이 듭니다. 따라서 환경과 경제적 측면에서 대중교통이 우수합니다.",
+tip: "친환경(环保), 주차 문제(停车问题), 경제적 관점(经济的角度)을 근거로 제시하세요."
+},
+{
+id: "s2_p5_2", part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50,
+topic: "대도시 거주 vs 한적한 시골 거주",
+q: "你更愿意住在繁华的大城市还是安静的乡村？为什么？", pinyinQ: "Nǐ gèng yuànyì zhù zài fánhuá de dà chéngshì háishì ānjìng de xiāngcūn? Wèishénme?", transQ: "번화한 대도시와 조용한 시골 중 어디에 살고 싶나요?",
+a: "我更愿意住在繁华的大城市。\n首先，大城市的基础设施非常完善，不仅交通便利，而且有优秀的医疗资源和教育环境。\n其次，大城市的工作机会和文化活动更多，生活更加丰富多彩，有利于个人的职业发展。\n虽然乡村的空气清新、环境安静，但生活设施和交通相对不太方便。\n所以综合考虑发展和生活便利性，我更喜欢住在大城市。",
+pinyinA: "Wǒ gèng yuànyì zhù zài fánhuá de dà chéngshì.\nShǒuxiān, dà chéngshì de jīchǔ shèshī fēicháng wánshàn, bùjǐn jiāotōng biànlì, érqiě yǒu yōuxiù de yīliáo zīyuán hé jiàoyù huánjìng.\nQícì, dà chéngshì de gōngzuò jīhuì hé wénhuà huódòng gèng duō, shēnghuó gèngjiā fēngfù duōcǎi, yǒulìyú gèrén de zhíyè fāzhǎn.\nSuīrán xiāngcūn de kōngqì qīngxīn, huánjìng ānjìng, dàn shēnghuó shèshī hé jiāotōng xiāngduì bú tài fāngbiàn.\nSuǒyǐ zōnghé kǎolǜ fāzhǎn hé shēnghuó biànlìxìng, wǒ gèng xǐhuan zhù zài dà chéngshì.",
+transA: "저는 번화한 대도시에 사는 것을 더 원합니다. 첫째, 인프라가 완벽해 교통, 의료, 교육 환경이 우수합니다. 둘째, 일자리와 문화생활 기회가 많아 커리어 성장에 유리합니다. 시골은 공기가 좋지만 인프라가 아쉽습니다. 편리성을 볼 때 대도시가 좋습니다.",
+tip: "인프라(基础设施), 의료자원(医疗资源), 커리어 발전(职业发展) 표현을 익혀두세요."
+}
+]
+};
+​// Authentic, high-frequency TSC Part 2 specific exam items for sets 3 to 10
+const realPart2Specs = {
+3: [
+{ topic: "가격 (셔츠 200위안)", desc: "파란색 셔츠에 가격표 '200元'이 명확하게 적혀 있는 그림", q: "这件衣服多少钱？", pyQ: "Zhè jiàn yīfu duōshao qián?", trQ: "이 옷은 얼마입니까?", a: "这件衣服两百块（元）。", pyA: "Zhè jiàn yīfu liǎngbǎi kuài (yuán).", trA: "이 옷은 200위안입니다.", tip: "가격 질문에는 200을 '两百块' 또는 '两百元'으로 답합니다." },
+{ topic: "장소·동작 (요리하기)", desc: "여성이 주방 가스레인지 앞에서 프라이팬으로 요리하는 그림", q: "她在做什么？", pyQ: "Tā zài zuò shénme?", trQ: "그녀는 무엇을 하고 있습니까?", a: "她在厨房做饭呢。", pyA: "Tā zài chúfáng zuòfàn ne.", trA: "그녀는 주방에서 밥(요리)을 하고 있습니다.", tip: "‘在+장소+동사’ 또는 간결하게 ‘在做饭呢’로 답합니다." },
+{ topic: "위치 (버스 정류장)", desc: "한 남자가 버스 정류장 표지판 옆에서 버스를 기다리는 그림", q: "他在哪里等车？", pyQ: "Tā zài nǎlǐ děng chē?", trQ: "그는 어디에서 차를 기다리고 있습니까?", a: "他在公共汽车站等车。", pyA: "Tā zài gōnggòng qìchēzhàn děng chē.", trA: "그는 버스 정류장에서 차를 기다리고 있습니다.", tip: "정류장은 ‘公共汽车站’ 또는 줄여서 ‘公交车站’라고 합니다." },
+{ topic: "수량 (우산 2자루)", desc: "우산꽂이에 보라색과 분홍색 우산 2자루가 꽂혀 있는 그림", q: "这里有几把雨伞？", pyQ: "Zhèlǐ yǒu jǐ bǎ yǔsǎn?", trQ: "여기에 우산이 몇 자루 있습니까?", a: "这里有两把雨伞。", pyA: "Zhèlǐ yǒu liǎng bǎ yǔsǎn.", trA: "여기에 우산이 두 자루 있습니다.", tip: "우산 양사는 반드시 '把(bǎ)'를 쓰고 숫자는 '两(liǎng)'입니다." }
+],
+4: [
+{ topic: "가구·위치 (TV 앞 소파)", desc: "거실 TV 화면 맞은편에 안락한 소파가 놓여 있는 그림", q: "电视前面有什么？", pyQ: "Diànshì qiánmiàn yǒu shénme?", trQ: "텔레비전 앞에는 무엇이 있습니까?", a: "电视前面有一个沙发。", pyA: "Diànshì qiánmiàn yǒu yí ge shāfā.", trA: "텔레비전 앞에는 소파가 하나 있습니다.", tip: "방위사 '前面'과 사물 명칭 '沙发(shāfā)'를 사용하세요." },
+{ topic: "장소 (마트 계산대)", desc: "손님이 마트 계산대(수납처)에서 물건을 결제하고 있는 그림", q: "这是什么地方？", pyQ: "Zhè shì shénme dìfang?", trQ: "이곳은 어떤 장소입니까?", a: "这是超市的收银台。", pyA: "Zhè shì chāoshì de shōuyíntái.", trA: "이곳은 마트 계산대(수납대)입니다.", tip: "‘这是超市(슈퍼/마트)’ 또는 ‘收银台(계산대)’라고 답하면 만점입니다." },
+{ topic: "동작 (자전거 타기)", desc: "남자가 길가에서 두 발 자전거를 신나게 타고 있는 그림", q: "他在做什么？", pyQ: "Tā zài zuò shénme?", trQ: "그는 무엇을 하고 있습니까?", a: "他在骑自行车呢。", pyA: "Tā zài qí zìxíngchē ne.", trA: "그는 자전거를 타고 있습니다.", tip: "자전거를 타다는 동사 '骑(qí)'를 씁니다." },
+{ topic: "수량 (생수 3병)", desc: "탁자 위에 투명한 생수 물병 3병이 놓여 있는 그림", q: "桌子上有几瓶水？", pyQ: "Zhuōzi shang yǒu jǐ píng shuǐ?", trQ: "책상 위에 물이 몇 병 있습니까?", a: "桌子上有三瓶水。", pyA: "Zhuōzi shang yǒu sān píng shuǐ.", trA: "책상 위에 물 세 병이 있습니다.", tip: "병에 든 액체 양사는 '瓶(píng)'을 정확히 발음하세요." }
+],
+5: [
+{ topic: "동작 (컴퓨터 업무)", desc: "직원이 사무실 책상에서 노트북(컴퓨터)으로 작업하는 그림", q: "他在做什么？", pyQ: "Tā zài zuò shénme?", trQ: "그는 무엇을 하고 있습니까?", a: "他在用电脑工作呢。", pyA: "Tā zài yòng diànnǎo gōngzuò ne.", trA: "그는 컴퓨터로 일하고 있습니다.", tip: "‘用电脑工作(컴퓨터로 일하다)’ 또는 ‘在工作’로 답하세요." },
+{ topic: "사물 (주전자와 찻잔)", desc: "식탁 위에 차를 우리는 도자기 주전자와 찻잔이 놓인 그림", q: "桌子上有什么？", pyQ: "Zhuōzi shang yǒu shénme?", trQ: "식탁 위에 무엇이 있습니까?", a: "桌子上有茶壶和茶杯。", pyA: "Zhuōzi shang yǒu cháhú hé chábēi.", trA: "식탁 위에 주전자와 찻잔이 있습니다.", tip: "차 주전자(茶壶) 또는 간단히 '茶(차)'라고 해도 좋습니다." },
+{ topic: "상태·동물 (잠자는 고양이)", desc: "주황색 줄무늬 고양이가 방바닥에서 웅크리고 자는 그림", q: "猫在做什么？", pyQ: "Māo zài zuò shénme?", trQ: "고양이는 무엇을 하고 있습니까?", a: "小猫在睡觉呢。", pyA: "Xiǎomāo zài shuìjiào ne.", trA: "고양이가 잠을 자고 있습니다.", tip: "잠을 자다는 '睡觉(shuìjiào)' 동사를 활용합니다." },
+{ topic: "장소 (지하철 승강장)", desc: "스크린도어와 열차가 보이는 지하철 승강장 플랫폼 그림", q: "这是哪里？", pyQ: "Zhè shì nǎlǐ?", trQ: "이곳은 어디입니까?", a: "这是地铁站。", pyA: "Zhè shì dìtiězhàn.", trA: "이곳은 지하철역입니다.", tip: "장소를 묻는 '这是哪里'에는 '这是地铁站'으로 즉답합니다." }
+],
+6: [
+{ topic: "사물 (여행용 캐리어)", desc: "바퀴와 손잡이가 달린 여행용 보라색 캐리어 가방 그림", q: "这是什么？", pyQ: "Zhè shì shénme?", trQ: "이것은 무엇입니까?", a: "这是一个行李箱。", pyA: "Zhè shì yí ge xínglixiāng.", trA: "이것은 여행용 캐리어(트렁크)입니다.", tip: "캐리어 가방은 중국어로 '行李箱(xínglixiāng)'입니다." },
+{ topic: "동작 (수영하기)", desc: "수영장 물속에서 수경을 쓰고 자유형 수영을 하는 그림", q: "他在做什么？", pyQ: "Tā zài zuò shénme?", trQ: "그는 무엇을 하고 있습니까?", a: "他在游泳池游泳呢。", pyA: "Tā zài yóuyǒngchí yóuyǒng ne.", trA: "그는 수영장에서 수영을 하고 있습니다.", tip: "수영하다는 이합동사 '游泳(yóuyǒng)'을 사용합니다." },
+{ topic: "결제 수단 (신용카드)", desc: "손에 IC칩이 달린 직사각형 신용카드를 들고 있는 그림", q: "他手里拿着什么？", pyQ: "Tā shǒuli názhe shénme?", trQ: "그는 손에 무엇을 쥐고 있습니까?", a: "他手里拿着一张信用卡。", pyA: "Tā shǒuli názhe yì zhāng xìnyòngkǎ.", trA: "그는 손에 신용카드 한 장을 쥐고 있습니다.", tip: "카드의 양사는 장(张, zhāng), 신용카드는 '信用卡'입니다." },
+{ topic: "수량 (신발 4켤레)", desc: "신발장 선반 위에 운동화가 4켤레 나란히 놓여 있는 그림", q: "这里有几双鞋？", pyQ: "Zhèlǐ yǒu jǐ shuāng xié?", trQ: "여기에 신발이 몇 켤레 있습니까?", a: "这里有四双鞋。", pyA: "Zhèlǐ yǒu sì shuāng xié.", trA: "여기에 신발 네 켤레가 있습니다.", tip: "쌍/켤레를 뜻하는 짝 양사 '双(shuāng)'이 정답의 핵심입니다." }
+],
+7: [
+{ topic: "직업·장소 (병원 의사)", desc: "흰 가운을 입고 청진기를 목에 두른 병원 의사 선생님 그림", q: "他是做什么工作的？", pyQ: "Tā shì zuò shénme gōngzuò de?", trQ: "그는 무슨 일을 하는 사람입니까?", a: "他是一位医生。", pyA: "Tā shì yí wèi yīshēng.", trA: "그는 의사 선생님입니다.", tip: "직업을 묻는 질문에는 '他是医生'이라고 간결히 답합니다." },
+{ topic: "동작·장소 (도서관 독서)", desc: "도서관 책상에 앉아 조용히 책을 펴놓고 공부하는 그림", q: "他在做什么？", pyQ: "Tā zài zuò shénme?", trQ: "그는 무엇을 하고 있습니까?", a: "他在图书馆学习呢。", pyA: "Tā zài túshūguǎn xuéxí ne.", trA: "그는 도서관에서 공부하고 있습니다.", tip: "‘在看书’ 또는 ‘在学习’ 모두 정답으로 인정됩니다." },
+{ topic: "악기 연주 (기타 치기)", desc: "의자에 앉아 통기타 줄을 튕기며 연주하고 있는 그림", q: "他在弹什么乐器？", pyQ: "Tā zài tán shénme yuèqì?", trQ: "그는 무슨 악기를 연주하고 있습니까?", a: "他在弹吉他呢。", pyA: "Tā zài tán jítā ne.", trA: "그는 기타를 치고 있습니다.", tip: "기타는 외래어로 '吉他(jítā)', 현악기를 켜다는 '弹(tán)'입니다." },
+{ topic: "수량 (꽃병의 꽃 3송이)", desc: "투명한 꽃병에 예쁜 꽃 세 송이가 꽂혀 있는 그림", q: "瓶子里有几朵花？", pyQ: "Píngzi li yǒu jǐ duǒ huā?", trQ: "병 안에 꽃이 몇 송이 있습니까?", a: "瓶子里有三朵花。", pyA: "Píngzi li yǒu sān duǒ huā.", trA: "병 안에 꽃 세 송이가 있습니다.", tip: "꽃을 세는 양사는 송이 '朵(duǒ)'를 씁니다." }
+],
+8: [
+{ topic: "사물 (식당 메뉴판)", desc: "음식점 식탁 위에 요리 목록이 적힌 메뉴판이 펼쳐진 그림", q: "这是什么？", pyQ: "Zhè shì shénme?", trQ: "이것은 무엇입니까?", a: "这是饭馆的菜单。", pyA: "Zhè shì fànguǎn de càidān.", trA: "이것은 식당의 메뉴판입니다.", tip: "메뉴판은 중국어로 '菜单(càidān)'입니다." },
+{ topic: "가사 동작 (설거지하기)", desc: "개수대 싱크대에서 거품을 내며 그릇을 씻고 있는 그림", q: "她在做什么？", pyQ: "Tā zài zuò shénme?", trQ: "그녀는 무엇을 하고 있습니까?", a: "她在厨房洗碗呢。", pyA: "Tā zài chúfáng xǐwǎn ne.", trA: "그녀는 주방에서 설거지를 하고 있습니다.", tip: "그릇을 씻다(설거지하다)는 '洗碗(xǐwǎn)'입니다." },
+{ topic: "동작 (강아지 산책)", desc: "공원 잔디밭에서 목줄을 잡고 반려견을 산책시키는 그림", q: "他在做什么？", pyQ: "Tā zài zuò shénme?", trQ: "그는 무엇을 하고 있습니까?", a: "他在公园溜狗呢。", pyA: "Tā zài gōngyuán liùgǒu ne.", trA: "그는 공원에서 개를 산책시키고 있습니다.", tip: "개를 산책시키다는 '溜狗(liùgǒu)' 또는 '带狗散步'입니다." },
+{ topic: "장소 (과일 가게)", desc: "사과, 바나나, 포도 등 신선한 과일이 진열된 상점 그림", q: "这是什么商店？", pyQ: "Zhè shì shénme shāngdiàn?", trQ: "이곳은 어떤 상점입니까?", a: "这是一家水果店。", pyA: "Zhè shì yì jiā shuǐguǒdiàn.", trA: "이곳은 과일 가게입니다.", tip: "과일 가게는 '水果店(shuǐguǒdiàn)'이라고 부릅니다." }
+],
+9: [
+{ topic: "사물 (기차표/승차권)", desc: "출발지와 도착지, 좌석 번호가 적힌 고속철 기차표 그림", q: "这是什么票？", pyQ: "Zhè shì shénme piào?", trQ: "이것은 무슨 표입니까?", a: "这是一张火车票。", pyA: "Zhè shì yì zhāng huǒchēpiào.", trA: "이것은 기차표 한 장입니다.", tip: "기차표는 '火车票(huǒchēpiào)', 양사는 '张(zhāng)'입니다." },
+{ topic: "청소 동작 (바닥 쓸기)", desc: "남자가 빗자루를 양손에 쥐고 방바닥을 쓸고 있는 그림", q: "他在做什么？", pyQ: "Tā zài zuò shénme?", trQ: "그는 무엇을 하고 있습니까?", a: "他在拿扫帚扫地呢。", pyA: "Tā zài ná sàozhou sǎodì ne.", trA: "그는 빗자루를 들고 바닥을 쓸고 있습니다.", tip: "바닥을 쓸다는 '扫地(sǎodì)' 동사구를 사용하세요." },
+{ topic: "요리·제과 (빵 굽기)", desc: "오븐에서 갓 구워낸 따끈따끈한 식빵 덩어리가 있는 그림", q: "盘子里是什么？", pyQ: "Pánzi li shì shénme?", trQ: "접시 안에는 무엇이 있습니까?", a: "盘子里是刚烤好的面包。", pyA: "Pánzi li shì gāng kǎohǎo de miànbāo.", trA: "접시 안에는 갓 구워낸 빵이 있습니다.", tip: "빵은 '面包(miànbāo)', 간단히 '盘子里是面包'라고 해도 됩니다." },
+{ topic: "수량 (배낭 2개)", desc: "소파 위에 등에 매는 배낭 가방 2개가 나란히 놓인 그림", q: "沙发上有几个背包？", pyQ: "Shāfā shang yǒu jǐ ge bēibāo?", trQ: "소파 위에 배낭이 몇 개 있습니까?", a: "沙发上有两个背包。", pyA: "Shāfā shang yǒu liǎng ge bēibāo.", trA: "소파 위에 배낭이 두 개 있습니다.", tip: "배낭은 '背包(bēibāo)' 또는 '书包', 수량 2는 '两个'입니다." }
+],
+10: [
+{ topic: "장소 (호텔 프론트 데스크)", desc: "호텔 로비의 체크인 카운터 프론트 데스크가 있는 그림", q: "这是什么地方？", pyQ: "Zhè shì shénme dìfang?", trQ: "이곳은 어떤 장소입니까?", a: "这是饭店（酒店）的前台。", pyA: "Zhè shì fàndiàn (jiǔdiàn) de qiántái.", trA: "이곳은 호텔의 프론트 데스크(안내 데스크)입니다.", tip: "호텔은 '酒店/饭店', 프론트는 '前台(qiántái)'입니다." },
+{ topic: "날씨·동작 (비 올 때 우산 쓰기)", desc: "비가 내리는 날 우산을 받쳐 들고 길을 걸어가는 그림", q: "外面天气怎么样？", pyQ: "Wàimiàn tiānqì zěnmeyàng?", trQ: "밖의 날씨가 어떠합니까?", a: "外面正在下雨呢。", pyA: "Wàimiàn zhèngzài xiàyǔ ne.", trA: "밖에는 지금 비가 내리고 있습니다.", tip: "날씨를 물었으므로 '正在下雨呢(비가 내리고 있다)'로 답합니다." },
+{ topic: "기기 동작 (스마트폰 촬영)", desc: "스마트폰을 두 손으로 가로로 들고 풍경 사진을 찍는 그림", q: "他在做什么？", pyQ: "Tā zài zuò shénme?", trQ: "그는 무엇을 하고 있습니까?", a: "他在用手机拍照呢。", pyA: "Tā zài yòng shǒujī pāizhào ne.", trA: "그는 스마트폰으로 사진을 찍고 있습니다.", tip: "사진을 찍다는 '拍照(pāizhào)' 또는 '照相(zhàoxiàng)'입니다." },
+{ topic: "소지품 (자동차 열쇠)", desc: "스마트 리모컨 버튼이 달린 자동차 차키 열쇠 그림", q: "这是什么钥匙？", pyQ: "Zhè shì shénme yàoshi?", trQ: "이것은 무슨 열쇠입니까?", a: "这是车钥匙（汽车钥匙）。", pyA: "Zhè shì chē yàoshi (qìchē yàoshi).", trA: "이것은 자동차 열쇠(차키)입니다.", tip: "열쇠는 '钥匙(yàoshi)', 차키는 '车钥匙'라고 합니다." }
+]
+};
+​// Synthesize structured data for sets 3-10 using real specific Part 2 questions
+for (let s = 3; s <= 10; s++) {
+const theme = setThemes[s];
+const p2Specs = realPart2Specs[s];
+allTscSets[s] = [
+// Part 2 (4 Specific Exam Questions)
+{
+id: s${s}_p2_1, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: p2Specs[0].topic, visualSvg: s${s}_p2_1,
+visualDesc: p2Specs[0].desc,
+q: p2Specs[0].q, pinyinQ: p2Specs[0].pyQ, transQ: p2Specs[0].trQ,
+a: p2Specs[0].a, pinyinA: p2Specs[0].pyA, transA: p2Specs[0].trA,
+tip: p2Specs[0].tip
+},
+{
+id: s${s}_p2_2, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: p2Specs[1].topic, visualSvg: s${s}_p2_2,
+visualDesc: p2Specs[1].desc,
+q: p2Specs[1].q, pinyinQ: p2Specs[1].pyQ, transQ: p2Specs[1].trQ,
+a: p2Specs[1].a, pinyinA: p2Specs[1].pyA, transA: p2Specs[1].trA,
+tip: p2Specs[1].tip
+},
+{
+id: s${s}_p2_3, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: p2Specs[2].topic, visualSvg: s${s}_p2_3,
+visualDesc: p2Specs[2].desc,
+q: p2Specs[2].q, pinyinQ: p2Specs[2].pyQ, transQ: p2Specs[2].trQ,
+a: p2Specs[2].a, pinyinA: p2Specs[2].pyA, transA: p2Specs[2].trA,
+tip: p2Specs[2].tip
+},
+{
+id: s${s}_p2_4, part: "part2", partName: "제2부분: 그림 보고 답하기", respTime: 6,
+topic: p2Specs[3].topic, visualSvg: s${s}_p2_4,
+visualDesc: p2Specs[3].desc,
+q: p2Specs[3].q, pinyinQ: p2Specs[3].pyQ, transQ: p2Specs[3].trQ,
+a: p2Specs[3].a, pinyinA: p2Specs[3].pyA, transA: p2Specs[3].trA,
+tip: p2Specs[3].tip
+},
+​// Part 3 (5 Qs)
+{
+id: s${s}_p3_1, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: theme.p3[0],
+q: "今天下班后一起去喝杯咖啡怎么样？", pinyinQ: "Jīntiān xiàbān hòu yìqǐ qù hē bēi kāfēi zěnmeyàng?", transQ: "오늘 퇴근하고 커피 한잔하러 갈래요?",
+a: "好啊！我知道公司附近有一家很不错的咖啡店，我们一起去吧。",
+pinyinA: "Hǎo a! Wǒ zhīdào gōngsī fùjìn yǒu yì jiā hěn búcuò de kāfēidiàn, wǒmen yìqǐ qù ba.", transA: "좋아요! 회사 근처에 괜찮은 카페를 아는데 같이 가요.",
+tip: "동의(好啊) + 장소 추천(公司附近)으로 풍성한 답변 완성."
+},
+{
+id: s${s}_p3_2, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: theme.p3[1],
+q: "这周末你有什么安排吗？", pinyinQ: "Zhè zhōumò nǐ yǒu shénme ānpái ma?", transQ: "이번 주말에 무슨 계획 있어요?",
+a: "我打算在家里好好休息，看几部电影，放松一下。",
+pinyinA: "Wǒ dǎsuàn zài jiā lǐ hǎohāo xiūxi, kàn jǐ bù diànyǐng, fàngsōng yíxià.", transA: "집에서 푹 쉬면서 영화 몇 편 보고 힐링할 생각이에요.",
+tip: "'打算...(계획이다) + 放松一下'는 만능 여가 표현입니다."
+},
+{
+id: s${s}_p3_3, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: theme.p3[2],
+q: "今天中午你想去哪里吃饭？", pinyinQ: "Jīntiān zhōngwǔ nǐ xiǎng qù nǎlǐ chīfàn?", transQ: "오늘 점심 어디 가서 드실래요?",
+a: "去公司食堂吃怎么样？既省时间又很实惠。",
+pinyinA: "Qù gōngsī shítáng chī zěnmeyàng? Jì shěng shíjiān yòu hěn shíhuì.", transA: "사내 식당 어때요? 시간도 아끼고 실속 있잖아요.",
+tip: "사내식당(公司食堂), 시간절약(省时间), 실속(实惠)을 활용하세요."
+},
+{
+id: s${s}_p3_4, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: theme.p3[3],
+q: "你平时一般几点起床？", pinyinQ: "Nǐ píngshí yībān jǐ diǎn qǐchuáng?", transQ: "평소 보통 몇 시에 일어나세요?",
+a: "我平时一般早上七点起床，洗漱完吃完早餐就去上班。",
+pinyinA: "Wǒ píngshí yībān zǎoshang qī diǎn qǐchuáng, xǐshù wán chī wán zǎocān jiù qù shàngbān.", transA: "저는 평소 7시에 일어나서 씻고 아침 먹고 출근해요.",
+tip: "기상 시간 후 출근까지의 동선(洗漱-早餐-上班)을 연결합니다."
+},
+{
+id: s${s}_p3_5, part: "part3", partName: "제3부분: 일상 대화 완성", respTime: 15,
+topic: theme.p3[4],
+q: "今天外面冷不冷？需要多穿点衣服吗？", pinyinQ: "Jīntiān wàimiàn lěng bù lěng? Xūyào duō chuān diǎn yīfu ma?", transQ: "오늘 밖이 춥나요? 옷을 두껍게 입어야 할까요?",
+a: "今天外面风挺大的，有点儿冷，最好多穿一件外套。",
+pinyinA: "Jīntiān wàimiàn fēng tǐng dà de, yǒudiǎnr lěng, zuìhǎo duō chuān yí jiàn wàitào.", transA: "바람이 꽤 불고 쌀쌀해요, 외투 한 벌 더 입는 게 좋아요.",
+tip: "날씨 묘사(风挺大的) + 행동 조언(多穿外套)을 조합합니다."
+},
+​// Part 4 (3 Qs)
+{
+id: s${s}_p4_1, part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
+topic: theme.p4[0].ko,
+q: 关于${theme.p4[0].zh}，谈谈你的看法。,
+pinyinQ: Guānyú ${theme.p4[0].py}, tántan nǐ de kànfǎ.,
+transQ: ${theme.p4[0].ko}에 대해 당신의 생각을 말해보세요.,
+a: "我认为这对现代职场人非常重要。首先，它可以帮助我们保持身心健康，缓解工作带来的压力。其次，这能让我们以更饱满的状态投入到工作和生活中。所以我们应该重视这一点。",
+pinyinA: "Wǒ rènwéi zhè duì xiàndài zhíchǎngrén fēicháng zhòngyào. Shǒuxiān, tā kěyǐ bāngzhù wǒmen bǎochí shēnxīn jiànkāng, huǎnjiě gōngzuò dài lái de yālì. Qícì, zhè néng ràng wǒmen yǐ gèng bǎomǎn de zhuàngtài tóurù dào gōngzuò hé shēnghuó zhōng. Suǒyǐ wǒmen yīnggāi zhòngshì zhè yì diǎn.",
+transA: "저는 이것이 현대 직장인에게 매우 중요하다고 생각합니다. 첫째로 심신 건강과 스트레스 완화에 도움이 됩니다. 둘째로 업무와 삶에 더 활력 있게 몰입할 수 있게 해줍니다. 따라서 우리는 이를 중요하게 여겨야 합니다.",
+tip: "직장인 관점(现代职场人)과 심신 건강(身心健康)을 결합한 만능 틀입니다."
+},
+{
+id: s${s}_p4_2, part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
+topic: theme.p4[1].ko,
+q: 请谈谈你平时如何安排${theme.p4[1].zh}？,
+pinyinQ: Qǐng tántan nǐ píngshí rúhé ānpái ${theme.p4[1].py}?,
+transQ: 평소 ${theme.p4[1].ko}을(를) 어떻게 계획하고 실천하시는지 말해보세요.,
+a: "我通常会制定合理的计划。一方面，每天坚持投入固定的时间去实践；另一方面，遇到不懂的问题会积极向身边的同事或朋友请教。通过坚持，我收获了很大的进步和成就感。",
+pinyinA: "Wǒ tōngcháng huì zhìdìng hélǐ de jìhuà. Yì fāngmiàn, měitiān jiānchí tóurù gùdìng de shíjiān qù shíjiàn; lìng yì fāngmiàn, yù dào bù dǒng de wèntí huì jījí xiàng shēnbiān de tóngshì huò péngyou qǐngjiào. Tōngguò jiānchí, wǒ shōuhuòle hěn dà de jìnbù hé chéngjiùgǎn.",
+transA: "저는 합리적인 계획을 세웁니다. 한편으론 매일 일정 시간을 꾸준히 투자하고, 다른 한편으론 모르는 점을 동료에게 적극 묻습니다. 꾸준함을 통해 큰 발전과 성취감을 얻었습니다.",
+tip: "'一方面... 另一方面...' 대구법으로 논리성을 확보하세요."
+},
+{
+id: s${s}_p4_3, part: "part4", partName: "제4부분: 일상 화제 및 생각 표현", respTime: 25,
+topic: theme.p4[2].ko,
+q: 请谈谈你对${theme.p4[2].zh}의经历或计划。,
+pinyinQ: Qǐng tántan nǐ duì ${theme.p4[2].py} de jīnglì huò jìhuà.,
+transQ: ${theme.p4[2].ko}에 대한 경험이나 계획을 말해보세요.,
+a: "我有过非常难忘的经历。那次经历不仅让我学到了很多实用的经验，还开阔了我的眼界。未来如果有机会，我希望能继续挑战自己，体验更多新鲜的事物，让人生更加丰富。",
+pinyinA: "Wǒ yǒuguo fēicháng nánwàng de jīnglì. Nà cì jīnglì bùjǐn ràng wǒ xuédàole hěn duō shíyòng de jīngyàn, hái kāikuòle wǒ de yǎnjiè. Wèilái rúguǒ yǒu jīhuì, wǒ xīwàng néng jìxù tiǎozhàn zìjǐ, tǐyàn gèng duō xīnxiān de shìwù, ràng rénshēng gèngjiā fēngfù.",
+transA: "잊지 못할 경험이 있습니다. 많은 실용적 경험을 배웠고 시야를 넓혔습니다. 앞으로도 도전하며 다양한 것을 체험해 인생을 풍요롭게 만들고 싶습니다.",
+tip: "배움(学到经验), 시야 확장(开阔眼界), 자기 도전(挑战自己)은 4급~5급 단골 고득점 어휘입니다."
+},
+​// Part 5 (2 Qs)
+{
+id: s${s}_p5_1, part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50,
+topic: theme.p5[0].ko,
+q: 关于“${theme.p5[0].zh}”，你更支持哪一种观点？请说明原因。,
+pinyinQ: Guānyú “${theme.p5[0].py}”, nǐ gèng zhīchí nǎ yì zhǒng guāndiǎn? Qǐng shuōmíng yuányīn.,
+transQ: "${theme.p5[0].ko}"에 대해 어느 쪽을 지지하며 그 이유는 무엇인가요?,
+a: "我更支持前者。\n首先，从效率和现代社会发展的角度来看，这种方式能为我们节省大量的时间和成本，更加符合快节奏的生活需求。\n其次，它拥有更高的灵活性和自主性，能够更好地满足现代人多元化的个性需求。\n虽然另一种观点也有其独特的优势和人情味，但是在实际应用中效率相对较低。\n因此综合权衡，我认为前者是更加符合时代趋势的理性选择。",
+pinyinA: "Wǒ gèng zhīchí qiánzhě.\nShǒuxiān, cóng xiàolǜ hé xiàndài shèhuì fāzhǎn de jiǎodù lái kàn, zhè zhǒng fāngshì néng wèi wǒmen jiéshěng dàliàng de shíjiān hé chéngběn, gèngjiā fúhé kuài jiézòu de shēnghuó xūqiú.\nQícì, tā yōngyǒu gèng gāo de línghuóxìng hé zìzhǔxìng, nénggòu gèng hǎo de mǎnzú xiàndàirén duōyuánhuà de gèxìng xūqiú.\nSuīrán lìng yì zhǒng guāndiǎn yě yǒu qí dútè de yōushì hé rénqíngwèi, dànshì zài shíjì yìngyòng zhōng xiàolǜ xiāngduì jiàodī.\nYīncǐ zōnghé quánhéng, wǒ rènwéi qiánzhě shì gèngjiā fúhé shídài qūshì de lǐxìng xuǎnzé.",
+transA: "저는 전자를 더 지지합니다. 첫째, 효율과 현대 사회 관점에서 시간과 비용을 크게 절감해 빠른 삶의 템포에 부합합니다. 둘째, 유연성과 자율성이 높아 다양한 개별 요구를 충족합니다. 비록 후자도 장점이 있지만 실제 효율은 다소 떨어집니다. 따라서 종합적으로 전자가 시대 흐름에 맞는 합리적 선택입니다.",
+tip: "양자택일 논제에서 '我更支持前者(전자 지지)'로 서두를 열고 5단 논법을 전개하세요."
+},
+{
+id: s${s}_p5_2, part: "part5", partName: "제5부분: 논리적 의견 진술 및 비교", respTime: 50,
+topic: theme.p5[1].ko,
+q: 你对“${theme.p5[1].zh}”持什么态度？请阐述你的理由。,
+pinyinQ: Nǐ duì “${theme.p5[1].py}” chí shénme tàidu? Qǐng chǎnshù nǐ de lǐyóu.,
+transQ: "${theme.p5[1].ko}"에 대해 어떤 입장이신가요? 이유를 밝혀보세요.,
+a: "我对这个问题持积极支持的态度。\n第一，这是科技进步和社会发展的必然结果，能够极大提高整体运作效率，推动社会创新。\n第二，对于个人而言，这种模式有助于提升生活便利度，打破传统限制，拓展更多可能性。\n当然，在推进的过程中也需要建立完善的制度和规范，防范潜在的风险。\n所以只要管理得当，这种发展趋势是非常值得肯定和推广的。",
+pinyinA: "Wǒ duì zhège wèntí chí jījí zhīchí de tàidu.\nDì-yī, zhè shì kējì jìnbù hé shèhuì fāzhǎn de bìrán jiéguǒ, nénggòu jídà tígāo zhěngtǐ yùnzuò xiàolǜ, tuīdòng shèhuì chuàngxīn.\nDì-èr, duìyú gèrén ér yán, zhè zhǒng móshì yǒuzhùyú tíshēng shēnghuó biànlìdù, dǎpò chuántǒng xiànzhì, tuòzhǎn gèng duō kěnéngxìng.\nDāngrán, zài tuījìn de guòchéng zhōng yě xūyào jiànlì wánshàn de zhìdù hé guīfàn, fángfàn qiánzài de fēngxiǎn.\nSuǒyǐ zhǐyào guǎnlǐ dédàng, zhè zhǒng fāzhǎn qūshì shì fēicháng zhídé kěndìng hé tuīguǎng de.",
+transA: "저는 이에 대해 적극 찬성하는 입장입니다. 첫째, 기술 진보와 사회 발전의 필연적 결과이며 전반적 효율을 높이고 혁신을 촉진합니다. 둘째, 개인에게 편리함을 주고 한계를 넘어 가능성을 넓혀줍니다. 물론 위험을 막는 제도적 보완도 필요합니다. 따라서 적절한 관리 아래 추진된다면 충분히 긍정적입니다.",
+tip: "사회·기술 찬반형 논제에 '必然结果(필연적 결과)', '极大提高效率(효율 극대화)'는 최고 득점용 표현입니다."
+}
+];
+}
+​let currentSet = 1, currentPart = 'all', globalSpeed = 1.0;
+let globalQ23Visible = false, globalQPinyinVisible = false, globalPinyinVisible = false, globalKoreanVisible = false, globalAnsVisible = false;
+let activeUtterance = null, currentSpeakingId = null, timerInterval = null, activeTimerId = null, webAudioCtx = null;
+​function getPartPillStyle(p) {
+if(p==='part2') return 'bg-amber-100 text-amber-800 border border-amber-300';
+if(p==='part3') return 'bg-blue-100 text-blue-800 border border-blue-300';
+if(p==='part4') return 'bg-purple-100 text-purple-800 border border-purple-300';
+if(p==='part5') return 'bg-rose-100 text-rose-800 border border-rose-300';
+return 'bg-slate-100 text-slate-800 border border-slate-300';
+}
+​function escapeJS(s) { return !s ? '' : s.replace(/\/g, '\\').replace(/'/g, "\'").replace(/"/g, '\"').replace(/\n/g, '\n').replace(/\r/g, ''); }
+function setLucideIcon(el, n, c) { if(el) el.innerHTML = <i data-lucide="${n}" class="${c}"></i>; }
+​function changeSet(v) { stopTTS(); if(timerInterval) clearInterval(timerInterval); currentSet = parseInt(v, 10); renderApp(); }
+function filterPart(p) {
+stopTTS(); currentPart = p;
+document.querySelectorAll('.tab-btn').forEach(b => {
+let isSel = b.getAttribute('data-part') === p;
+b.className = tab-btn px-2.5 py-1 rounded-lg whitespace-nowrap ${isSel ? 'font-bold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm' : 'font-medium text-slate-600 hover:bg-slate-100'};
+});
+renderApp();
+}
+function setSpeed(sp) {
+globalSpeed = sp;
+document.querySelectorAll('.speed-btn').forEach(b => {
+let isCur = Math.abs(parseFloat(b.getAttribute('data-speed')) - sp) < 0.01;
+b.className = speed-btn px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs rounded ${isCur ? 'font-bold bg-blue-600 text-white shadow-sm' : 'font-semibold text-slate-600 hover:text-slate-900'};
+});
+}
+​function playTone(f, d, t='sine') {
+try {
+if (!webAudioCtx) webAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+if (webAudioCtx.state === 'suspended') webAudioCtx.resume();
+let osc = webAudioCtx.createOscillator(), gain = webAudioCtx.createGain();
+osc.type = t; osc.frequency.setValueAtTime(f, webAudioCtx.currentTime);
+gain.gain.setValueAtTime(0.2, webAudioCtx.currentTime);
+gain.gain.exponentialRampToValueAtTime(0.001, webAudioCtx.currentTime + d);
+osc.connect(gain); gain.connect(webAudioCtx.destination);
+osc.start(); osc.stop(webAudioCtx.currentTime + d);
+} catch(e) {}
+}
+​// Precise SVG Renderers for All 40 Part 2 Questions
+function getPart2Svg(key) {
+switch(key) {
+// Set 1
+case 's1_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="50" cy="50" r="45" fill="#f8fafc" stroke="#1e293b" stroke-width="4"/><circle cx="50" cy="50" r="3" fill="#0f172a"/><text x="50" y="18" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">12</text><text x="50" y="90" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">6</text><text x="14" y="53" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">9</text><text x="86" y="53" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">3</text><line x1="50" y1="50" x2="28" y2="42" stroke="#0f172a" stroke-width="3.5" stroke-linecap="round"/><line x1="50" y1="50" x2="16" y2="50" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"/></svg>;
+case 's1_p2_2': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="10" y="65" width="80" height="8" rx="2" fill="#d97706"/><rect x="20" y="32" width="34" height="26" rx="2" fill="#334155"/><rect x="23" y="35" width="28" height="20" rx="1" fill="#93c5fd"/><line x1="16" y1="60" x2="58" y2="60" stroke="#475569" stroke-width="3"/><rect x="64" y="38" width="16" height="27" rx="3" fill="#4f46e5" stroke="#1e1b4b" stroke-width="1.5"/><circle cx="72" cy="62" r="1.5" fill="#ffffff"/></svg>;
+case 's1_p2_3': return <svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="50" cy="50" r="45" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="50" y="58" font-size="34" text-anchor="middle">🏃‍♂️</text></svg>;
+case 's1_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><ellipse cx="50" cy="65" rx="36" ry="14" fill="#fed7aa" stroke="#ea580c" stroke-width="2"/><text x="34" y="56" font-size="18">🍎</text><text x="48" y="52" font-size="18">🍎</text><text x="64" y="56" font-size="18">🍎</text><text x="40" y="70" font-size="17">🍎</text><text x="58" y="70" font-size="17">🍎</text></svg>;
+​// Set 2
+case 's2_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="18" y="20" width="64" height="64" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><rect x="18" y="20" width="64" height="20" rx="6" fill="#ef4444"/><text x="50" y="34" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">5月 MAY</text><text x="50" y="66" font-size="28" font-weight="900" fill="#0f172a" text-anchor="middle">12</text><text x="50" y="78" font-size="8" font-weight="bold" fill="#64748b" text-anchor="middle">星期五</text></svg>;
+case 's2_p2_2': return <svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M28,40 L34,75 Q35,82 50,82 Q65,82 66,75 L72,40 Z" fill="#92400e"/><path d="M70,45 Q84,45 84,56 Q84,68 68,68" fill="none" stroke="#92400e" stroke-width="4"/><ellipse cx="50" cy="40" rx="22" ry="7" fill="#451a03"/><path d="M42,28 Q44,20 42,14" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round"/><path d="M50,26 Q52,18 50,12" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round"/><path d="M58,28 Q60,20 58,14" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round"/></svg>;
+case 's2_p2_3': return <svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="50" cy="50" r="45" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/><text x="50" y="58" font-size="34" text-anchor="middle">📖</text></svg>;
+case 's2_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="22" y="65" width="56" height="11" rx="2" fill="#2563eb"/><rect x="25" y="52" width="50" height="11" rx="2" fill="#16a34a"/><rect x="28" y="39" width="44" height="11" rx="2" fill="#ea580c"/><text x="50" y="90" font-size="9" font-weight="bold" text-anchor="middle" fill="#64748b">三本书</text></svg>;
+​// Set 3
+case 's3_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M30,25 L50,15 L70,25 L85,40 L70,50 L65,38 L65,85 L35,85 L35,38 L30,50 L15,40 Z" fill="#3b82f6"/><rect x="40" y="55" width="22" height="16" rx="2" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/><text x="51" y="66" font-size="8" font-weight="bold" fill="#ef4444" text-anchor="middle">200元</text></svg>;
+case 's3_p2_2': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="62" width="70" height="20" rx="3" fill="#64748b"/><path d="M30,62 C30,48 55,48 55,62" fill="#f97316"/><line x1="52" y1="52" x2="75" y2="40" stroke="#334155" stroke-width="4" stroke-linecap="round"/><circle cx="42" cy="35" r="5" fill="#cbd5e1" opacity="0.7"/><circle cx="50" cy="27" r="4" fill="#cbd5e1" opacity="0.5"/><text x="75" y="72" font-size="14">🍳</text></svg>;
+case 's3_p2_3': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="46" y="15" width="8" height="70" fill="#475569"/><circle cx="50" cy="25" r="14" fill="#2563eb"/><text x="50" y="30" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">BUS</text><rect x="25" y="78" width="50" height="6" rx="2" fill="#1e293b"/><text x="32" y="68" font-size="20">🚶‍♂️</text></svg>;
+case 's3_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M15,48 C15,22 48,22 48,48 Z" fill="#8b5cf6"/><line x1="32" y1="48" x2="32" y2="78" stroke="#475569" stroke-width="3"/><path d="M52,48 C52,22 85,22 85,48 Z" fill="#ec4899"/><line x1="68" y1="48" x2="68" y2="78" stroke="#475569" stroke-width="3"/></svg>;
+​// Set 4
+case 's4_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="18" width="70" height="38" rx="3" fill="#0f172a"/><rect x="18" y="21" width="64" height="32" fill="#38bdf8"/><rect x="42" y="56" width="16" height="4" fill="#64748b"/><path d="M22,65 Q50,65 78,65 L82,82 Q50,84 18,82 Z" fill="#f59e0b"/><rect x="18" y="70" width="64" height="12" rx="3" fill="#d97706"/></svg>;
+case 's4_p2_2': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="10" y="50" width="80" height="30" rx="3" fill="#0284c7"/><rect x="58" y="32" width="22" height="18" rx="2" fill="#f8fafc" stroke="#334155" stroke-width="1.5"/><rect x="62" y="36" width="14" height="10" fill="#38bdf8"/><text x="32" y="44" font-size="18">🛒</text><text x="70" y="72" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">收银台</text></svg>;
+case 's4_p2_3': return <svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="26" cy="65" r="16" fill="none" stroke="#334155" stroke-width="3.5"/><circle cx="74" cy="65" r="16" fill="none" stroke="#334155" stroke-width="3.5"/><path d="M26,65 L46,42 L66,42 L74,65 M46,42 L52,65 L66,65" fill="none" stroke="#2563eb" stroke-width="3.5" stroke-linecap="round"/><text x="48" y="42" font-size="22">🚴‍♂️</text></svg>;
+case 's4_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="18" y="30" width="16" height="50" rx="3" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5"/><rect x="23" y="24" width="6" height="6" fill="#0284c7"/><rect x="42" y="30" width="16" height="50" rx="3" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5"/><rect x="47" y="24" width="6" height="6" fill="#0284c7"/><rect x="66" y="30" width="16" height="50" rx="3" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5"/><rect x="71" y="24" width="6" height="6" fill="#0284c7"/></svg>;
+​// Set 5
+case 's5_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="22" y="22" width="56" height="38" rx="3" fill="#334155"/><rect x="26" y="26" width="48" height="30" fill="#60a5fa"/><polygon points="12,68 88,68 82,64 18,64" fill="#94a3b8"/><text x="50" y="46" font-size="12" fill="#ffffff" text-anchor="middle">💻 OFFICE</text></svg>;
+case 's5_p2_2': return <svg viewBox="0 0 100 100" class="w-20 h-20"><ellipse cx="50" cy="78" rx="42" ry="8" fill="#cbd5e1"/><path d="M25,50 C25,32 50,30 50,50 L52,70 L23,70 Z" fill="#d97706"/><ellipse cx="37" cy="35" rx="8" ry="3" fill="#b45309"/><path d="M50,42 Q62,42 62,55 Q62,65 52,65" fill="none" stroke="#d97706" stroke-width="3"/><path d="M68,54 L76,72 L62,72 Z" fill="#f59e0b"/></svg>;
+case 's5_p2_3': return <svg viewBox="0 0 100 100" class="w-20 h-20"><ellipse cx="52" cy="62" rx="30" ry="18" fill="#fb923c"/><circle cx="36" cy="52" r="14" fill="#fb923c"/><polygon points="26,42 30,30 36,44" fill="#f97316"/><polygon points="38,44 44,30 48,42" fill="#f97316"/><text x="64" y="45" font-size="16" fill="#3b82f6">zzz...</text></svg>;
+case 's5_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="12" y="18" width="76" height="52" fill="#1e293b"/><rect x="18" y="24" width="28" height="40" fill="#93c5fd"/><rect x="54" y="24" width="28" height="40" fill="#93c5fd"/><rect x="10" y="70" width="80" height="8" fill="#ef4444"/><text x="50" y="86" font-size="9" font-weight="bold" fill="#64748b" text-anchor="middle">地铁站 PLATFORM</text></svg>;
+​// Set 6
+case 's6_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="30" y="30" width="40" height="52" rx="6" fill="#4f46e5"/><path d="M42,30 L42,16 L58,16 L58,30" fill="none" stroke="#312e81" stroke-width="4"/><line x1="30" y1="46" x2="70" y2="46" stroke="#312e81" stroke-width="3"/><line x1="30" y1="62" x2="70" y2="62" stroke="#312e81" stroke-width="3"/><circle cx="38" cy="84" r="4" fill="#1e1b4b"/><circle cx="62" cy="84" r="4" fill="#1e1b4b"/></svg>;
+case 's6_p2_2': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="10" y="48" width="80" height="34" rx="4" fill="#38bdf8"/><path d="M12,56 Q25,50 38,56 Q51,62 64,56 Q77,50 88,56" fill="none" stroke="#ffffff" stroke-width="3"/><text x="50" y="46" font-size="28" text-anchor="middle">🏊‍♂️</text></svg>;
+case 's6_p2_3': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="18" y="24" width="64" height="42" rx="5" fill="#0f172a"/><rect x="18" y="34" width="64" height="9" fill="#2563eb"/><rect x="25" y="49" width="14" height="10" rx="2" fill="#fbbf24"/><text x="66" y="58" font-size="8" font-weight="bold" fill="#ffffff">CARD</text><path d="M42,68 L50,88 L65,76 Z" fill="#f87171"/></svg>;
+case 's6_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="10" y="20" width="80" height="60" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/><text x="32" y="44" font-size="18">👟</text><text x="68" y="44" font-size="18">👟</text><text x="32" y="70" font-size="18">👟</text><text x="68" y="70" font-size="18">👟</text><text x="50" y="86" font-size="8" font-weight="bold" fill="#64748b" text-anchor="middle">四双鞋</text></svg>;
+​// Set 7
+case 's7_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="50" cy="34" r="14" fill="#fbcfe8"/><rect x="34" y="50" width="32" height="32" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><path d="M42,50 Q50,62 58,50" fill="none" stroke="#0284c7" stroke-width="3"/><circle cx="50" cy="66" r="3" fill="#0284c7"/><text x="50" y="40" font-size="18" text-anchor="middle">👨‍⚕️</text></svg>;
+case 's7_p2_2': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="64" width="70" height="16" rx="2" fill="#b45309"/><rect x="28" y="34" width="44" height="30" rx="3" fill="#2563eb"/><line x1="50" y1="34" x2="50" y2="64" stroke="#ffffff" stroke-width="2"/><text x="50" y="26" font-size="16" text-anchor="middle">📚</text></svg>;
+case 's7_p2_3': return <svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M50,14 L50,38 C36,38 30,52 36,74 C40,88 60,88 64,74 C70,52 64,38 50,38 Z" fill="#d97706"/><circle cx="50" cy="62" r="8" fill="#1e293b"/><line x1="50" y1="14" x2="50" y2="68" stroke="#f8fafc" stroke-width="2"/><text x="75" y="35" font-size="18">🎵</text></svg>;
+case 's7_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M36,54 L40,82 L60,82 L64,54 Z" fill="#93c5fd" opacity="0.8"/><text x="28" y="44" font-size="18">🌷</text><text x="48" y="36" font-size="18">🌸</text><text x="68" y="44" font-size="18">🌹</text><text x="50" y="94" font-size="8" font-weight="bold" fill="#64748b" text-anchor="middle">三朵花</text></svg>;
+​// Set 8
+case 's8_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="22" y="16" width="56" height="68" rx="4" fill="#fef08a" stroke="#ca8a04" stroke-width="2"/><text x="50" y="32" font-size="10" font-weight="900" fill="#854d0e" text-anchor="middle">菜 单</text><line x1="30" y1="42" x2="70" y2="42" stroke="#ca8a04" stroke-width="2.5"/><line x1="30" y1="54" x2="60" y2="54" stroke="#ca8a04" stroke-width="2.5"/><line x1="30" y1="66" x2="65" y2="66" stroke="#ca8a04" stroke-width="2.5"/></svg>;
+case 's8_p2_2': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="14" y="46" width="72" height="34" rx="4" fill="#38bdf8" opacity="0.6"/><ellipse cx="44" cy="52" rx="20" ry="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><ellipse cx="56" cy="54" rx="18" ry="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><circle cx="34" cy="38" r="5" fill="#ffffff"/><circle cx="48" cy="32" r="7" fill="#ffffff"/><circle cx="62" cy="36" r="6" fill="#ffffff"/></svg>;
+case 's8_p2_3': return <svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="50" cy="50" r="45" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="50" y="58" font-size="36" text-anchor="middle">🐕‍🦺</text></svg>;
+case 's8_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><ellipse cx="50" cy="65" rx="38" ry="14" fill="#fde047" stroke="#ca8a04" stroke-width="2"/><text x="28" y="56" font-size="16">🍎</text><text x="46" y="50" font-size="16">🍌</text><text x="64" y="56" font-size="16">🍇</text><text x="50" y="90" font-size="9" font-weight="bold" fill="#64748b" text-anchor="middle">水果店</text></svg>;
+​// Set 9
+case 's9_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="26" width="70" height="46" rx="5" fill="#f97316"/><rect x="22" y="34" width="56" height="30" rx="3" fill="#ffffff"/><text x="32" y="48" font-size="8" font-weight="bold" fill="#0f172a">北京</text><text x="50" y="48" font-size="8" fill="#ea580c">→</text><text x="68" y="48" font-size="8" font-weight="bold" fill="#0f172a">上海</text><text x="50" y="59" font-size="7" font-weight="bold" fill="#64748b" text-anchor="middle">火车票 TICKET</text></svg>;
+case 's9_p2_2': return <svg viewBox="0 0 100 100" class="w-20 h-20"><line x1="28" y1="18" x2="65" y2="68" stroke="#b45309" stroke-width="5" stroke-linecap="round"/><polygon points="56,62 82,72 68,84" fill="#3b82f6"/><line x1="50" y1="78" x2="86" y2="78" stroke="#64748b" stroke-width="2"/></svg>;
+case 's9_p2_3': return <svg viewBox="0 0 100 100" class="w-20 h-20"><ellipse cx="50" cy="58" rx="28" ry="18" fill="#d97706"/><path d="M32,46 Q50,30 68,46" fill="none" stroke="#b45309" stroke-width="3"/><text x="50" y="88" font-size="9" font-weight="bold" fill="#64748b" text-anchor="middle">面包 BREAD</text></svg>;
+case 's9_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="18" y="34" width="26" height="38" rx="5" fill="#10b981"/><path d="M26,34 L26,26 L36,26 L36,34" fill="none" stroke="#047857" stroke-width="3"/><rect x="56" y="34" width="26" height="38" rx="5" fill="#6366f1"/><path d="M64,34 L64,26 L74,26 L74,34" fill="none" stroke="#4338ca" stroke-width="3"/><text x="50" y="88" font-size="9" font-weight="bold" fill="#64748b" text-anchor="middle">两个背包</text></svg>;
+​// Set 10
+case 's10_p2_1': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="12" y="46" width="76" height="34" rx="2" fill="#334155"/><rect x="28" y="24" width="44" height="22" fill="#64748b"/><text x="50" y="66" font-size="10" font-weight="900" fill="#ffffff" text-anchor="middle">HOTEL 前台</text><circle cx="50" cy="34" r="5" fill="#f8fafc"/></svg>;
+case 's10_p2_2': return <svg viewBox="0 0 100 100" class="w-20 h-20"><path d="M25,40 C25,18 65,18 65,40 Z" fill="#38bdf8"/><line x1="45" y1="40" x2="45" y2="70" stroke="#0284c7" stroke-width="3"/><line x1="20" y1="20" x2="16" y2="30" stroke="#0284c7" stroke-width="2"/><line x1="72" y1="18" x2="68" y2="28" stroke="#0284c7" stroke-width="2"/><line x1="80" y1="36" x2="76" y2="46" stroke="#0284c7" stroke-width="2"/><text x="45" y="84" font-size="18" text-anchor="middle">🚶‍♂️</text></svg>;
+case 's10_p2_3': return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="24" y="22" width="52" height="56" rx="6" fill="#1e293b"/><circle cx="50" cy="50" r="14" fill="#38bdf8"/><circle cx="64" cy="32" r="3.5" fill="#f43f5e"/><line x1="24" y1="66" x2="76" y2="66" stroke="#475569" stroke-width="1.5"/></svg>;
+case 's10_p2_4': return <svg viewBox="0 0 100 100" class="w-20 h-20"><circle cx="36" cy="50" r="16" fill="none" stroke="#64748b" stroke-width="5"/><path d="M52,50 L82,50 L82,60 L74,60 L72,55" fill="none" stroke="#64748b" stroke-width="5" stroke-linejoin="round"/><text x="36" y="54" font-size="12" text-anchor="middle">🚗</text></svg>;
+​default: return <svg viewBox="0 0 100 100" class="w-20 h-20"><rect x="15" y="15" width="70" height="70" rx="12" fill="#f8fafc" stroke="#3b82f6" stroke-width="2"/><text x="50" y="58" font-size="30" text-anchor="middle">🎯</text></svg>;
+}
+}
+​function renderApp() {
+const container = document.getElementById('questionsContainer');
+container.innerHTML = '';
+const currentDataset = allTscSets[currentSet] || [];
+const filtered = currentPart === 'all' ? currentDataset : currentDataset.filter(item => item.part === currentPart);
+document.getElementById('bannerSetLabel').textContent = SET ${String(currentSet).padStart(2, '0')};
+document.getElementById('bannerTitle').textContent = 삼성 사내 TSC 실전 모의고사 ${currentSet}회;
+document.getElementById('bannerTotalCount').textContent = ${filtered.length}개 문항 표시 중;
+​filtered.forEach((item) => {
+let isP2 = item.part === 'part2', isP45 = item.part === 'part4' || item.part === 'part5';
+let sQH = isP45 ? true : globalQ23Visible;
+let sQP = globalPinyinVisible || globalQPinyinVisible, sQK = globalKoreanVisible || globalQPinyinVisible;
+let sQBox = isP45 ? (sQP || sQK) : ((sQH && (sQP || sQK)) || globalQPinyinVisible);
+let sAP = globalPinyinVisible || globalAnsVisible, sAK = globalKoreanVisible || globalAnsVisible;
+​let card = document.createElement('div');
+card.className = "bg-white rounded-xl border border-slate-200/90 shadow-sm hover:border-slate-300 transition-all p-3.5 sm:p-5";
+card.id = card_${item.id};
+card.innerHTML = <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-100 gap-2"> <div class="flex items-center gap-1.5 flex-wrap"> <span class="text-[11px] font-bold px-2 py-0.5 rounded-md ${getPartPillStyle(item.part)}">${item.partName.split(':')[0]}</span> <span class="text-[11px] font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">${item.topic}</span> </div> <button onclick="triggerTimer('${item.id}', ${item.respTime})" class="px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold flex items-center gap-1 active:bg-blue-600 active:text-white transition-colors"> <i data-lucide="play" class="w-3 h-3 text-blue-600"></i><span>답변 ${item.respTime}초 타이머</span> </button> </div> <div id="timerBox_${item.id}" class="hidden mb-3 p-2.5 bg-amber-50 border border-amber-200 rounded-lg"> <div class="flex items-center justify-between text-xs font-bold text-amber-900 mb-1"> <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>실전 답변 시간 카운트다운</span> <span id="timerText_${item.id}" class="text-rose-600 font-extrabold text-sm">0초</span> </div> <div class="w-full bg-amber-200/70 h-2 rounded-full overflow-hidden"> <div id="timerProgress_${item.id}" class="bg-rose-500 h-2 rounded-full transition-all duration-300" style="width: 100%;"></div> </div> </div> <div class="${isP2 ? 'flex flex-col sm:flex-row gap-3 sm:gap-4 items-start' : 'space-y-3'}"> ${isP2 ?
+<div class="w-full sm:w-36 shrink-0 bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex flex-col items-center justify-center text-center">
+<div class="svg-icon-wrap py-1">
+{getPart2Svg(item.visualSvg)}
+</div>
+<span class="text-[10px] font-bold text-slate-600 mt-1 bg-white px-2 py-0.5 rounded-full border border-slate-200">
+시험 그림 (상시노출)
+</span>
+<span class="text-[11px] font-medium text-slate-600 mt-1.5 text-center leading-snug break-keep">
+${item.visualDesc}
+</span>
+</div>
+` : ''}
+<div class="flex-1 w-full space-y-2">
+<div class="bg-slate-50/80 p-3 rounded-xl border border-slate-200/80">
+<div class="flex items-start justify-between gap-2">
+<div class="space-y-1.5 flex-1">
+<div class="flex items-center gap-1.5">
+<span class="text-[11px] font-bold text-slate-400">질문 (문제)</span>
+${isP45 ? `<span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">한자 상시표시 · 병음은 숨김</span>` : `<span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">듣기 평가 (디폴트 가림)</span>`}
+</div>
+<div id="qHanzi_${item.id}" class="${sQH ? '' : 'hidden'} text-base sm:text-lg font-bold text-slate-900 font-chinese leading-relaxed">${item.q}</div>
+<div id="qPrompt_${item.id}" class="${sQH ? 'hidden' : ''} text-xs text-slate-500 py-1 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0"></span>
+<span>질문 텍스트가 가려져 있습니다. <strong>[문제 듣기]</strong>를 누르고 귀로만 듣고 답해보세요!</span>
+</div>
+<div id="qDetailBox_${item.id}" class="${sQBox ? '' : 'hidden'} pt-1 space-y-1">
+<div class="q-pinyin text-xs font-semibold text-indigo-700 font-mono ${sQP ? '' : 'hidden'}">${item.pinyinQ}</div>
+<div class="q-korean text-xs text-slate-600 ${sQK ? '' : 'hidden'}">${item.transQ}</div>
+</div>
+</div>
+<div class="flex items-center gap-1 shrink-0 flex-wrap justify-end">
+<button onclick="playTTS('${escapeJS(item.q)}', 'q_${item.id}', this)" class="tts-btn px-2.5 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-bold flex items-center gap-1 shadow-sm active:scale-95 transition-transform">
+<span class="tts-icon-wrap flex items-center"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i></span>
+<span class="tts-lbl">문제 듣기</span>
+</button>
+${isP45 ? `
+<button onclick="togglePart45QuestionPinyin('${item.id}')" id="btnQPinyin_${item.id}" class="px-2 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-800 text-xs font-semibold hover:bg-amber-50 flex items-center gap-1 shadow-sm">
+<i data-lucide="languages" class="w-3 h-3 text-amber-600"></i>
+<span id="btnQPinyinLabel_${item.id}">${sQBox ? '문제 병음 가림' : '문제 병음 보기'}</span>
+</button>
+` : `
+<button onclick="toggleSingleQ('${item.id}')" class="px-2 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-100 flex items-center gap-1 shadow-sm">
+<span id="btnQIconWrap_${item.id}" class="flex items-center"><i data-lucide="${sQH ? 'eye-off' : 'eye'}" class="w-3.5 h-3.5 text-slate-500"></i></span>
+<span id="btnQLabel_${item.id}">{sQH ? '질문 숨김' : '질문 보기'}</span>
+</button>
+} </div> </div> </div> <div id="ansBox_${item.id}" class="ans-block ${globalAnsVisible ? '' : 'hidden'}"> <div class="bg-indigo-50/60 border border-indigo-100 rounded-xl p-3 sm:p-3.5 space-y-1.5"> <div class="flex items-center justify-between"> <span class="text-xs font-bold text-indigo-900 flex items-center gap-1"> <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-indigo-600"></i> 모범 표준 답안 </span> <button onclick="playTTS('${escapeJS(item.a)}', 'a_${item.id}', this)" class="tts-btn px-2 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-xs font-bold flex items-center gap-1"> <span class="tts-icon-wrap flex items-center"><i data-lucide="volume-2" class="w-3 h-3"></i></span> <span class="tts-lbl">답변 듣기</span> </button> </div> <div class="text-sm sm:text-base font-bold text-slate-900 font-chinese whitespace-pre-line leading-relaxed">${item.a}</div> <div class="ans-pinyin text-xs font-semibold text-indigo-900 font-mono whitespace-pre-line leading-relaxed ${sAP ? '' : 'hidden'}">${item.pinyinA}</div> <div class="ans-korean text-xs text-slate-700 whitespace-pre-line leading-relaxed pt-1 border-t border-indigo-100 ${sAK ? '' : 'hidden'}">${item.transA}</div> <div class="text-[11px] text-indigo-950/80 pt-1 border-t border-indigo-100/70 flex items-start gap-1"> <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5"></i> <span><strong>공략 포인트:</strong> ${item.tip}</span> </div> </div> </div> <div class="pt-0.5"> <button onclick="toggleSingleAns('${item.id}')" class="px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 flex items-center gap-1.5 shadow-sm active:bg-slate-100"> <span id="btnAnsIconWrap_${item.id}" class="flex items-center"><i data-lucide="${globalAnsVisible ? 'eye-off' : 'eye'}" class="w-3.5 h-3.5 text-indigo-600"></i></span> <span id="btnAnsLabel_${item.id}">${globalAnsVisible ? '모범 답안 닫기' : '모범 답안 열기'}</span> </button> </div> </div> </div>;
+container.appendChild(card);
+});
+lucide.createIcons();
+}
+​function syncAllQuestionDetails() {
+let ds = allTscSets[currentSet] || [];
+let sQP = globalPinyinVisible || globalQPinyinVisible, sQK = globalKoreanVisible || globalQPinyinVisible;
+ds.forEach(item => {
+let box = document.getElementById(qDetailBox_${item.id});
+if(!box) return;
+let isP45 = item.part === 'part4' || item.part === 'part5';
+let hz = document.getElementById(qHanzi_${item.id});
+let hzVis = hz && !hz.classList.contains('hidden');
+let pEl = box.querySelector('.q-pinyin'), kEl = box.querySelector('.q-korean');
+if(pEl) pEl.classList.toggle('hidden', !sQP); if(kEl) kEl.classList.toggle('hidden', !sQK);
+let sBox = isP45 ? (sQP||sQK) : ((hzVis && (sQP||sQK)) || globalQPinyinVisible);
+box.classList.toggle('hidden', !sBox);
+let lbl = document.getElementById(btnQPinyinLabel_${item.id});
+if(lbl) lbl.textContent = sBox ? '문제 병음 가림' : '문제 병음 보기';
+});
+}
+​function toggleAllQuestionText() {
+globalQ23Visible = !globalQ23Visible;
+document.getElementById('labelGlobalQ').textContent = globalQ23Visible ? '2·3부 질문 숨김' : '2·3부 질문 열기';
+let b = document.getElementById('btnGlobalQ'); b.classList.toggle('bg-rose-100', globalQ23Visible); b.classList.toggle('border-rose-400', globalQ23Visible);
+(allTscSets[currentSet] || []).forEach(item => {
+if (item.part === 'part2' || item.part === 'part3') {
+let hz = document.getElementById(qHanzi_${item.id}), pr = document.getElementById(qPrompt_${item.id}), lbl = document.getElementById(btnQLabel_${item.id}), ic = document.getElementById(btnQIconWrap_${item.id});
+if (hz && pr) { hz.classList.toggle('hidden', !globalQ23Visible); pr.classList.toggle('hidden', globalQ23Visible); if(lbl) lbl.textContent = globalQ23Visible ? '질문 숨김' : '질문 보기'; setLucideIcon(ic, globalQ23Visible ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-slate-500'); }
+}
+});
+syncAllQuestionDetails(); lucide.createIcons();
+}
+​function toggleAllQuestionPinyin() {
+globalQPinyinVisible = !globalQPinyinVisible; document.getElementById('labelGlobalQPinyin').textContent = globalQPinyinVisible ? '문제 병음 전체 가림' : '문제 병음 전체 열기';
+let b = document.getElementById('btnGlobalQPinyin'); b.classList.toggle('bg-amber-100', globalQPinyinVisible); b.classList.toggle('border-amber-400', globalQPinyinVisible);
+syncAllQuestionDetails();
+}
+function toggleAllPinyin() {
+globalPinyinVisible = !globalPinyinVisible; document.getElementById('labelGlobalPinyin').textContent = globalPinyinVisible ? '병음 전체 숨기기' : '병음 전체 표시';
+let b = document.getElementById('btnGlobalPinyin'); b.classList.toggle('bg-blue-100', globalPinyinVisible); b.classList.toggle('border-blue-400', globalPinyinVisible);
+document.querySelectorAll('.ans-pinyin').forEach(el => el.classList.toggle('hidden', !globalPinyinVisible)); syncAllQuestionDetails();
+}
+function toggleAllKorean() {
+globalKoreanVisible = !globalKoreanVisible; document.getElementById('labelGlobalKorean').textContent = globalKoreanVisible ? '해석 숨기기' : '해석 보기';
+let b = document.getElementById('btnGlobalKorean'); b.classList.toggle('bg-emerald-100', globalKoreanVisible); b.classList.toggle('border-emerald-400', globalKoreanVisible);
+document.querySelectorAll('.ans-korean').forEach(el => el.classList.toggle('hidden', !globalKoreanVisible)); syncAllQuestionDetails();
+}
+function toggleAllAnswers() {
+globalAnsVisible = !globalAnsVisible; document.getElementById('labelGlobalAns').textContent = globalAnsVisible ? '답안 전체 닫기' : '답안 전체 열기';
+let b = document.getElementById('btnGlobalAns'); b.classList.toggle('bg-indigo-100', globalAnsVisible); b.classList.toggle('border-indigo-400', globalAnsVisible);
+document.querySelectorAll('.ans-block').forEach(el => el.classList.toggle('hidden', !globalAnsVisible));
+if (globalAnsVisible) { document.querySelectorAll('.ans-pinyin, .ans-korean').forEach(el => el.classList.remove('hidden')); }
+else { document.querySelectorAll('.ans-pinyin').forEach(el => el.classList.toggle('hidden', !globalPinyinVisible)); document.querySelectorAll('.ans-korean').forEach(el => el.classList.toggle('hidden', !globalKoreanVisible)); }
+(allTscSets[currentSet] || []).forEach(item => {
+let lbl = document.getElementById(btnAnsLabel_${item.id}), ic = document.getElementById(btnAnsIconWrap_${item.id});
+if(lbl) lbl.textContent = globalAnsVisible ? '모범 답안 닫기' : '모범 답안 열기'; setLucideIcon(ic, globalAnsVisible ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-indigo-600');
+});
+lucide.createIcons();
+}
+​function togglePart45QuestionPinyin(id) {
+let b = document.getElementById(qDetailBox_${id}), l = document.getElementById(btnQPinyinLabel_${id});
+if(!b) return; let isH = b.classList.contains('hidden'); b.classList.toggle('hidden', !isH);
+let pEl = b.querySelector('.q-pinyin'), kEl = b.querySelector('.q-korean');
+if(pEl) pEl.classList.toggle('hidden', !isH); if(kEl) kEl.classList.toggle('hidden', !isH);
+if(l) l.textContent = isH ? '문제 병음 가림' : '문제 병음 보기';
+}
+function toggleSingleQ(id) {
+let hz = document.getElementById(qHanzi_${id}), pr = document.getElementById(qPrompt_${id}), b = document.getElementById(qDetailBox_${id}), l = document.getElementById(btnQLabel_${id}), ic = document.getElementById(btnQIconWrap_${id});
+if(!hz) return; let isO = hz.classList.contains('hidden'); hz.classList.toggle('hidden', !isO); if(pr) pr.classList.toggle('hidden', isO);
+if(b) { b.classList.toggle('hidden', !isO); let pEl = b.querySelector('.q-pinyin'), kEl = b.querySelector('.q-korean'); if(pEl) pEl.classList.toggle('hidden', !isO); if(kEl) kEl.classList.toggle('hidden', !isO); }
+if(l) l.textContent = isO ? '질문 숨김' : '질문 보기'; setLucideIcon(ic, isO ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-slate-500'); lucide.createIcons();
+}
+function toggleSingleAns(id) {
+let b = document.getElementById(ansBox_${id}), l = document.getElementById(btnAnsLabel_${id}), ic = document.getElementById(btnAnsIconWrap_${id});
+if(!b) return; let isO = b.classList.contains('hidden'); b.classList.toggle('hidden', !isO);
+if(isO) { let pEl = b.querySelector('.ans-pinyin'), kEl = b.querySelector('.ans-korean'); if(pEl) pEl.classList.remove('hidden'); if(kEl) kEl.classList.remove('hidden'); }
+if(l) l.textContent = isO ? '모범 답안 닫기' : '모범 답안 열기'; setLucideIcon(ic, isO ? 'eye-off' : 'eye', 'w-3.5 h-3.5 text-indigo-600'); lucide.createIcons();
+}
+​function playTTS(text, elementId, btnEl) {
+if (!('speechSynthesis' in window)) return showToast("브라우저가 TTS를 지원하지 않습니다.");
+if (window.speechSynthesis.speaking && currentSpeakingId === elementId) return stopTTS();
+stopTTS();
+let utter = new SpeechSynthesisUtterance(text); utter.lang = 'zh-CN'; utter.rate = globalSpeed;
+let cnVoice = window.speechSynthesis.getVoices().find(v => v.lang && (v.lang.includes('zh') || v.lang.includes('cmn')));
+if (cnVoice) utter.voice = cnVoice;
+currentSpeakingId = elementId;
+if (btnEl) { btnEl.classList.add('ring-2', 'ring-rose-500', '!bg-rose-600', '!text-white'); let ic = btnEl.querySelector('.tts-icon-wrap'); setLucideIcon(ic, 'square', elementId.startsWith('a_') ? 'w-3 h-3' : 'w-3.5 h-3.5'); lucide.createIcons(); }
+utter.onend = () => { resetTTSButtons(); currentSpeakingId = null; }; utter.onerror = utter.onend;
+activeUtterance = utter; window.speechSynthesis.speak(utter);
+}
+function stopTTS() { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); resetTTSButtons(); currentSpeakingId = null; }
+function resetTTSButtons() {
+document.querySelectorAll('.tts-btn').forEach(b => { b.classList.remove('ring-2', 'ring-rose-500', '!bg-rose-600', '!text-white'); let ic = b.querySelector('.tts-icon-wrap'); setLucideIcon(ic, 'volume-2', b.textContent.includes('답변') ? 'w-3 h-3' : 'w-3.5 h-3.5'); });
+lucide.createIcons();
+}
+​function triggerTimer(id, duration) {
+if (timerInterval) { clearInterval(timerInterval); if (activeTimerId) { let oldBox = document.getElementById(timerBox_${activeTimerId}); if (oldBox) oldBox.classList.add('hidden'); } }
+activeTimerId = id; let box = document.getElementById(timerBox_${id}), text = document.getElementById(timerText_${id}), bar = document.getElementById(timerProgress_${id});
+if (!box || !text || !bar) return;
+box.classList.remove('hidden'); playTone(880, 0.2, 'sine');
+let tLeft = duration, tTotal = duration; text.textContent = ${tLeft}초; bar.style.width = '100%';
+timerInterval = setInterval(() => {
+tLeft--; bar.style.width = ${Math.max(0, (tLeft/tTotal)*100)}%; text.textContent = ${tLeft}초;
+if (tLeft === 3) playTone(660, 0.15, 'sine');
+if (tLeft <= 0) { clearInterval(timerInterval); timerInterval = null; text.textContent = '답변 종료!'; playTone(440, 0.5, 'triangle'); setTimeout(() => box.classList.add('hidden'), 1500); }
+}, 1000);
+}
+​function showToast(msg) {
+let t = document.createElement('div'); t.className = "fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-lg border border-slate-700"; t.textContent = msg;
+document.body.appendChild(t); setTimeout(() => t.remove(), 3000);
+}
+​window.addEventListener('DOMContentLoaded', () => {
+renderApp(); if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+});
+</script>
 </body>
 </html>
